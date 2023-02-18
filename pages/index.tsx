@@ -1,5 +1,5 @@
 import { Paper, styled, Typography } from '@mui/material'
-import { useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 
 const ContentDiv = styled('div')`
@@ -14,15 +14,46 @@ const ContentDiv = styled('div')`
   align-items: center;
 `;
 
+type TreeDict = {
+  [key: string]: TreeDict | null
+}
+
+const LabSummary: FC<{ node: TreeDict }> = ({ node }) => {
+  return (
+    <div>
+      {Object.keys(node).map(name => {
+        const item = node[name]
+        if (item) {
+          return (
+            <div>
+              <span>{name}</span>
+              <LabSummary node={item} />
+            </div>
+          )
+        }
+        else {
+          return (
+            <div>
+              <span>{name}</span>
+            </div>
+          )
+        }
+      })}
+    </div>
+  )
+}
+
 export default function Home() {
+  const [dirTree, setDirTree] = useState({} as TreeDict)
+
   useEffect(() => {
-    const fetchTree = async () => {
+    const fetchTreeDict = async () => {
       // The /api path is rewritten so that it can fetch to production port, bypass CORS
       const res = await fetch('/api/tree')
-      const treeDict = await res.json()
-      console.log(treeDict)
+      const treeObj = await res.json()
+      setDirTree(treeObj)
     }
-    fetchTree().catch(console.error)
+    fetchTreeDict().catch(console.error)
   }, [])
 
   return (
@@ -32,9 +63,8 @@ export default function Home() {
           width: '100%',
           textAlign: 'center'
         }}>
-        <Typography variant='h4'>Directory Tree</Typography>
-        <Typography variant='h5'>Hello World!</Typography>
-        <Typography variant='h5'>This is the all-in-one backtest lab you ever need.</Typography>
+        <Typography variant='h4'>Labs in CWD</Typography>
+        <LabSummary node={dirTree} />
       </Paper>
     </ContentDiv>
   )
