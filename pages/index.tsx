@@ -1,4 +1,5 @@
 import { Paper, styled, Typography } from '@mui/material'
+import { useEffect } from 'react';
 
 
 const ContentDiv = styled('div')`
@@ -8,12 +9,21 @@ const ContentDiv = styled('div')`
   display: flex;
   flex-flow: column;
   /* align vertically */
-  justify-content: center;
+  justify-content: flex-start;
   /* align horizontally */
   align-items: center;
 `;
 
 export default function Home() {
+  useEffect(() => {
+    const fetchTree = async () => {
+      // The /api path is rewritten so that it can fetch to production port, bypass CORS
+      const tree = await fetch('/api/tree')
+      console.log(tree)
+    }
+    fetchTree().catch(console.error)
+  }, [])
+
   return (
     <ContentDiv>
       <Paper
@@ -21,7 +31,7 @@ export default function Home() {
           width: '100%',
           textAlign: 'center'
         }}>
-        <Typography variant='h4'>Welcome to TrBox Lab</Typography>
+        <Typography variant='h4'>Directory Tree</Typography>
         <Typography variant='h5'>Hello World!</Typography>
         <Typography variant='h5'>This is the all-in-one backtest lab you ever need.</Typography>
       </Paper>
