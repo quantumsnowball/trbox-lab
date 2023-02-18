@@ -1,5 +1,9 @@
-import { Paper, styled, Typography } from '@mui/material'
+import { Breadcrumbs, Paper, styled, Typography } from '@mui/material'
 import { FC, useEffect, useState } from 'react';
+import HomeIcon from '@mui/icons-material/Home';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+import GrainIcon from '@mui/icons-material/Grain';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 
 const ContentDiv = styled('div')`
@@ -52,6 +56,39 @@ const LabSummary: FC<{ node: TreeDict }> = ({ node }) => {
   )
 }
 
+const BreadCrumbsExample = () => {
+  return (
+    <Breadcrumbs
+      separator={<NavigateNextIcon />}
+      aria-label="breadcrumb"
+      sx={{ m: 1, p: 1 }}
+    >
+      <Typography
+        variant='h6'
+        sx={{ display: 'flex', alignItems: 'center' }}
+      >
+        <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+      </Typography>
+      <Typography
+        variant='h6'
+        sx={{ display: 'flex', alignItems: 'center' }}
+      >
+        <WhatshotIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+        Momentum
+      </Typography>
+      <Typography
+        variant='h6'
+        sx={{ display: 'flex', alignItems: 'center' }}
+        color="text.primary"
+      >
+        <GrainIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+        st_demo_sub_2
+      </Typography>
+    </Breadcrumbs>
+  )
+}
+
+
 export default function Home() {
   const [dirTree, setDirTree] = useState({} as TreeDict)
 
@@ -72,7 +109,8 @@ export default function Home() {
           width: '100%',
           textAlign: 'center'
         }}>
-        <Typography variant='h4'>Labs in CWD</Typography>
+        <Typography variant='h5'>Labs</Typography>
+        <BreadCrumbsExample />
         <LabSummary node={dirTree} />
       </Paper>
     </ContentDiv>
