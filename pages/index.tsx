@@ -20,26 +20,35 @@ type TreeDict = {
 
 const LabSummary: FC<{ node: TreeDict }> = ({ node }) => {
   return (
-    <div>
+    <Paper
+      elevation={5}
+      sx={{
+        textAlign: 'left',
+        m: 1,
+        p: 1,
+      }}
+    >
       {Object.keys(node).map(name => {
         const item = node[name]
+        // a dir
         if (item) {
           return (
-            <div>
-              <span>{name}</span>
+            <div key={name}>
+              <Typography variant='h6'>{name}/</Typography>
               <LabSummary node={item} />
             </div>
           )
         }
+        // a st_*.py file
         else {
           return (
-            <div>
-              <span>{name}</span>
+            <div key={name}>
+              <Typography key={name} variant='h6'>{name}</Typography>
             </div>
           )
         }
       })}
-    </div>
+    </Paper>
   )
 }
 
