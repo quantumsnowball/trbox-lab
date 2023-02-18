@@ -61,8 +61,8 @@ function App({ Component, pageProps }: AppProps) {
     <ReduxWrapper>
       <ThemeWrapper>
         <Head>
-          <title>Trbox - Console</title>
-          <meta name="description" content="Trbox Console" />
+          <title>Trbox - Lab</title>
+          <meta name="description" content="Trbox Lab" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>

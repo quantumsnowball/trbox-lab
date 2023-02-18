@@ -21,9 +21,9 @@ export default function Home() {
           width: '100%',
           textAlign: 'center'
         }}>
-        <Typography variant='h4'>Welcome to TrBox Console</Typography>
+        <Typography variant='h4'>Welcome to TrBox Lab</Typography>
         <Typography variant='h5'>Hello World!</Typography>
-        <Typography variant='h5'>This is the all-in-one algo trading dashboard you ever need.</Typography>
+        <Typography variant='h5'>This is the all-in-one backtest lab you ever need.</Typography>
       </Paper>
     </ContentDiv>
   )

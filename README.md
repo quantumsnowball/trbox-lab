@@ -1,3 +1,3 @@
-# Trbox Dashboard
+# Trbox Lab
 
-This is the frontend console for `trbox` when live trading.
+This is the frontend console for `trbox` when backtest.
