@@ -18,8 +18,9 @@ export default function Home() {
   useEffect(() => {
     const fetchTree = async () => {
       // The /api path is rewritten so that it can fetch to production port, bypass CORS
-      const tree = await fetch('/api/tree')
-      console.log(tree)
+      const res = await fetch('/api/tree')
+      const treeDict = await res.json()
+      console.log(treeDict)
     }
     fetchTree().catch(console.error)
   }, [])
