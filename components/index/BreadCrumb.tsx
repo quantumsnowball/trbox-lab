@@ -24,8 +24,12 @@ const Home = () => {
 }
 
 const BreadCrumbs = () => {
+  const dispatch = useDispatch()
   const dirTree = useSelector((s: RootState) => s.layoutTemp.breadCrumbs.dirTree)
-  const nodes = useSelector((s: RootState) => s.layoutTemp.breadCrumbs.nodes)
+  const [nodes, shortenNodes] = [
+    useSelector((s: RootState) => s.layoutTemp.breadCrumbs.nodes),
+    (i: number) => () => dispatch(layoutTempActions.shortenNodes(i))
+  ]
   const [anchor, setAnchor] = useState<null | HTMLElement>(null)
   const [visible, setVisible] = useState(false)
   const onClickBreadCrumb = (event: React.MouseEvent<HTMLElement>) => {
@@ -41,10 +45,12 @@ const BreadCrumbs = () => {
     >
       <Home />
       {
-        nodes.map(name => {
+        nodes.map((name, i) => {
           return (
             <Typography
               variant='h6'
+              sx={{ cursor: 'pointer' }}
+              onClick={shortenNodes(i + 1)}
             >
               {name}
             </Typography>
