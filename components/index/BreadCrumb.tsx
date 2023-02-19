@@ -3,17 +3,25 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import GrainIcon from '@mui/icons-material/Grain';
 import { useState } from 'react';
 import { Breadcrumbs, Menu, MenuItem, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { layoutTempActions } from '@/redux/slices/layoutTemp';
 
 
-const Home = () =>
-  <Typography
-    variant='h6'
-    sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-  >
-    <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-  </Typography>
+const Home = () => {
+  const dispatch = useDispatch()
+  const clearNodes = () => dispatch(layoutTempActions.clearNodes())
+
+  return (
+    <Typography
+      variant='h6'
+      sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+      onClick={clearNodes}
+    >
+      <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+    </Typography>
+  )
+}
 
 const BreadCrumbs = () => {
   const dirTree = useSelector((s: RootState) => s.layoutTemp.breadCrumbs.dirTree)
