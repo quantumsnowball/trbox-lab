@@ -9,7 +9,8 @@ const layoutTempSlice = createSlice({
       visible: false,
     },
     breadCrumbs: {
-      dirTree: {} as TreeDict
+      dirTree: {} as TreeDict,
+      nodes: [] as string[],
     }
   },
   reducers: {
@@ -20,6 +21,10 @@ const layoutTempSlice = createSlice({
     // breadCrumbs
     setDirTree: (s, a: PayloadAction<TreeDict>) => { s.breadCrumbs.dirTree = a.payload },
     clearDirTree: s => { s.breadCrumbs.dirTree = {} },
+    setNodes: (s, a: PayloadAction<string[]>) => { s.breadCrumbs.nodes = a.payload },
+    appendNode: (s, a: PayloadAction<string>) => { s.breadCrumbs.nodes.push(a.payload) },
+    popNode: s => { s.breadCrumbs.nodes.pop() },
+    clearNodes: s => { s.breadCrumbs.nodes = [] },
   }
 })
 

@@ -3,6 +3,8 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import GrainIcon from '@mui/icons-material/Grain';
 import { useState } from 'react';
 import { Breadcrumbs, Menu, MenuItem, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 
 const options = [
@@ -13,6 +15,8 @@ const options = [
 ];
 
 const BreadCrumbs = () => {
+  const dirTree = useSelector((s: RootState) => s.layoutTemp.breadCrumbs.dirTree)
+  const nodes = useSelector((s: RootState) => s.layoutTemp.breadCrumbs.nodes)
   const [anchor, setAnchor] = useState<null | HTMLElement>(null)
   const [visible, setVisible] = useState(false)
   const onClickBreadCrumb = (event: React.MouseEvent<HTMLElement>) => {

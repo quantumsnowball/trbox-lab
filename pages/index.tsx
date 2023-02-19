@@ -1,6 +1,7 @@
 import { TreeDict } from '@/common/types';
 import BreadCrumbs from '@/components/index/BreadCrumb';
 import LabSummary from '@/components/index/LabSummary';
+import Summary from '@/components/index/Summary';
 import { layoutTempActions } from '@/redux/slices/layoutTemp';
 import { RootState } from '@/redux/store';
 import { Paper, styled, Typography } from '@mui/material'
@@ -48,6 +49,7 @@ export default function Home() {
         }}>
         <Typography variant='h5'>Labs</Typography>
         <BreadCrumbs />
+        <Summary />
         <LabSummary node={dirTree} />
       </Paper>
     </ContentDiv>
