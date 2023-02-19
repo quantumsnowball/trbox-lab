@@ -26,3 +26,7 @@ export type OrderResult = {
 export type TradeLog = OrderResult[]
 
 
+export type TreeDict = {
+  [key: string]: TreeDict | null
+}
+
