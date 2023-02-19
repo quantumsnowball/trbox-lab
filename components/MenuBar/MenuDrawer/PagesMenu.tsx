@@ -9,6 +9,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import InsightsIcon from '@mui/icons-material/Insights'
 import { useRouter } from 'next/router'
 import ReceiptLong from '@mui/icons-material/ReceiptLong'
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined'
 
 
 function PagesMenu() {
@@ -33,6 +34,12 @@ function PagesMenu() {
             icon={<HomeIcon />}
             text='Home'
             onClick={() => router.push('/')}
+            level={1}
+          />
+          <MenuButton
+            icon={<LeaderboardOutlinedIcon />}
+            text='Results'
+            onClick={() => router.push('/results')}
             level={1}
           />
           <MenuButton
