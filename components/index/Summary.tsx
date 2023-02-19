@@ -8,11 +8,12 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { FC } from "react"
 
+const SUFFIX = '.py'
 
 const Icon: FC<{ name: string }> = ({ name }) =>
   // if no .py ext, consider a dir
   <>
-    {name.endsWith('.py') ?
+    {name.endsWith(SUFFIX) ?
       <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
@@ -45,7 +46,7 @@ const Summary = () => {
             variant='h6'
             sx={{ m: 1, p: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
             onClick={() => {
-              if (!nodes.at(-1)?.endsWith('.py'))
+              if (!nodes.at(-1)?.endsWith(SUFFIX))
                 appendNode(name)
             }}
           >

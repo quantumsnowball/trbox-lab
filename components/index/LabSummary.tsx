@@ -24,7 +24,7 @@ const LabSummary: FC<{ node: TreeDict }> = ({ node }) => {
             </div>
           )
         }
-        // a st_*.py file
+        // a *.py file
         else {
           return (
             <div key={name}>

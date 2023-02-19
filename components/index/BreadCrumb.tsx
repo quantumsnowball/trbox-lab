@@ -8,6 +8,8 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 
 
+const SUFFIX = '.py'
+
 const Home = () => {
   const dispatch = useDispatch()
   const clearNodes = () => dispatch(srcTreeTempActions.clearNodes())
@@ -26,7 +28,7 @@ const Home = () => {
 const Icon: FC<{ name: string }> = ({ name }) =>
   // if no .py ext, consider a dir
   <>
-    {name.endsWith('.py') ?
+    {name.endsWith(SUFFIX) ?
       <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
