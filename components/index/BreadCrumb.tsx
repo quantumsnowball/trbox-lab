@@ -1,11 +1,14 @@
 import HomeIcon from '@mui/icons-material/Home';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import GrainIcon from '@mui/icons-material/Grain';
-import { useState } from 'react';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { FC, useState } from 'react';
 import { Breadcrumbs, Menu, MenuItem, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { layoutTempActions } from '@/redux/slices/layoutTemp';
+import FolderIcon from '@mui/icons-material/Folder';
+import DataObjectIcon from '@mui/icons-material/DataObject';
 
 
 const Home = () => {
@@ -37,9 +40,32 @@ const BreadCrumbs = () => {
     setAnchor(event.currentTarget)
   }
 
+  const isLastDir = () => {
+    const last = nodes.at(-1)
+    // at root, must be a dir
+    if (!last)
+      return true
+    // get last node
+    const lastNode = dirTree[last]
+    // last node is a file
+    if (!lastNode)
+      return false
+    // last node is a dir
+    console.debug({ lastNode })
+    return true
+  }
+
+  const Icon: FC<{ name: string }> = ({ name }) =>
+    // if no .py ext, consider a dir
+    <>
+      {name.endsWith('.py') ?
+        <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
+        <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
+    </>
+
   return (
     <Breadcrumbs
-      // separator={<NavigateNextIcon />}
+      // separator={<Sep />}
       aria-label="breadcrumb"
       sx={{ m: 1, p: 1 }}
     >
@@ -48,10 +74,12 @@ const BreadCrumbs = () => {
         nodes.map((name, i) => {
           return (
             <Typography
+              key={name}
               variant='h6'
-              sx={{ cursor: 'pointer' }}
+              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
               onClick={shortenNodes(i + 1)}
             >
+              <Icon name={name} />
               {name}
             </Typography>
           )
