@@ -6,9 +6,7 @@ import { layoutActions } from '../../../redux/slices/layout'
 import { MenuButtonGrouper, MenuButton } from './common'
 import AccountTreeIcon from '@mui/icons-material/AccountTree'
 import HomeIcon from '@mui/icons-material/Home'
-import InsightsIcon from '@mui/icons-material/Insights'
 import { useRouter } from 'next/router'
-import ReceiptLong from '@mui/icons-material/ReceiptLong'
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined'
 
 
@@ -40,18 +38,6 @@ function PagesMenu() {
             icon={<LeaderboardOutlinedIcon />}
             text='Results'
             onClick={() => router.push('/results')}
-            level={1}
-          />
-          <MenuButton
-            icon={<InsightsIcon />}
-            text='Navs'
-            onClick={() => router.push('/navs')}
-            level={1}
-          />
-          <MenuButton
-            icon={<ReceiptLong />}
-            text='Trade Log'
-            onClick={() => router.push('/tradelog')}
             level={1}
           />
         </List>
