@@ -1,8 +1,12 @@
 import { TreeDict } from '@/common/types';
 import BreadCrumbs from '@/components/index/BreadCrumb';
 import LabSummary from '@/components/index/LabSummary';
+import { layoutTempActions } from '@/redux/slices/layoutTemp';
+import { RootState } from '@/redux/store';
 import { Paper, styled, Typography } from '@mui/material'
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
 const ContentDiv = styled('div')`
@@ -18,7 +22,12 @@ const ContentDiv = styled('div')`
 `;
 
 export default function Home() {
-  const [dirTree, setDirTree] = useState({} as TreeDict)
+  const dispatch = useDispatch()
+  const [dirTree, setDirTree] = [
+    useSelector((s: RootState) => s.layoutTemp.breadCrumbs.dirTree),
+    (t: TreeDict) => dispatch(layoutTempActions.setDirTree(t))
+  ]
+
 
   useEffect(() => {
     const fetchTreeDict = async () => {
