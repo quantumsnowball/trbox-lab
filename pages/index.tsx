@@ -1,13 +1,10 @@
-import { TreeDict } from '@/common/types';
 import BreadCrumbs from '@/components/index/BreadCrumb';
-import LabSummary from '@/components/index/LabSummary';
+import { TreeDict } from '@/common/types';
 import Summary from '@/components/index/Summary';
 import { layoutTempActions } from '@/redux/slices/layoutTemp';
-import { RootState } from '@/redux/store';
-import { Paper, styled, Typography } from '@mui/material'
+import { Paper, styled } from '@mui/material'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 
 
 const ContentDiv = styled('div')`
