@@ -1,5 +1,5 @@
 import { TreeDict } from "@/common/types"
-import { layoutTempActions } from "@/redux/slices/layoutTemp"
+import { srcTreeTempActions } from "@/redux/slices/srcTreeTemp"
 import { RootState } from "@/redux/store"
 import { Button, Typography } from "@mui/material"
 import { useDispatch } from "react-redux"
@@ -19,11 +19,11 @@ const Icon: FC<{ name: string }> = ({ name }) =>
 
 const Summary = () => {
   const dispatch = useDispatch()
-  const dirTree = useSelector((s: RootState) => s.layoutTemp.breadCrumbs.dirTree)
+  const dirTree = useSelector((s: RootState) => s.srcTreeTemp.dirTree)
   const [nodes, appendNode, popNode] = [
-    useSelector((s: RootState) => s.layoutTemp.breadCrumbs.nodes),
-    (n: string) => dispatch(layoutTempActions.appendNode(n)),
-    () => dispatch(layoutTempActions.popNode()),
+    useSelector((s: RootState) => s.srcTreeTemp.nodes),
+    (n: string) => dispatch(srcTreeTempActions.appendNode(n)),
+    () => dispatch(srcTreeTempActions.popNode()),
   ]
   const selected = nodes.reduce((tree, name, _, arr) => {
     const node = tree[name]

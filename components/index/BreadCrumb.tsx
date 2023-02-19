@@ -3,14 +3,14 @@ import { FC, } from 'react';
 import { Breadcrumbs, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { layoutTempActions } from '@/redux/slices/layoutTemp';
+import { srcTreeTempActions } from '@/redux/slices/srcTreeTemp';
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 
 
 const Home = () => {
   const dispatch = useDispatch()
-  const clearNodes = () => dispatch(layoutTempActions.clearNodes())
+  const clearNodes = () => dispatch(srcTreeTempActions.clearNodes())
 
   return (
     <Typography
@@ -34,8 +34,8 @@ const Icon: FC<{ name: string }> = ({ name }) =>
 const BreadCrumbs = () => {
   const dispatch = useDispatch()
   const [nodes, shortenNodes] = [
-    useSelector((s: RootState) => s.layoutTemp.breadCrumbs.nodes),
-    (i: number) => () => dispatch(layoutTempActions.shortenNodes(i))
+    useSelector((s: RootState) => s.srcTreeTemp.nodes),
+    (i: number) => () => dispatch(srcTreeTempActions.shortenNodes(i))
   ]
 
 

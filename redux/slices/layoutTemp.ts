@@ -1,5 +1,4 @@
-import { TreeDict } from '@/common/types'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 
 const layoutTempSlice = createSlice({
@@ -8,24 +7,11 @@ const layoutTempSlice = createSlice({
     menu: {
       visible: false,
     },
-    breadCrumbs: {
-      dirTree: {} as TreeDict,
-      nodes: [] as string[],
-    }
   },
   reducers: {
-    // menu
     toggleMenu: s => { s.menu.visible = !s.menu.visible },
     openMenu: s => { s.menu.visible = true },
     closeMenu: s => { s.menu.visible = false },
-    // breadCrumbs
-    setDirTree: (s, a: PayloadAction<TreeDict>) => { s.breadCrumbs.dirTree = a.payload },
-    clearDirTree: s => { s.breadCrumbs.dirTree = {} },
-    setNodes: (s, a: PayloadAction<string[]>) => { s.breadCrumbs.nodes = a.payload },
-    shortenNodes: (s, a: PayloadAction<number>) => { s.breadCrumbs.nodes = s.breadCrumbs.nodes.slice(0, a.payload) },
-    appendNode: (s, a: PayloadAction<string>) => { s.breadCrumbs.nodes.push(a.payload) },
-    popNode: s => { s.breadCrumbs.nodes.pop() },
-    clearNodes: s => { s.breadCrumbs.nodes = [] },
   }
 })
 

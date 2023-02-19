@@ -1,10 +1,10 @@
 import BreadCrumbs from '@/components/index/BreadCrumb';
 import { TreeDict } from '@/common/types';
 import Summary from '@/components/index/Summary';
-import { layoutTempActions } from '@/redux/slices/layoutTemp';
 import { Paper, styled } from '@mui/material'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { srcTreeTempActions } from '@/redux/slices/srcTreeTemp';
 
 
 const ContentDiv = styled('div')`
@@ -21,7 +21,7 @@ const ContentDiv = styled('div')`
 
 export default function Home() {
   const dispatch = useDispatch()
-  const setDirTree = (t: TreeDict) => dispatch(layoutTempActions.setDirTree(t))
+  const setDirTree = (t: TreeDict) => dispatch(srcTreeTempActions.setDirTree(t))
 
   useEffect(() => {
     const fetchTreeDict = async () => {

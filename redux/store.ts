@@ -8,6 +8,7 @@ import storage from 'redux-persist/lib/storage'
 import { contentTempReducer } from './slices/contentTemp'
 import { layoutReducer } from './slices/layout'
 import { layoutTempReducer } from './slices/layoutTemp'
+import { srcTreeTempReducer } from './slices/srcTreeTemp'
 import { themeReducer } from './slices/theme'
 
 
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   contentTemp: contentTempReducer,
   layout: layoutReducer,
   layoutTemp: layoutTempReducer,
+  srcTreeTemp: srcTreeTempReducer,
   theme: themeReducer
 })
 
@@ -27,6 +29,7 @@ export const store = configureStore({
     blacklist: [
       'contentTemp',
       'layoutTemp',
+      'srcTreeTemp',
     ]
   }, rootReducer),
   middleware: (getDefaultMiddleware) =>
