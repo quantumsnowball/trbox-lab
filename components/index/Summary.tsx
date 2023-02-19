@@ -18,6 +18,14 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
+const dirThenName = (a: [string, TreeDict | null], b: [string, TreeDict | null]) => {
+  if (a[1] && !b[1]) return -1
+  if (!a[1] && b[1]) return +1
+  if (a[0] < b[0]) return -1
+  if (a[0] > b[0]) return +1
+  return 0
+}
+
 const Summary = () => {
   const dispatch = useDispatch()
   const dirTree = useSelector((s: RootState) => s.srcTreeTemp.dirTree)
@@ -40,7 +48,7 @@ const Summary = () => {
   return (
     <>
       {
-        Object.entries(selected).map(([name, node]) =>
+        Object.entries(selected).sort(dirThenName).map(([name, node]) =>
           <Typography
             key={name}
             variant='h6'
