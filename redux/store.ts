@@ -9,6 +9,7 @@ import { contentTempReducer } from './slices/contentTemp'
 import { layoutReducer } from './slices/layout'
 import { layoutTempReducer } from './slices/layoutTemp'
 import { srcTreeTempReducer } from './slices/srcTreeTemp'
+import { resultTreeTempReducer } from './slices/resultTreeTemp'
 import { themeReducer } from './slices/theme'
 
 
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   layout: layoutReducer,
   layoutTemp: layoutTempReducer,
   srcTreeTemp: srcTreeTempReducer,
+  resultTreeTemp: resultTreeTempReducer,
   theme: themeReducer
 })
 
@@ -30,6 +32,7 @@ export const store = configureStore({
       'contentTemp',
       'layoutTemp',
       'srcTreeTemp',
+      'resultTreeTemp',
     ]
   }, rootReducer),
   middleware: (getDefaultMiddleware) =>
