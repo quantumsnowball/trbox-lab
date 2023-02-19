@@ -5,8 +5,7 @@ import { Button, Typography } from "@mui/material"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import FolderIcon from '@mui/icons-material/Folder';
-import DataObjectIcon from '@mui/icons-material/DataObject';
-import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { FC } from "react"
 
 const PREFIX = '.result'
@@ -15,7 +14,7 @@ const Icon: FC<{ name: string }> = ({ name }) =>
   // if no .py ext, consider a dir
   <>
     {name.startsWith(PREFIX) ?
-      <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
+      <LeaderboardOutlinedIcon sx={{ mr: 1 }} fontSize="inherit" /> :
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 

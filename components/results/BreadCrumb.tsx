@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { resultTreeTempActions } from '@/redux/slices/resultTreeTemp';
 import FolderIcon from '@mui/icons-material/Folder';
-import DataObjectIcon from '@mui/icons-material/DataObject';
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 
+const PREFIX = '.result'
 
 const Home = () => {
   const dispatch = useDispatch()
@@ -26,8 +27,8 @@ const Home = () => {
 const Icon: FC<{ name: string }> = ({ name }) =>
   // if no .py ext, consider a dir
   <>
-    {name.endsWith('.py') ?
-      <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
+    {name.startsWith(PREFIX) ?
+      <LeaderboardOutlinedIcon sx={{ mr: 1 }} fontSize="inherit" /> :
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
