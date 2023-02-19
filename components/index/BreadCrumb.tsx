@@ -31,21 +31,6 @@ const BreadCrumbs = () => {
     (i: number) => () => dispatch(layoutTempActions.shortenNodes(i))
   ]
 
-  const isLastDir = () => {
-    const last = nodes.at(-1)
-    // at root, must be a dir
-    if (!last)
-      return true
-    // get last node
-    const lastNode = dirTree[last]
-    // last node is a file
-    if (!lastNode)
-      return false
-    // last node is a dir
-    console.debug({ lastNode })
-    return true
-  }
-
   const Icon: FC<{ name: string }> = ({ name }) =>
     // if no .py ext, consider a dir
     <>

@@ -24,11 +24,7 @@ const ContentDiv = styled('div')`
 
 export default function Home() {
   const dispatch = useDispatch()
-  const [dirTree, setDirTree] = [
-    useSelector((s: RootState) => s.layoutTemp.breadCrumbs.dirTree),
-    (t: TreeDict) => dispatch(layoutTempActions.setDirTree(t))
-  ]
-
+  const setDirTree = (t: TreeDict) => dispatch(layoutTempActions.setDirTree(t))
 
   useEffect(() => {
     const fetchTreeDict = async () => {
@@ -48,7 +44,6 @@ export default function Home() {
         }}>
         <BreadCrumbs />
         <Summary />
-        <LabSummary node={dirTree} />
       </Paper>
     </ContentDiv>
   )
