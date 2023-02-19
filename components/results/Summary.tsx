@@ -9,11 +9,12 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import ScienceOutlinedIcon from '@mui/icons-material/ScienceOutlined';
 import { FC } from "react"
 
+const PREFIX = '.result'
 
 const Icon: FC<{ name: string }> = ({ name }) =>
   // if no .py ext, consider a dir
   <>
-    {name.startsWith('.run') ?
+    {name.startsWith(PREFIX) ?
       <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
@@ -46,7 +47,7 @@ const Summary = () => {
             variant='h6'
             sx={{ m: 1, p: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
             onClick={() => {
-              if (!nodes.at(-1)?.startsWith('.run'))
+              if (!nodes.at(-1)?.startsWith(PREFIX))
                 appendNode(name)
             }}
           >
