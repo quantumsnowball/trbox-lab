@@ -7,6 +7,7 @@ import { useSelector } from "react-redux"
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { FC } from "react"
+import { byDirThenName } from "../common/utils"
 
 const PREFIX = '.result'
 
@@ -17,14 +18,6 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <LeaderboardOutlinedIcon sx={{ mr: 1 }} fontSize="inherit" /> :
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
-
-const dirThenName = (a: [string, TreeDict | null], b: [string, TreeDict | null]) => {
-  if (a[1] && !b[1]) return -1
-  if (!a[1] && b[1]) return +1
-  if (a[0] < b[0]) return -1
-  if (a[0] > b[0]) return +1
-  return 0
-}
 
 const Summary = () => {
   const dispatch = useDispatch()
@@ -48,7 +41,7 @@ const Summary = () => {
   return (
     <>
       {
-        Object.entries(selected).sort(dirThenName).map(([name, node]) =>
+        Object.entries(selected).sort(byDirThenName).map(([name, node]) =>
           <Typography
             key={name}
             variant='h6'
