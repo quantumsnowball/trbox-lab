@@ -45,9 +45,7 @@ export default function Home() {
       <Paper
         sx={{
           width: '100%',
-          textAlign: 'center'
         }}>
-        <Typography variant='h5'>Labs</Typography>
         <BreadCrumbs />
         <Summary />
         <LabSummary node={dirTree} />

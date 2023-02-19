@@ -1,7 +1,7 @@
 import { TreeDict } from "@/common/types"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
 import { RootState } from "@/redux/store"
-import { Typography } from "@mui/material"
+import { Button, Typography } from "@mui/material"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 
@@ -28,23 +28,24 @@ const Summary = () => {
   return (
     <>
       {
-        Object.entries(selected).map(([name, _]) =>
+        Object.entries(selected).map(([name, node]) =>
           <Typography
             key={name}
-            sx={{ cursor: 'pointer' }}
+            variant='h6'
+            sx={{ m: 1, p: 1, cursor: 'pointer' }}
             onClick={() => appendNode(name)}
           >
-            {name}
+            {name}{node ? '/' : null}
           </Typography>)
       }
       {
         nodes.length > 0 ?
-          <Typography
+          <Button
             onClick={() => popNode()}
             sx={{ cursor: 'pointer' }}
           >
             go back
-          </Typography>
+          </Button>
           : null
       }
     </>
