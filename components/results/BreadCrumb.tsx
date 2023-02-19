@@ -1,6 +1,6 @@
 import HomeIcon from '@mui/icons-material/Home';
 import { FC, } from 'react';
-import { Box, Breadcrumbs, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { resultTreeTempActions } from '@/redux/slices/resultTreeTemp';
@@ -40,6 +40,8 @@ const BreadCrumbs = () => {
     (i: number) => () => dispatch(resultTreeTempActions.shortenNodes(i)),
     () => dispatch(resultTreeTempActions.popNode()),
   ]
+  const theme = useTheme()
+  const isBig = useMediaQuery(theme.breakpoints.up('sm'))
 
 
   return (
@@ -65,7 +67,7 @@ const BreadCrumbs = () => {
           })
         }
       </Breadcrumbs >
-      {nodes.length > 0 ?
+      {(isBig && nodes.length > 0) ?
         <UpOneLevelButton onClick={() => popNode()} /> : null
       }
     </Box>
