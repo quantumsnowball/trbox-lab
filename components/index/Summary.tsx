@@ -27,10 +27,10 @@ const Summary = () => {
   ]
   const selected = nodes.reduce((tree, name, _, arr) => {
     const node = tree[name]
-    // is a file, break the loop, return last node
+    // is a file, break the loop, return TODO: file ops
     if (node === null) {
       arr = []
-      return tree
+      return {}
     }
     // iter to next node
     return tree[name] as TreeDict
