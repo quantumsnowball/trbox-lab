@@ -26,11 +26,11 @@ const Summary = () => {
     useSelector((s: RootState) => s.srcTreeTemp.nodes),
     (n: string) => dispatch(srcTreeTempActions.appendNode(n)),
   ]
-  const selected = nodes.reduce((tree, name, _, arr) => {
+  const selected = nodes.reduce((tree, name, _, _arr) => {
     const node = tree[name]
     // is a file, break the loop, return TODO: file ops
     if (node === null) {
-      arr = []
+      _arr = []
       return {}
     }
     // iter to next node

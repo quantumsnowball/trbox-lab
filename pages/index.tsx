@@ -31,6 +31,7 @@ export default function Home() {
       setDirTree(treeObj)
     }
     fetchTreeDict().catch(console.error)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

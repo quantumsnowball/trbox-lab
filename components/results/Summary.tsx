@@ -22,15 +22,15 @@ const Icon: FC<{ name: string }> = ({ name }) =>
 const Summary = () => {
   const dispatch = useDispatch()
   const dirTree = useSelector((s: RootState) => s.resultTreeTemp.dirTree)
-  const [nodes, appendNode, popNode] = [
+  const [nodes, appendNode] = [
     useSelector((s: RootState) => s.resultTreeTemp.nodes),
     (n: string) => dispatch(resultTreeTempActions.appendNode(n)),
   ]
-  const selected = nodes.reduce((tree, name, _, arr) => {
+  const selected = nodes.reduce((tree, name, _, _arr) => {
     const node = tree[name]
     // is a file, break the loop, return TODO: file ops
     if (node === null) {
-      arr = []
+      _arr = []
       return {}
     }
     // iter to next node
