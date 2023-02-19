@@ -1,7 +1,7 @@
 import { TreeDict } from "@/common/types"
 import { resultTreeTempActions } from "@/redux/slices/resultTreeTemp"
 import { RootState } from "@/redux/store"
-import { Button, Typography } from "@mui/material"
+import { Typography } from "@mui/material"
 import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 import FolderIcon from '@mui/icons-material/Folder';
@@ -25,7 +25,6 @@ const Summary = () => {
   const [nodes, appendNode, popNode] = [
     useSelector((s: RootState) => s.resultTreeTemp.nodes),
     (n: string) => dispatch(resultTreeTempActions.appendNode(n)),
-    () => dispatch(resultTreeTempActions.popNode()),
   ]
   const selected = nodes.reduce((tree, name, _, arr) => {
     const node = tree[name]
@@ -54,16 +53,6 @@ const Summary = () => {
             <Icon name={name} />
             {name}{node ? '/' : null}
           </Typography>)
-      }
-      {
-        nodes.length > 0 ?
-          <Button
-            onClick={() => popNode()}
-            sx={{ cursor: 'pointer' }}
-          >
-            go back
-          </Button>
-          : null
       }
     </>
   )

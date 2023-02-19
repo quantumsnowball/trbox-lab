@@ -1,11 +1,12 @@
 import HomeIcon from '@mui/icons-material/Home';
 import { FC, } from 'react';
-import { Breadcrumbs, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { resultTreeTempActions } from '@/redux/slices/resultTreeTemp';
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
+import { UpOneLevelButton } from '../common/buttons';
 
 const PREFIX = '.result'
 
@@ -34,34 +35,40 @@ const Icon: FC<{ name: string }> = ({ name }) =>
 
 const BreadCrumbs = () => {
   const dispatch = useDispatch()
-  const [nodes, shortenNodes] = [
+  const [nodes, shortenNodes, popNode] = [
     useSelector((s: RootState) => s.resultTreeTemp.nodes),
-    (i: number) => () => dispatch(resultTreeTempActions.shortenNodes(i))
+    (i: number) => () => dispatch(resultTreeTempActions.shortenNodes(i)),
+    () => dispatch(resultTreeTempActions.popNode()),
   ]
 
 
   return (
-    <Breadcrumbs
-      aria-label="breadcrumb"
-      sx={{ m: 1, p: 1 }}
-    >
-      <Home />
-      {
-        nodes.map((name, i) => {
-          return (
-            <Typography
-              key={name}
-              variant='h6'
-              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-              onClick={shortenNodes(i + 1)}
-            >
-              <Icon name={name} />
-              {name}
-            </Typography>
-          )
-        })
+    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Breadcrumbs
+        aria-label="breadcrumb"
+        sx={{ m: 1, p: 1 }}
+      >
+        <Home />
+        {
+          nodes.map((name, i) => {
+            return (
+              <Typography
+                key={name}
+                variant='h6'
+                sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                onClick={shortenNodes(i + 1)}
+              >
+                <Icon name={name} />
+                {name}
+              </Typography>
+            )
+          })
+        }
+      </Breadcrumbs >
+      {nodes.length > 0 ?
+        <UpOneLevelButton onClick={() => popNode()} /> : null
       }
-    </Breadcrumbs >
+    </Box>
   )
 }
 
