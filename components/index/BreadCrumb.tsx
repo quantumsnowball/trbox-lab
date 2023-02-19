@@ -23,25 +23,24 @@ const Home = () => {
   )
 }
 
+const Icon: FC<{ name: string }> = ({ name }) =>
+  // if no .py ext, consider a dir
+  <>
+    {name.endsWith('.py') ?
+      <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
+      <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
+  </>
+
 const BreadCrumbs = () => {
   const dispatch = useDispatch()
-  const dirTree = useSelector((s: RootState) => s.layoutTemp.breadCrumbs.dirTree)
   const [nodes, shortenNodes] = [
     useSelector((s: RootState) => s.layoutTemp.breadCrumbs.nodes),
     (i: number) => () => dispatch(layoutTempActions.shortenNodes(i))
   ]
 
-  const Icon: FC<{ name: string }> = ({ name }) =>
-    // if no .py ext, consider a dir
-    <>
-      {name.endsWith('.py') ?
-        <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
-        <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
-    </>
 
   return (
     <Breadcrumbs
-      // separator={<Sep />}
       aria-label="breadcrumb"
       sx={{ m: 1, p: 1 }}
     >
