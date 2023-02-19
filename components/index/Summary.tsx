@@ -33,7 +33,10 @@ const Summary = () => {
             key={name}
             variant='h6'
             sx={{ m: 1, p: 1, cursor: 'pointer' }}
-            onClick={() => appendNode(name)}
+            onClick={() => {
+              if (!nodes.at(-1)?.endsWith('.py'))
+                appendNode(name)
+            }}
           >
             {name}{node ? '/' : null}
           </Typography>)
