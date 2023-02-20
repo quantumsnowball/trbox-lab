@@ -32,6 +32,31 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
+const PathBar: FC<{ slugs: string[], paths: string[] }> = ({ slugs, paths }) => {
+  const router = useRouter()
+
+  return (
+    <>
+      {
+        paths?.map((path, i) => {
+          const name = slugs[i]
+          return (
+            <Typography
+              key={path}
+              variant='h6'
+              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+              onClick={() => router.push(`${ROOT}${path}`)}
+            >
+              <Icon name={name} />
+              {name}
+            </Typography>
+          )
+        })
+      }
+    </>
+
+  )
+}
 const UpButton: FC<{ paths: string[] }> = ({ paths }) => {
   const router = useRouter()
   const theme = useTheme()
@@ -62,8 +87,6 @@ type Props = {
 }
 
 const BreadCrumbs = ({ slugs, paths }: Props) => {
-  const router = useRouter()
-
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <Breadcrumbs
@@ -71,22 +94,7 @@ const BreadCrumbs = ({ slugs, paths }: Props) => {
         sx={{ m: 1, p: 1 }}
       >
         <Home />
-        {
-          paths?.map((path, i) => {
-            const name = slugs[i]
-            return (
-              <Typography
-                key={path}
-                variant='h6'
-                sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-                onClick={() => router.push(`${ROOT}${path}`)}
-              >
-                <Icon name={name} />
-                {name}
-              </Typography>
-            )
-          })
-        }
+        <PathBar {...{ slugs, paths }} />
       </Breadcrumbs >
       <UpButton {...{ paths }} />
     </Box>
