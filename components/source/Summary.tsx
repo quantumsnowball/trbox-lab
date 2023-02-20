@@ -2,9 +2,10 @@ import { TreeDict } from "@/common/types"
 import { Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
-import { FC } from "react"
+import { FC, useState } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from "next/router";
+import { useGetSourceQuery } from "@/redux/slices/apiSlice";
 
 const SUFFIX = '.py'
 
@@ -25,7 +26,7 @@ const Summary: FC<Props> = ({ slugs, dirTree }) => {
   const router = useRouter()
   const lastNode = slugs.reduce((tree, name, _, _arr) => {
     const node = tree[name]
-    // is a file, break the loop
+    // is a .py file, break the loop
     if (node === null) {
       _arr = []
       return {}
@@ -33,11 +34,13 @@ const Summary: FC<Props> = ({ slugs, dirTree }) => {
     // iter to next node
     return tree[name] as TreeDict
   }, dirTree)
+  const entries = Object.entries(lastNode)
+  const lastSlug = slugs.at(-1)
 
   return (
     <>
-      {
-        Object.entries(lastNode).sort(byDirThenName).map(([name, node]) =>
+      {entries.length > 0 ?
+        entries.sort(byDirThenName).map(([name, node]) =>
           <Typography
             key={name}
             variant='h6'
@@ -51,6 +54,10 @@ const Summary: FC<Props> = ({ slugs, dirTree }) => {
             <Icon name={name} />
             {name}{node ? '/' : null}
           </Typography>)
+        :
+        lastSlug?.endsWith(SUFFIX) ?
+          <div>show code here</div>
+          : null
       }
     </>
   )
