@@ -1,8 +1,9 @@
+import { TreeDict } from '@/common/types';
 import BreadCrumbs from '@/components/source/BreadCrumb';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { Paper, styled } from '@mui/material'
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 
 const ContentDiv = styled('div')`
@@ -21,15 +22,31 @@ const Source = () => {
   const { data: dirTree } = useGetSourceTreeQuery()
   const router = useRouter()
   const { slugs } = router.query
-
+  const [validSlugs, setValidSlugs] = useState([] as string[])
 
   useEffect(() => {
-    console.debug({ dirTree })
-    const currentPath = window.location.pathname
-    console.debug({ currentPath })
-    console.debug({ slugs })
+    const validateSlugs = (slugs: string[] | string | undefined) => {
+      // currently at root
+      if (!Array.isArray(slugs)) return []
+      // dirTree not ready, go to root
+      if (!dirTree) return []
+      // got into the tree until hit a false property
+      const valids = [] as string[]
+      slugs.reduce((node, slug, _, _arr) => {
+        if (!node.hasOwnProperty(slug)) {
+          // null property, break
+          _arr = []
+          return {}
+        }
+        // valid, append slug to valids
+        valids.push(slug)
+        return node[slug] as TreeDict
+      }, dirTree)
+      return valids
+    }
+    setValidSlugs(validateSlugs(slugs))
+  }, [dirTree, slugs])
 
-  }, [dirTree])
 
   return (
     <ContentDiv>
@@ -38,8 +55,7 @@ const Source = () => {
           width: '100%',
         }}
       >
-        {Array.isArray(slugs) ?
-          <BreadCrumbs slugs={slugs} /> : null}
+        <BreadCrumbs slugs={validSlugs} />
       </Paper>
     </ContentDiv>
   )
