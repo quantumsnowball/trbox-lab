@@ -8,6 +8,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { FC } from "react"
 import { byDirThenName } from "../common/utils"
+import { useRouter } from 'next/router'
 
 const PREFIX = '.result'
 
@@ -21,6 +22,7 @@ const Icon: FC<{ name: string }> = ({ name }) =>
 
 const Summary = () => {
   const dispatch = useDispatch()
+  const router = useRouter()
   const dirTree = useSelector((s: RootState) => s.resultTreeTemp.dirTree)
   const [nodes, appendNode] = [
     useSelector((s: RootState) => s.resultTreeTemp.nodes),
@@ -46,8 +48,10 @@ const Summary = () => {
             variant='h6'
             sx={{ m: 1, p: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
             onClick={() => {
-              if (!nodes.at(-1)?.startsWith(PREFIX))
+              if (!nodes.at(-1)?.startsWith(PREFIX)) {
                 appendNode(name)
+                router.push(`results/${[...nodes, name].join('/')}`)
+              }
             }}
           >
             <Icon name={name} />
