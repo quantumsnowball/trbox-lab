@@ -40,6 +40,7 @@ const Source = () => {
         if (!node.hasOwnProperty(slug)) {
           // null property, break
           _arr = []
+          router.push(ROOT)
           return {}
         }
         // valid, append slug to valids
@@ -50,8 +51,6 @@ const Source = () => {
     }
     setValidSlugs(validateSlugs(slugs))
   }, [dirTree, slugs])
-
-
 
   return (
     <ContentDiv>
