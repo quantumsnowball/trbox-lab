@@ -24,6 +24,7 @@ const Source = () => {
   const router = useRouter()
   const { slugs } = router.query
   const [validSlugs, setValidSlugs] = useState([] as string[])
+  const validPaths = validSlugs.map((sum => slug => sum += slug)(''))
 
   useEffect(() => {
     const validateSlugs = (slugs: string[] | string | undefined) => {
@@ -56,7 +57,7 @@ const Source = () => {
           width: '100%',
         }}
       >
-        <BreadCrumbs slugs={validSlugs} />
+        <BreadCrumbs slugs={validSlugs} paths={validPaths} />
         {dirTree ? <Summary slugs={validSlugs} dirTree={dirTree} /> : null}
       </Paper>
     </ContentDiv>

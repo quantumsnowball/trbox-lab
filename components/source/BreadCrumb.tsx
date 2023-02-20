@@ -28,9 +28,10 @@ const Icon: FC<{ name: string }> = ({ name }) =>
 
 type Props = {
   slugs: string[]
+  paths: string[]
 }
 
-const BreadCrumbs = ({ slugs }: Props) => {
+const BreadCrumbs = ({ slugs, paths }: Props) => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <Breadcrumbs
@@ -39,10 +40,11 @@ const BreadCrumbs = ({ slugs }: Props) => {
       >
         <Home />
         {
-          slugs?.map((name, _) => {
+          paths?.map((path, i) => {
+            const name = slugs[i]
             return (
               <Typography
-                key={name}
+                key={path}
                 variant='h6'
                 sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
               >
