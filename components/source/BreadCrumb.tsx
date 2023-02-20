@@ -3,15 +3,20 @@ import { FC, } from 'react';
 import { Box, Breadcrumbs, Typography } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
+import { useRouter } from 'next/router';
 
 
+const ROOT = '/source'
 const SUFFIX = '.py'
 
 const Home = () => {
+  const router = useRouter()
+
   return (
     <Typography
       variant='h6'
       sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+      onClick={() => router.push(ROOT)}
     >
       <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
     </Typography>
@@ -32,6 +37,8 @@ type Props = {
 }
 
 const BreadCrumbs = ({ slugs, paths }: Props) => {
+  const router = useRouter()
+
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
       <Breadcrumbs
@@ -47,6 +54,7 @@ const BreadCrumbs = ({ slugs, paths }: Props) => {
                 key={path}
                 variant='h6'
                 sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                onClick={() => router.push(`${ROOT}${path}`)}
               >
                 <Icon name={name} />
                 {name}

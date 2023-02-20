@@ -44,7 +44,6 @@ const Summary: FC<Props> = ({ slugs, dirTree }) => {
             sx={{ m: 1, p: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
             onClick={() => {
               if (!slugs.at(-1)?.endsWith(SUFFIX)) {
-                console.debug({ slugs, name })
                 router.push(`${window.location.pathname}/${name}`)
               }
             }}

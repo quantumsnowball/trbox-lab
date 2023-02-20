@@ -24,7 +24,7 @@ const Source = () => {
   const router = useRouter()
   const { slugs } = router.query
   const [validSlugs, setValidSlugs] = useState([] as string[])
-  const validPaths = validSlugs.map((sum => slug => sum += slug)(''))
+  const validPaths = validSlugs.map((sum => slug => sum += '/' + slug)(''))
 
   useEffect(() => {
     const validateSlugs = (slugs: string[] | string | undefined) => {
