@@ -11,6 +11,8 @@ import { layoutTempReducer } from './slices/layoutTemp'
 import { srcTreeTempReducer } from './slices/srcTreeTemp'
 import { resultTreeTempReducer } from './slices/resultTreeTemp'
 import { themeReducer } from './slices/theme'
+import { trboxLabApi } from './slices/apiSlice'
+
 
 
 // reducers
@@ -20,7 +22,8 @@ const rootReducer = combineReducers({
   layoutTemp: layoutTempReducer,
   srcTreeTemp: srcTreeTempReducer,
   resultTreeTemp: resultTreeTempReducer,
-  theme: themeReducer
+  theme: themeReducer,
+  [trboxLabApi.reducerPath]: trboxLabApi.reducer,
 })
 
 // store
@@ -40,7 +43,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       }
-    })
+    }).concat(trboxLabApi.middleware)
 })
 
 // persistor
