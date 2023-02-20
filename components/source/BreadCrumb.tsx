@@ -11,26 +11,14 @@ import { Node } from '@/common/types';
 const ROOT = '/source'
 const SUFFIX = '.py'
 
-const Home = () => {
-  const router = useRouter()
-
-  return (
-    <Typography
-      variant='h6'
-      sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-      onClick={() => router.push(ROOT)}
-    >
-      <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-    </Typography>
-  )
-}
-
-const Icon: FC<{ name: string }> = ({ name }) =>
+const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
   // if no .py ext, consider a dir
   <>
-    {name.endsWith(SUFFIX) ?
-      <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
-      <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
+    {path === '' ?
+      <HomeIcon sx={{ mr: 1 }} fontSize="inherit" />
+      : name.endsWith(SUFFIX) ?
+        <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
+        <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
 const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
@@ -41,7 +29,6 @@ const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
       aria-label="breadcrumb"
       sx={{ m: 1, p: 1 }}
     >
-      <Home />
       {
         nodes.map(({ name, path }) => {
           return (
@@ -51,7 +38,7 @@ const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
               sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
               onClick={() => router.push(`${ROOT}${path}`)}
             >
-              <Icon name={name} />
+              <Icon {...{ name, path }} />
               {name}
             </Typography>
           )
