@@ -26,7 +26,6 @@ const validateUrl = (slugs: string[], rootNode: Node) => {
   let selected = [rootNode,]
   for (let slug of slugs) {
     const found = list.find(child => child.name === slug)
-    console.debug({ list, slug, found })
     if (!found)
       return false
     else
@@ -53,7 +52,6 @@ const Source = () => {
     }
     // push to root anyway if path not valid
     const result = validateUrl(slugs, rootNode)
-    console.debug({ result })
     if (!result) {
       router.push(ROOT)
       return

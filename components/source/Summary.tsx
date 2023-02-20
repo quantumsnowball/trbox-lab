@@ -48,11 +48,13 @@ const Code: FC<{ path: string }> = ({ path }) => {
 const Summary: FC<Props> = ({ nodes }) => {
   const router = useRouter()
   const lastNode = nodes.at(-1)
+  const entries = lastNode && lastNode.children
+
 
   return (
     <>
       {
-        lastNode?.children?.map(({ name, type, path }) =>
+        entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
           <Typography
             key={name}
             variant='h6'
