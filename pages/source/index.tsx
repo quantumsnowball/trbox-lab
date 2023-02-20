@@ -1,6 +1,6 @@
-import { TreeDict } from '@/common/types';
+import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { Paper, styled } from '@mui/material'
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 
 const ContentDiv = styled('div')`
@@ -16,18 +16,7 @@ const ContentDiv = styled('div')`
 `;
 
 export default function Source() {
-  const [dirTree, setDirTree] = useState({} as TreeDict)
-
-  useEffect(() => {
-    const fetchTreeDict = async () => {
-      // The /api path is rewritten so that it can fetch to production port, bypass CORS
-      const res = await fetch('/api/tree/source')
-      const treeObj = await res.json()
-      setDirTree(treeObj)
-    }
-    fetchTreeDict().catch(console.error)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { data: dirTree } = useGetSourceTreeQuery()
 
   useEffect(() => {
     console.debug({ dirTree })
