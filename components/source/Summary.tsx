@@ -22,14 +22,26 @@ type Props = {
   dirTree: TreeDict
 }
 
-const Code: FC = () => {
-  return (
-    <Box
-      sx={{ m: 1, p: 1 }}
-    >
-      <code>print('code')</code>
-    </Box>
+const Code: FC<{ path: string }> = ({ path }) => {
+  const { data: source } = useGetSourceQuery(path)
 
+  return (
+    <>
+      {source ?
+        <Box
+          sx={{ m: 1, p: 1 }}
+        >
+          <Typography
+            variant='h6'
+          >
+            <code>
+              {source.code}
+            </code>
+          </Typography>
+        </Box >
+        : null
+      }
+    </>
   )
 }
 
@@ -47,6 +59,7 @@ const Summary: FC<Props> = ({ slugs, dirTree }) => {
   }, dirTree)
   const entries = Object.entries(lastNode)
   const lastSlug = slugs.at(-1)
+  const lastPath = slugs.join('/')
 
   return (
     <>
@@ -67,7 +80,7 @@ const Summary: FC<Props> = ({ slugs, dirTree }) => {
           </Typography>)
         :
         lastSlug?.endsWith(SUFFIX) ?
-          <Code />
+          <Code path={lastPath} />
           : null
       }
     </>

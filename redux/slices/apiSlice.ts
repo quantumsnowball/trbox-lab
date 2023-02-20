@@ -5,13 +5,17 @@ type ResultMeta = {
   [key: string]: string
 }
 
+type Source = {
+  code: string
+}
+
 export const trboxLabApi = createApi({
   reducerPath: 'trboxLabApi',
   refetchOnMountOrArgChange: true,
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: builder => ({
     getSourceTree: builder.query<TreeDict, void>({ query: () => `tree/source` }),
-    getSource: builder.query<string, string>({ query: (path: string) => `source/${path}` }),
+    getSource: builder.query<Source, string>({ query: (path: string) => `source/${path}` }),
     getResultMeta: builder.query<ResultMeta, string>({ query: (path: string) => path }),
   }),
 })
