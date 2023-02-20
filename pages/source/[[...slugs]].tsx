@@ -16,7 +16,7 @@ const ContentDiv = styled('div')`
   align-items: center;
 `;
 
-export default function Source() {
+const Source = () => {
   const { data: dirTree } = useGetSourceTreeQuery()
   const router = useRouter()
   const { slugs } = router.query
@@ -40,3 +40,5 @@ export default function Source() {
     </ContentDiv>
   )
 }
+
+export default Source
