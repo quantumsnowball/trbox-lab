@@ -1,9 +1,10 @@
 import HomeIcon from '@mui/icons-material/Home';
 import { FC, } from 'react';
-import { Box, Breadcrumbs, Typography } from '@mui/material';
+import { Box, Breadcrumbs, Typography, useMediaQuery, useTheme } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { useRouter } from 'next/router';
+import { UpOneLevelButton } from '../common/buttons';
 
 
 const ROOT = '/source'
@@ -30,6 +31,30 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
+
+const UpButton: FC<{ paths: string[] }> = ({ paths }) => {
+  const router = useRouter()
+  const theme = useTheme()
+  const isBig = useMediaQuery(theme.breakpoints.up('sm'))
+  return (
+    <>
+      {
+        (isBig && paths.length > 0) ?
+          <UpOneLevelButton
+            onClick={() => {
+              paths.length === 1 ?
+                router.push(ROOT) :
+                router.push(`${ROOT}${paths?.at(-2)}`)
+            }}
+          />
+          :
+          null
+      }
+    </>
+
+  )
+}
+
 
 type Props = {
   slugs: string[]
@@ -63,6 +88,7 @@ const BreadCrumbs = ({ slugs, paths }: Props) => {
           })
         }
       </Breadcrumbs >
+      <UpButton {...{ paths }} />
     </Box>
   )
 }
