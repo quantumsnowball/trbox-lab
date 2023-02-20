@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 
+const ROOT = '/source'
+
 const ContentDiv = styled('div')`
   /* take all vertical space */
   flex: 1 1 auto;
@@ -48,6 +50,7 @@ const Source = () => {
     }
     setValidSlugs(validateSlugs(slugs))
   }, [dirTree, slugs])
+
 
 
   return (

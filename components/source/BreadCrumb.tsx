@@ -36,7 +36,11 @@ const PathBar: FC<{ slugs: string[], paths: string[] }> = ({ slugs, paths }) => 
   const router = useRouter()
 
   return (
-    <>
+    <Breadcrumbs
+      aria-label="breadcrumb"
+      sx={{ m: 1, p: 1 }}
+    >
+      <Home />
       {
         paths?.map((path, i) => {
           const name = slugs[i]
@@ -53,8 +57,7 @@ const PathBar: FC<{ slugs: string[], paths: string[] }> = ({ slugs, paths }) => 
           )
         })
       }
-    </>
-
+    </Breadcrumbs >
   )
 }
 const UpButton: FC<{ paths: string[] }> = ({ paths }) => {
@@ -89,13 +92,7 @@ type Props = {
 const BreadCrumbs = ({ slugs, paths }: Props) => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Breadcrumbs
-        aria-label="breadcrumb"
-        sx={{ m: 1, p: 1 }}
-      >
-        <Home />
-        <PathBar {...{ slugs, paths }} />
-      </Breadcrumbs >
+      <PathBar {...{ slugs, paths }} />
       <UpButton {...{ paths }} />
     </Box>
   )
