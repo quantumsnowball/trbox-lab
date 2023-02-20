@@ -53,7 +53,9 @@ const Summary: FC<Props> = ({ nodes }) => {
 
   return (
     <>
-      {
+      {lastNode?.name.endsWith(SUFFIX) ?
+        <Code path={lastNode.path} />
+        :
         entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
           <Typography
             key={name}
