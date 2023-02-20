@@ -1,5 +1,6 @@
 import { TreeDict } from '@/common/types';
 import BreadCrumbs from '@/components/source/BreadCrumb';
+import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { Paper, styled } from '@mui/material'
 import { useRouter } from 'next/router';
@@ -56,6 +57,7 @@ const Source = () => {
         }}
       >
         <BreadCrumbs slugs={validSlugs} />
+        {dirTree ? <Summary slugs={validSlugs} dirTree={dirTree} /> : null}
       </Paper>
     </ContentDiv>
   )
