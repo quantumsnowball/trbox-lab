@@ -61,7 +61,6 @@ const Source = () => {
     setNodes(result)
   }, [slugs, rootNode])
 
-  console.debug(nodes)
   return (
     <ContentDiv>
       <Paper
