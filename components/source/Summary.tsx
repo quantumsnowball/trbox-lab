@@ -1,8 +1,8 @@
 import { TreeDict } from "@/common/types"
-import { Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
-import { FC, useState } from "react"
+import { FC } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from "next/router";
 import { useGetSourceQuery } from "@/redux/slices/apiSlice";
@@ -20,6 +20,17 @@ const Icon: FC<{ name: string }> = ({ name }) =>
 type Props = {
   slugs: string[]
   dirTree: TreeDict
+}
+
+const Code: FC = () => {
+  return (
+    <Box
+      sx={{ m: 1, p: 1 }}
+    >
+      <code>print('code')</code>
+    </Box>
+
+  )
 }
 
 const Summary: FC<Props> = ({ slugs, dirTree }) => {
@@ -56,7 +67,7 @@ const Summary: FC<Props> = ({ slugs, dirTree }) => {
           </Typography>)
         :
         lastSlug?.endsWith(SUFFIX) ?
-          <div>show code here</div>
+          <Code />
           : null
       }
     </>
