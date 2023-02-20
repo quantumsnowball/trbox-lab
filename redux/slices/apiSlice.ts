@@ -6,10 +6,10 @@ type ResultMeta = {
 
 export const trboxLabApi = createApi({
   reducerPath: 'trboxLabApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: builder => ({
     getResultMeta: builder.query<ResultMeta, string>({
-      query: (path: string) => `result/${path}`
+      query: (path: string) => path
     })
   })
 })

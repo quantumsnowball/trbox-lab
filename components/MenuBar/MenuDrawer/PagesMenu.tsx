@@ -36,8 +36,8 @@ function PagesMenu() {
           />
           <MenuButton
             icon={<LeaderboardOutlinedIcon />}
-            text='Results'
-            onClick={() => router.push('/results')}
+            text='Result'
+            onClick={() => router.push('/result')}
             level={1}
           />
         </List>

@@ -16,12 +16,8 @@ const ContentDiv = styled('div')`
 `;
 
 
-type Props = {
-  path: string
-}
-
-const MetaSummary: FC<Props> = ({ path }) => {
-  const { data } = useGetResultMetaQuery(path)
+const MetaSummary: FC = () => {
+  const { data } = useGetResultMetaQuery(window.location.pathname)
 
   return (
     <ContentDiv>
@@ -32,7 +28,9 @@ const MetaSummary: FC<Props> = ({ path }) => {
         <BreadCrumbs />
         {data && Object.entries(data).map(([k, v]) => {
           return (
-            <Typography>
+            <Typography
+              key={k}
+            >
               `${k}={v}`
             </Typography>
           )

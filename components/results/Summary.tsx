@@ -48,9 +48,15 @@ const Summary = () => {
             variant='h6'
             sx={{ m: 1, p: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
             onClick={() => {
-              if (!nodes.at(-1)?.startsWith(PREFIX)) {
+              // if (!(nodes.at(-1)?.startsWith(PREFIX))) 
+              if (nodes) {
+                const lastNode = nodes.at(-1)
+                if (name.startsWith(PREFIX)) {
+                  let path = `${[...nodes, name].join('/')}`
+                  // console.debug({ nodes, lastNode, name, path })
+                  router.push(`result/${path}`)
+                }
                 appendNode(name)
-                router.push(`results/${[...nodes, name].join('/')}`)
               }
             }}
           >
