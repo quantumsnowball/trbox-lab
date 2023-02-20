@@ -21,9 +21,9 @@ const ContentDiv = styled('div')`
   align-items: center;
 `;
 
-const validateUrl = (slugs: string[], node: Node) => {
-  let list = node.children
-  let selected = [] as Node[]
+const validateUrl = (slugs: string[], rootNode: Node) => {
+  let list = rootNode.children
+  let selected = [rootNode,]
   for (let slug of slugs) {
     const found = list.find(child => child.name === slug)
     console.debug({ list, slug, found })
@@ -37,28 +37,31 @@ const validateUrl = (slugs: string[], node: Node) => {
 }
 
 const Source = () => {
-  const { data: node } = useGetSourceTreeQuery()
+  const { data: rootNode } = useGetSourceTreeQuery()
   const router = useRouter()
   const { slugs } = router.query
-  const [selection, setSelection] = useState([] as Node[])
+  const [nodes, setNodes] = useState([] as Node[])
 
   useEffect(() => {
-    // at root or node not fetched
-    console.debug({ slugs, node })
-    if (!slugs) return
-    if (!Array.isArray(slugs)) return
-    if (!node) return
+    // node not fetched
+    if (!rootNode)
+      return
+    // at root or 
+    if (!slugs || !Array.isArray(slugs)) {
+      setNodes([rootNode,])
+      return
+    }
     // push to root anyway if path not valid
-    const result = validateUrl(slugs, node)
+    const result = validateUrl(slugs, rootNode)
     console.debug({ result })
     if (!result) {
       router.push(ROOT)
       return
     }
-    setSelection(result)
-  }, [slugs, node])
+    setNodes(result)
+  }, [slugs, rootNode])
 
-  console.debug(selection)
+  console.debug(nodes)
   return (
     <ContentDiv>
       <Paper
@@ -66,7 +69,8 @@ const Source = () => {
           width: '100%',
         }}
       >
-        Hello World
+        <BreadCrumbs nodes={nodes} />
+        <Summary nodes={nodes} />
       </Paper>
     </ContentDiv>
   )

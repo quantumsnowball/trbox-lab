@@ -5,6 +5,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { useRouter } from 'next/router';
 import { UpOneLevelButton } from '../common/buttons';
+import { Node } from '@/common/types';
 
 
 const ROOT = '/source'
@@ -32,7 +33,7 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-const PathBar: FC<{ slugs: string[], paths: string[] }> = ({ slugs, paths }) => {
+const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
   const router = useRouter()
 
   return (
@@ -42,8 +43,7 @@ const PathBar: FC<{ slugs: string[], paths: string[] }> = ({ slugs, paths }) => 
     >
       <Home />
       {
-        paths?.map((path, i) => {
-          const name = slugs[i]
+        nodes.map(({ name, path }) => {
           return (
             <Typography
               key={path}
@@ -85,15 +85,13 @@ const UpButton: FC<{ paths: string[] }> = ({ paths }) => {
 
 
 type Props = {
-  slugs: string[]
-  paths: string[]
+  nodes: Node[]
 }
 
-const BreadCrumbs = ({ slugs, paths }: Props) => {
+const BreadCrumbs = ({ nodes }: Props) => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <PathBar {...{ slugs, paths }} />
-      <UpButton {...{ paths }} />
+      <PathBar {...{ nodes }} />
     </Box>
   )
 }

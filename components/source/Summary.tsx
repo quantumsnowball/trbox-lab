@@ -1,4 +1,4 @@
-import { TreeDict } from "@/common/types"
+import { Node } from "@/common/types"
 import { Box, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
@@ -18,8 +18,7 @@ const Icon: FC<{ name: string }> = ({ name }) =>
   </>
 
 type Props = {
-  slugs: string[]
-  dirTree: TreeDict
+  nodes: Node[]
 }
 
 const Code: FC<{ path: string }> = ({ path }) => {
@@ -45,43 +44,23 @@ const Code: FC<{ path: string }> = ({ path }) => {
   )
 }
 
-const Summary: FC<Props> = ({ slugs, dirTree }) => {
+const Summary: FC<Props> = ({ nodes }) => {
   const router = useRouter()
-  const lastNode = slugs.reduce((tree, name, _, _arr) => {
-    const node = tree[name]
-    // is a .py file, break the loop
-    if (node === null) {
-      _arr = []
-      return {}
-    }
-    // iter to next node
-    return tree[name] as TreeDict
-  }, dirTree)
-  const entries = Object.entries(lastNode)
-  const lastSlug = slugs.at(-1)
-  const lastPath = slugs.join('/')
+  const lastNode = nodes.at(-1)
+  console.debug({ lastNode })
 
   return (
     <>
-      {entries.length > 0 ?
-        entries.sort(byDirThenName).map(([name, node]) =>
+      {
+        lastNode?.children?.map(({ name, type }) =>
           <Typography
             key={name}
             variant='h6'
             sx={{ m: 1, p: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-            onClick={() => {
-              if (!slugs.at(-1)?.endsWith(SUFFIX)) {
-                router.push(`${window.location.pathname}/${name}`)
-              }
-            }}
           >
             <Icon name={name} />
-            {name}{node ? '/' : null}
+            {name}{type === 'folder' ? '/' : null}
           </Typography>)
-        :
-        lastSlug?.endsWith(SUFFIX) ?
-          <Code path={lastPath} />
-          : null
       }
     </>
   )
