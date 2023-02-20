@@ -31,12 +31,7 @@ export const store = configureStore({
   reducer: persistReducer({
     key: 'root',
     storage: storage,
-    blacklist: [
-      'contentTemp',
-      'layoutTemp',
-      'srcTreeTemp',
-      'resultTreeTemp',
-    ]
+    whitelist: ['layout', 'theme'],
   }, rootReducer),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

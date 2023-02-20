@@ -7,12 +7,13 @@ type ResultMeta = {
 
 export const trboxLabApi = createApi({
   reducerPath: 'trboxLabApi',
+  refetchOnMountOrArgChange: true,
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: builder => ({
     getSourceTree: builder.query<TreeDict, void>({ query: () => `tree/source` }),
     getSource: builder.query<string, string>({ query: (path: string) => `source/${path}` }),
     getResultMeta: builder.query<ResultMeta, string>({ query: (path: string) => path }),
-  })
+  }),
 })
 
 export const {
