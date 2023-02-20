@@ -30,6 +30,7 @@ const MetaSummary: FC = () => {
           return (
             <Typography
               key={k}
+              sx={{ p:1, m:1, userSelect: 'text' }}
             >
               `${k}={v}`
             </Typography>

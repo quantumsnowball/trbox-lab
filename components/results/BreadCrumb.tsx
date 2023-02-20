@@ -13,13 +13,18 @@ const PREFIX = '.result'
 
 const Home = () => {
   const dispatch = useDispatch()
+  const router = useRouter()
   const clearNodes = () => dispatch(resultTreeTempActions.clearNodes())
 
   return (
     <Typography
       variant='h6'
       sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-      onClick={clearNodes}
+      onClick={() => {
+        clearNodes()
+        if (window.location.pathname !== '/result')
+          router.push('/result')
+      }}
     >
       <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
     </Typography>
@@ -39,7 +44,7 @@ const BreadCrumbs = () => {
   const router = useRouter()
   const [nodes, shortenNodes, popNode] = [
     useSelector((s: RootState) => s.resultTreeTemp.nodes),
-    (i: number) => () => dispatch(resultTreeTempActions.shortenNodes(i)),
+    (i: number) => dispatch(resultTreeTempActions.shortenNodes(i)),
     () => dispatch(resultTreeTempActions.popNode()),
   ]
   const theme = useTheme()
@@ -63,7 +68,8 @@ const BreadCrumbs = () => {
                 onClick={() => {
                   shortenNodes(i + 1)
                   if (window.location.pathname !== '/result')
-                    router.push('/result')
+                    if (!name.startsWith('.result_'))
+                      router.push('/result')
                 }}
               >
                 <Icon name={name} />
