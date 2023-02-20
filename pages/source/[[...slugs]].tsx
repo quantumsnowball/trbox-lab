@@ -1,3 +1,4 @@
+import BreadCrumbs from '@/components/source/BreadCrumb';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { Paper, styled } from '@mui/material'
 import { useRouter } from 'next/router';
@@ -35,7 +36,10 @@ const Source = () => {
       <Paper
         sx={{
           width: '100%',
-        }}>
+        }}
+      >
+        {Array.isArray(slugs) ?
+          <BreadCrumbs slugs={slugs} /> : null}
       </Paper>
     </ContentDiv>
   )
