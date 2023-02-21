@@ -28,8 +28,15 @@ const Brief: FC<{ path: string }> = ({ path }) => {
           <Box
             sx={{ m: 1, p: 1 }}
           >
-            <Typography> title: {meta.title} </Typography>
-            <Typography> desc: {meta.desc} </Typography>
+            {
+              Object.entries(meta).map(([k, v]) =>
+                <Typography
+                  variant='h6'
+                  sx={{ userSelect: 'text' }}
+                >{k} = {v}
+                </Typography>)
+            }
+
           </Box>
           : null
       }
