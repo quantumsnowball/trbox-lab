@@ -1,94 +1,87 @@
 import HomeIcon from '@mui/icons-material/Home';
 import { FC, } from 'react';
 import { Box, Breadcrumbs, Typography, useMediaQuery, useTheme } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/redux/store';
-import { resultTreeTempActions } from '@/redux/slices/resultTreeTemp';
 import FolderIcon from '@mui/icons-material/Folder';
-import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
+import DataObjectIcon from '@mui/icons-material/DataObject';
+import { useRouter } from 'next/router';
 import { UpOneLevelButton } from '../common/buttons';
-import { useRouter } from 'next/router'
+import { Node } from '@/common/types';
 
+
+const ROOT = '/result'
 const PREFIX = '.result'
 
-const Home = () => {
-  const dispatch = useDispatch()
+const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
+  // if no .py ext, consider a dir
+  <>
+    {path === '' ?
+      <HomeIcon sx={{ mr: 1 }} fontSize="inherit" />
+      : name.startsWith(PREFIX) ?
+        <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
+        <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
+  </>
+
+const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
   const router = useRouter()
-  const clearNodes = () => dispatch(resultTreeTempActions.clearNodes())
 
   return (
-    <Typography
-      variant='h6'
-      sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-      onClick={() => {
-        clearNodes()
-        if (window.location.pathname !== '/result')
-          router.push('/result')
-      }}
+    <Breadcrumbs
+      aria-label="breadcrumb"
+      sx={{ m: 1, p: 1 }}
     >
-      <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-    </Typography>
+      {
+        nodes.map(({ name, path }) => {
+          return (
+            <Typography
+              key={path}
+              variant='h6'
+              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+              onClick={() => router.push(`${ROOT}${path}`)}
+            >
+              <Icon {...{ name, path }} />
+              {name}
+            </Typography>
+          )
+        })
+      }
+    </Breadcrumbs >
+  )
+}
+const UpButton: FC<{ paths: string[] }> = ({ paths }) => {
+  const router = useRouter()
+  const theme = useTheme()
+  const isBig = useMediaQuery(theme.breakpoints.up('sm'))
+  return (
+    <>
+      {
+        (isBig && paths.length > 0) ?
+          <UpOneLevelButton
+            onClick={() => {
+              paths.length === 1 ?
+                router.push(ROOT) :
+                router.push(`${ROOT}${paths?.at(-2)}`)
+            }}
+          />
+          :
+          null
+      }
+    </>
+
   )
 }
 
-const Icon: FC<{ name: string }> = ({ name }) =>
-  // if no .py ext, consider a dir
-  <>
-    {name.startsWith(PREFIX) ?
-      <LeaderboardOutlinedIcon sx={{ mr: 1 }} fontSize="inherit" /> :
-      <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
-  </>
 
-const BreadCrumbs = () => {
-  const dispatch = useDispatch()
-  const router = useRouter()
-  const [nodes, shortenNodes, popNode] = [
-    useSelector((s: RootState) => s.resultTreeTemp.nodes),
-    (i: number) => dispatch(resultTreeTempActions.shortenNodes(i)),
-    () => dispatch(resultTreeTempActions.popNode()),
-  ]
-  const theme = useTheme()
-  const isBig = useMediaQuery(theme.breakpoints.up('sm'))
+type Props = {
+  nodes: Node[]
+}
 
-
+const BreadCrumbs = ({ nodes }: Props) => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Breadcrumbs
-        aria-label="breadcrumb"
-        sx={{ m: 1, p: 1 }}
-      >
-        <Home />
-        {
-          nodes.map((name, i) => {
-            return (
-              <Typography
-                key={name}
-                variant='h6'
-                sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-                onClick={() => {
-                  shortenNodes(i + 1)
-                  if (window.location.pathname !== '/result')
-                    if (!name.startsWith('.result_'))
-                      router.push('/result')
-                }}
-              >
-                <Icon name={name} />
-                {name}
-              </Typography>
-            )
-          })
-        }
-      </Breadcrumbs >
-      {(isBig && nodes.length > 0) ?
-        <UpOneLevelButton
-          onClick={() => {
-            popNode()
-            if (window.location.pathname !== '/result')
-              router.push('/result')
-          }} /> : null
-      }
+      <PathBar {...{ nodes }} />
     </Box>
   )
 }
 
 export default BreadCrumbs
+

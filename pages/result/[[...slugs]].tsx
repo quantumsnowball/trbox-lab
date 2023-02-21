@@ -1,9 +1,12 @@
 import { Node } from '@/common/types';
+import BreadCrumbs from '@/components/result/BreadCrumb';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { Paper, styled, Typography } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
+
+const ROOT = '/result'
 
 const ContentDiv = styled('div')`
   /* take all vertical space */
@@ -16,6 +19,20 @@ const ContentDiv = styled('div')`
   /* align horizontally */
   align-items: center;
 `;
+
+const validateUrl = (slugs: string[], rootNode: Node) => {
+  let list = rootNode.children
+  let selected = [rootNode,]
+  for (let slug of slugs) {
+    const found = list.find(child => child.name === slug)
+    if (!found)
+      return false
+    else
+      list = found.children
+    selected.push(found)
+  }
+  return selected
+}
 
 
 const Result = () => {
@@ -33,7 +50,13 @@ const Result = () => {
       setNodes([rootNode,])
       return
     }
-    console.debug(nodes)
+    // push to root anyway if path not valid
+    const result = validateUrl(slugs, rootNode)
+    if (!result) {
+      router.push(ROOT)
+      return
+    }
+    setNodes(result)
 
 
   }, [slugs, rootNode])
@@ -43,9 +66,7 @@ const Result = () => {
         sx={{
           width: '100%',
         }}>
-        <Typography>
-          Hello Result
-        </Typography>
+        <BreadCrumbs {...{ nodes }} />
       </Paper>
     </ContentDiv>
   )
