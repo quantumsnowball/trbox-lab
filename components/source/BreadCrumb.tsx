@@ -51,7 +51,7 @@ const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
     >
       <Breadcrumbs
         aria-label="breadcrumb"
-        sx={{ m: 1, p: 1, flex: 1 }}
+        sx={{ m: 1, flex: 1 }}
       >
         {
           nodes.map(({ name, path }) => {

@@ -29,7 +29,12 @@ const Stdout: FC<{ runResult: RunResult | undefined }> = ({ runResult }) => {
 
 const RunButton: FC<{ run: () => void }> = ({ run }) =>
   <Box
-    sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+    sx={{
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      pt: 1, pb: 2,
+    }}
   >
     <Button
       variant="contained"
@@ -53,7 +58,7 @@ const Code: FC<{ path: string }> = ({ path }) => {
             flexFlow: 'column nowrap',
             height: '100%',
             overflow: 'auto',
-            m: 1, p: 1
+            mx: 1
           }}
         >
           <Typography
