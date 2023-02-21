@@ -1,11 +1,11 @@
 import { Node } from "@/common/types"
-import { Box, Button, Paper, Typography } from "@mui/material"
+import { Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { FC } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from "next/router";
-import { useGetSourceQuery, useLazyRunSourceQuery } from "@/redux/slices/apiSlice";
+import Code from "./Code";
 
 const ROOT = '/source'
 const SUFFIX = '.py'
@@ -22,56 +22,6 @@ type Props = {
   nodes: Node[]
 }
 
-const Code: FC<{ path: string }> = ({ path }) => {
-  const { data: source } = useGetSourceQuery(path)
-  const [trigger, { data: runResult }] = useLazyRunSourceQuery()
-
-  return (
-    <>
-      {source ?
-        <Box
-          sx={{ m: 1, p: 1 }}
-        >
-          <Typography
-            sx={{ whiteSpace: 'pre-line' }}
-          >
-            <code>
-              {source.code}
-            </code>
-          </Typography>
-          <Box
-            sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-          >
-            <Button
-              variant="contained"
-              onClick={() => trigger(path)}
-            >
-              RUN
-            </Button>
-          </Box>
-          {runResult ?
-            <>
-              <Typography>Stdout:</Typography>
-              <Paper
-                sx={{ m: 1, p: 1 }}
-              >
-                <Typography
-                  sx={{ whiteSpace: 'pre-line' }}
-                >
-                  <code>
-                    {runResult.stdout}
-                  </code>
-                </Typography>
-              </Paper>
-            </>
-            : null
-          }
-        </Box >
-        : null
-      }
-    </>
-  )
-}
 
 const Summary: FC<Props> = ({ nodes }) => {
   const router = useRouter()
