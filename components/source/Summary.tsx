@@ -33,7 +33,7 @@ const Code: FC<{ path: string }> = ({ path }) => {
           sx={{ m: 1, p: 1 }}
         >
           <Typography
-            variant='h6'
+            sx={{ whiteSpace: 'pre-line' }}
           >
             <code>
               {source.code}
@@ -55,9 +55,13 @@ const Code: FC<{ path: string }> = ({ path }) => {
               <Paper
                 sx={{ m: 1, p: 1 }}
               >
-                <code>
-                  {runResult.stdout}
-                </code>
+                <Typography
+                  sx={{ whiteSpace: 'pre-line' }}
+                >
+                  <code>
+                    {runResult.stdout}
+                  </code>
+                </Typography>
               </Paper>
             </>
             : null
