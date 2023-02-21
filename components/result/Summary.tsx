@@ -1,15 +1,13 @@
-import { TreeDict } from "@/common/types"
-import { resultTreeTempActions } from "@/redux/slices/resultTreeTemp"
-import { RootState } from "@/redux/store"
-import { Typography } from "@mui/material"
-import { useDispatch } from "react-redux"
-import { useSelector } from "react-redux"
+import { Node } from "@/common/types"
+import { Box, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { FC } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from 'next/router'
+import { useGetResultQuery } from "@/redux/slices/apiSlice";
 
+const ROOT = '/result'
 const PREFIX = '.result'
 
 const Icon: FC<{ name: string }> = ({ name }) =>
@@ -20,51 +18,56 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-const Summary = () => {
-  const dispatch = useDispatch()
-  const router = useRouter()
-  const dirTree = useSelector((s: RootState) => s.resultTreeTemp.dirTree)
-  const [nodes, appendNode] = [
-    useSelector((s: RootState) => s.resultTreeTemp.nodes),
-    (n: string) => dispatch(resultTreeTempActions.appendNode(n)),
-  ]
-  const selected = nodes.reduce((tree, name, _, _arr) => {
-    const node = tree[name]
-    // is a file, break the loop, return TODO: file ops
-    if (node === null) {
-      _arr = []
-      return {}
-    }
-    // iter to next node
-    return tree[name] as TreeDict
-  }, dirTree)
+const Brief: FC<{ path: string }> = ({ path }) => {
+  const { data: meta } = useGetResultQuery(path)
 
   return (
     <>
       {
-        Object.entries(selected).sort(byDirThenName).map(([name, node]) =>
+        meta ?
+          <Box
+            sx={{ m: 1, p: 1 }}
+          >
+            {
+              Object.entries(meta).map(([k, v]) =>
+                <Typography
+                  variant='h6'
+                  sx={{ userSelect: 'text' }}
+                >{k} = {v}
+                </Typography>)
+            }
+
+          </Box>
+          : null
+      }
+    </>
+
+  )
+}
+
+const Summary: FC<{ nodes: Node[] }> = ({ nodes }) => {
+  const router = useRouter()
+  const lastNode = nodes.at(-1)
+  const entries = lastNode && lastNode.children
+
+  return (
+    <>
+      {lastNode?.name.startsWith(PREFIX) ?
+        <Brief path={lastNode.path} />
+        :
+        entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
           <Typography
             key={name}
             variant='h6'
             sx={{ m: 1, p: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-            onClick={() => {
-              // if (!(nodes.at(-1)?.startsWith(PREFIX))) 
-              if (nodes) {
-                const lastNode = nodes.at(-1)
-                if (name.startsWith(PREFIX)) {
-                  let path = `${[...nodes, name].join('/')}`
-                  // console.debug({ nodes, lastNode, name, path })
-                  router.push(`result/${path}`)
-                }
-                appendNode(name)
-              }
-            }}
+            onClick={() => router.push(ROOT + path)}
           >
             <Icon name={name} />
-            {name}{node ? '/' : null}
+            {name}{type === 'folder' ? '/' : null}
           </Typography>)
       }
     </>
   )
 }
 export default Summary
+

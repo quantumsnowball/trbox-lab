@@ -1,4 +1,4 @@
-import { Node, TreeDict } from '@/common/types';
+import { Node } from '@/common/types';
 import BreadCrumbs from '@/components/source/BreadCrumb';
 import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';

@@ -7,7 +7,7 @@ import { byDirThenName } from "../common/utils"
 import { useRouter } from "next/router";
 import { useGetSourceQuery } from "@/redux/slices/apiSlice";
 
-const PREFIX = '/source'
+const ROOT = '/source'
 const SUFFIX = '.py'
 
 const Icon: FC<{ name: string }> = ({ name }) =>
@@ -61,7 +61,7 @@ const Summary: FC<Props> = ({ nodes }) => {
             key={name}
             variant='h6'
             sx={{ m: 1, p: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-            onClick={() => router.push(PREFIX + path)}
+            onClick={() => router.push(ROOT + path)}
           >
             <Icon name={name} />
             {name}{type === 'folder' ? '/' : null}
