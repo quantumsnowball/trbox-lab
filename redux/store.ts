@@ -5,10 +5,8 @@ import {
   FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER,
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import { contentTempReducer } from './slices/contentTemp'
 import { layoutReducer } from './slices/layout'
 import { layoutTempReducer } from './slices/layoutTemp'
-import { resultTreeTempReducer } from './slices/resultTreeTemp'
 import { themeReducer } from './slices/theme'
 import { trboxLabApi } from './slices/apiSlice'
 
@@ -16,10 +14,8 @@ import { trboxLabApi } from './slices/apiSlice'
 
 // reducers
 const rootReducer = combineReducers({
-  contentTemp: contentTempReducer,
   layout: layoutReducer,
   layoutTemp: layoutTempReducer,
-  resultTreeTemp: resultTreeTempReducer,
   theme: themeReducer,
   [trboxLabApi.reducerPath]: trboxLabApi.reducer,
 })
