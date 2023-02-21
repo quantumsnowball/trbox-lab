@@ -25,5 +25,7 @@ export const trboxLabApi = createApi({
 export const {
   useGetSourceTreeQuery,
   useGetSourceQuery,
-  useGetResultMetaQuery
+  useGetResultTreeQuery,
+  useGetResultQuery,
+  useGetResultMetaQuery,
 } = trboxLabApi

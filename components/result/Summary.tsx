@@ -1,61 +1,31 @@
 import { Node } from "@/common/types"
-import { Box, Typography } from "@mui/material"
+import { Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
-import DataObjectIcon from '@mui/icons-material/DataObject';
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { FC } from "react"
 import { byDirThenName } from "../common/utils"
-import { useRouter } from "next/router";
-import { useGetSourceQuery } from "@/redux/slices/apiSlice";
+import { useRouter } from 'next/router'
 
-const ROOT = '/source'
-const SUFFIX = '.py'
+const ROOT = '/result'
+const PREFIX = '.result'
 
 const Icon: FC<{ name: string }> = ({ name }) =>
   // if no .py ext, consider a dir
   <>
-    {name.endsWith(SUFFIX) ?
-      <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
+    {name.startsWith(PREFIX) ?
+      <LeaderboardOutlinedIcon sx={{ mr: 1 }} fontSize="inherit" /> :
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-type Props = {
-  nodes: Node[]
-}
 
-const Code: FC<{ path: string }> = ({ path }) => {
-  const { data: source } = useGetSourceQuery(path)
-
-  return (
-    <>
-      {source ?
-        <Box
-          sx={{ m: 1, p: 1 }}
-        >
-          <Typography
-            variant='h6'
-          >
-            <code>
-              {source.code}
-            </code>
-          </Typography>
-        </Box >
-        : null
-      }
-    </>
-  )
-}
-
-const Summary: FC<Props> = ({ nodes }) => {
+const Summary: FC<{ nodes: Node[] }> = ({ nodes }) => {
   const router = useRouter()
   const lastNode = nodes.at(-1)
   const entries = lastNode && lastNode.children
 
-
   return (
     <>
-      {lastNode?.name.endsWith(SUFFIX) ?
-        <Code path={lastNode.path} />
-        :
+      {
         entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
           <Typography
             key={name}
@@ -71,3 +41,4 @@ const Summary: FC<Props> = ({ nodes }) => {
   )
 }
 export default Summary
+

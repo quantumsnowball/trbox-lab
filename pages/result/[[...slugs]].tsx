@@ -1,7 +1,8 @@
 import { Node } from '@/common/types';
 import BreadCrumbs from '@/components/result/BreadCrumb';
-import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
-import { Paper, styled, Typography } from '@mui/material'
+import Summary from '@/components/result/Summary';
+import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
+import { Paper, styled } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -36,7 +37,7 @@ const validateUrl = (slugs: string[], rootNode: Node) => {
 
 
 const Result = () => {
-  const { data: rootNode } = useGetSourceTreeQuery()
+  const { data: rootNode } = useGetResultTreeQuery()
   const router = useRouter()
   const { slugs } = router.query
   const [nodes, setNodes] = useState([] as Node[])
@@ -67,9 +68,14 @@ const Result = () => {
           width: '100%',
         }}>
         <BreadCrumbs {...{ nodes }} />
+        <Summary {...{ nodes }} />
       </Paper>
     </ContentDiv>
   )
 }
 
 export default Result
+function useGetResultTree(): { data: any; } {
+  throw new Error('Function not implemented.');
+}
+
