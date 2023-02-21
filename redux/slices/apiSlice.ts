@@ -9,7 +9,7 @@ type ResultMeta = {
   [key: string]: string
 }
 
-type RunResult = {
+export type RunResult = {
   source: string,
   stdout: string,
 }
