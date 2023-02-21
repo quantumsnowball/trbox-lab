@@ -1,4 +1,5 @@
 import { Node } from '@/common/types'
+import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 type ResultMeta = {
@@ -16,14 +17,14 @@ export const trboxLabApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: builder => ({
     runSource: builder.query<RunResult, string>({
-      query: (path: string) => `run/${path}`
+      query: (path: string) => cleanUrl(`run/${path}`)
     }),
     getSourceTree: builder.query<Node, void>({
       query: () => `tree/source`
     }),
     getSource: builder.query<string, string>({
       query: (path: string) => ({
-        url: `source/${path}`,
+        url: cleanUrl(`source/${path}`),
         responseHandler: 'text'
       }),
     }),
@@ -31,7 +32,7 @@ export const trboxLabApi = createApi({
       query: () => `tree/result`
     }),
     getResult: builder.query<ResultMeta, string>({
-      query: (path: string) => `result/${path}/meta.json`
+      query: (path: string) => cleanUrl(`result/${path}/meta.json`)
     }),
   }),
 })
