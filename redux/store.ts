@@ -8,7 +8,6 @@ import storage from 'redux-persist/lib/storage'
 import { contentTempReducer } from './slices/contentTemp'
 import { layoutReducer } from './slices/layout'
 import { layoutTempReducer } from './slices/layoutTemp'
-import { srcTreeTempReducer } from './slices/srcTreeTemp'
 import { resultTreeTempReducer } from './slices/resultTreeTemp'
 import { themeReducer } from './slices/theme'
 import { trboxLabApi } from './slices/apiSlice'
@@ -20,7 +19,6 @@ const rootReducer = combineReducers({
   contentTemp: contentTempReducer,
   layout: layoutReducer,
   layoutTemp: layoutTempReducer,
-  srcTreeTemp: srcTreeTempReducer,
   resultTreeTemp: resultTreeTempReducer,
   theme: themeReducer,
   [trboxLabApi.reducerPath]: trboxLabApi.reducer,
@@ -31,12 +29,7 @@ export const store = configureStore({
   reducer: persistReducer({
     key: 'root',
     storage: storage,
-    blacklist: [
-      'contentTemp',
-      'layoutTemp',
-      'srcTreeTemp',
-      'resultTreeTemp',
-    ]
+    whitelist: ['layout', 'theme'],
   }, rootReducer),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

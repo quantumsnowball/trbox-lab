@@ -1,4 +1,4 @@
-import BreadCrumbs from "@/components/results/BreadCrumb";
+import BreadCrumbs from "@/components/result/BreadCrumb";
 import { useGetResultMetaQuery } from "@/redux/slices/apiSlice"
 import { Paper, styled, Typography } from "@mui/material"
 import { FC } from "react"
@@ -30,7 +30,7 @@ const MetaSummary: FC = () => {
           return (
             <Typography
               key={k}
-              sx={{ p:1, m:1, userSelect: 'text' }}
+              sx={{ p: 1, m: 1, userSelect: 'text' }}
             >
               `${k}={v}`
             </Typography>

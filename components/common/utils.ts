@@ -1,13 +1,12 @@
-import { TreeDict } from "@/common/types"
+import { Node } from "@/common/types"
 
 
 // sorting
-type Entry = [string, TreeDict | null]
-export const byDirThenName = (a: Entry, b: Entry) => {
-  if (a[1] && !b[1]) return -1
-  if (!a[1] && b[1]) return +1
-  if (a[0] < b[0]) return -1
-  if (a[0] > b[0]) return +1
+export const byDirThenName = (a: Node, b: Node) => {
+  if (a.type === 'folder' && b.type === 'file') return -1
+  if (b.type === 'folder' && a.type === 'file') return +1
+  if (a.name < b.name) return -1
+  if (a.name > b.name) return +1
   return 0
 }
 
