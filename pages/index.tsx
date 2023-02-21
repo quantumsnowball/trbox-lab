@@ -1,7 +1,5 @@
-import BreadCrumbs from '@/components/index/BreadCrumb';
 import { TreeDict } from '@/common/types';
-import Summary from '@/components/index/Summary';
-import { Paper, styled } from '@mui/material'
+import { styled, Typography } from '@mui/material'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { srcTreeTempActions } from '@/redux/slices/srcTreeTemp';
@@ -14,7 +12,7 @@ const ContentDiv = styled('div')`
   display: flex;
   flex-flow: column;
   /* align vertically */
-  justify-content: flex-start;
+  justify-content: center;
   /* align horizontally */
   align-items: center;
 `;
@@ -36,13 +34,12 @@ export default function Home() {
 
   return (
     <ContentDiv>
-      <Paper
-        sx={{
-          width: '100%',
-        }}>
-        <BreadCrumbs />
-        <Summary />
-      </Paper>
+      <Typography
+        variant='h4'
+        sx={{ textAlign: 'center' }}
+      >
+        Welcom to TrBox Lab
+      </Typography>
     </ContentDiv>
   )
 }
