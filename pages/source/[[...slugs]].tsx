@@ -12,13 +12,16 @@ const ROOT = '/source'
 const ContentDiv = styled('div')`
   /* take all vertical space */
   flex: 1 1 auto;
+  height: 100%;
+  /* take all horizontal space */
+  width: 100%;
   /* single item each row */
   display: flex;
   flex-flow: column;
   /* align vertically */
-  justify-content: flex-start;
+  justify-content: stretch;
   /* align horizontally */
-  align-items: center;
+  align-items: stretch;
 `;
 
 const validateUrl = (slugs: string[], rootNode: Node) => {
@@ -60,15 +63,11 @@ const Source = () => {
   }, [slugs, rootNode, router])
 
   return (
-    <ContentDiv>
-      <Paper
-        sx={{
-          width: '100%',
-        }}
-      >
-        <BreadCrumbs nodes={nodes} />
-        <Summary nodes={nodes} />
-      </Paper>
+    <ContentDiv
+      id='content-div'
+    >
+      <BreadCrumbs nodes={nodes} />
+      <Summary nodes={nodes} />
     </ContentDiv>
   )
 }

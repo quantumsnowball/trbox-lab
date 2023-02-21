@@ -48,11 +48,23 @@ const Code: FC<{ path: string }> = ({ path }) => {
     <>
       {source ?
         <Box
-          sx={{ m: 1, p: 1 }}
+          sx={{
+            display: 'flex',
+            flexFlow: 'column nowrap',
+            height: '100%',
+            overflow: 'auto',
+            m: 1, p: 1
+          }}
         >
           <Typography
             variant='body2'
-            sx={{ whiteSpace: 'pre', fontFamily: 'monospace', userSelect: 'text' }}
+            sx={{
+              height: '100%',
+              overflow: 'scroll',
+              whiteSpace: 'pre',
+              fontFamily: 'monospace',
+              userSelect: 'text'
+            }}
           >
             {source}
           </Typography>
