@@ -1,12 +1,12 @@
 import { Node } from '@/common/types'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-type ResultMeta = {
-  [key: string]: string
-}
-
 type Source = {
   code: string
+}
+
+type ResultMeta = {
+  [key: string]: string
 }
 
 export const trboxLabApi = createApi({
@@ -17,8 +17,7 @@ export const trboxLabApi = createApi({
     getSourceTree: builder.query<Node, void>({ query: () => `tree/source` }),
     getSource: builder.query<Source, string>({ query: (path: string) => `source/${path}` }),
     getResultTree: builder.query<Node, void>({ query: () => `tree/result` }),
-    getResult: builder.query<Source, string>({ query: (path: string) => `result/${path}` }),
-    getResultMeta: builder.query<ResultMeta, string>({ query: (path: string) => path }),
+    getResult: builder.query<ResultMeta, string>({ query: (path: string) => `result/${path}/meta.json` }),
   }),
 })
 
@@ -27,5 +26,4 @@ export const {
   useGetSourceQuery,
   useGetResultTreeQuery,
   useGetResultQuery,
-  useGetResultMetaQuery,
 } = trboxLabApi

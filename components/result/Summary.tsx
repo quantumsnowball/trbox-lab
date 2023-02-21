@@ -1,10 +1,11 @@
 import { Node } from "@/common/types"
-import { Typography } from "@mui/material"
+import { Box, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { FC } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from 'next/router'
+import { useGetResultQuery } from "@/redux/slices/apiSlice";
 
 const ROOT = '/result'
 const PREFIX = '.result'
@@ -17,9 +18,22 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-const Brief: FC = () => {
+const Brief: FC<{ path: string }> = ({ path }) => {
+  const { data: meta } = useGetResultQuery(path)
+
   return (
-    <div>fetch and then show some meta data</div>
+    <>
+      {
+        meta ?
+          <Box
+            sx={{ m: 1, p: 1 }}
+          >
+            <Typography> title: {meta.title} </Typography>
+            <Typography> desc: {meta.desc} </Typography>
+          </Box>
+          : null
+      }
+    </>
 
   )
 }
@@ -32,7 +46,7 @@ const Summary: FC<{ nodes: Node[] }> = ({ nodes }) => {
   return (
     <>
       {lastNode?.name.startsWith(PREFIX) ?
-        <Brief />
+        <Brief path={lastNode.path} />
         :
         entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
           <Typography
