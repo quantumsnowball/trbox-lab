@@ -1,6 +1,6 @@
-import BreadCrumbs from '@/components/results/BreadCrumb';
+import BreadCrumbs from '@/components/result/BreadCrumb';
 import { TreeDict } from '@/common/types';
-import Summary from '@/components/results/Summary';
+import Summary from '@/components/result/Summary';
 import { Paper, styled } from '@mui/material'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
