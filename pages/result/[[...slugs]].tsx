@@ -60,7 +60,7 @@ const Result = () => {
     setNodes(result)
 
 
-  }, [slugs, rootNode])
+  }, [slugs, rootNode, router])
   return (
     <ContentDiv>
       <Paper
@@ -75,7 +75,3 @@ const Result = () => {
 }
 
 export default Result
-function useGetResultTree(): { data: any; } {
-  throw new Error('Function not implemented.');
-}
-

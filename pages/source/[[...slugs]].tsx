@@ -57,7 +57,7 @@ const Source = () => {
       return
     }
     setNodes(result)
-  }, [slugs, rootNode])
+  }, [slugs, rootNode, router])
 
   return (
     <ContentDiv>
