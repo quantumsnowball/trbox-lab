@@ -21,45 +21,17 @@ const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
         <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
-  const router = useRouter()
-
-  return (
-    <Breadcrumbs
-      aria-label="breadcrumb"
-      sx={{ m: 1, p: 1 }}
-    >
-      {
-        nodes.map(({ name, path }) => {
-          return (
-            <Typography
-              key={path}
-              variant='h6'
-              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-              onClick={() => router.push(`${ROOT}${path}`)}
-            >
-              <Icon {...{ name, path }} />
-              {name}
-            </Typography>
-          )
-        })
-      }
-    </Breadcrumbs >
-  )
-}
-const UpButton: FC<{ paths: string[] }> = ({ paths }) => {
+const UpButton: FC<{ nodes: Node[] }> = ({ nodes }) => {
   const router = useRouter()
   const theme = useTheme()
   const isBig = useMediaQuery(theme.breakpoints.up('sm'))
   return (
     <>
       {
-        (isBig && paths.length > 0) ?
+        (isBig && nodes.length > 1) ?
           <UpOneLevelButton
             onClick={() => {
-              paths.length === 1 ?
-                router.push(ROOT) :
-                router.push(`${ROOT}${paths?.at(-2)}`)
+              router.push(`${ROOT}${nodes?.at(-2)?.path}`)
             }}
           />
           :
@@ -70,6 +42,37 @@ const UpButton: FC<{ paths: string[] }> = ({ paths }) => {
   )
 }
 
+const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
+  const router = useRouter()
+
+  return (
+    <Box
+      sx={{ width: '100%', display: 'flex' }}
+    >
+      <Breadcrumbs
+        aria-label="breadcrumb"
+        sx={{ m: 1, p: 1, flex: 1 }}
+      >
+        {
+          nodes.map(({ name, path }) => {
+            return (
+              <Typography
+                key={path}
+                variant='h6'
+                sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                onClick={() => router.push(`${ROOT}${path}`)}
+              >
+                <Icon {...{ name, path }} />
+                {name}
+              </Typography>
+            )
+          })
+        }
+      </Breadcrumbs >
+      <UpButton {...{ nodes }} />
+    </Box>
+  )
+}
 
 type Props = {
   nodes: Node[]
