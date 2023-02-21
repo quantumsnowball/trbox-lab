@@ -31,6 +31,7 @@ const Brief: FC<{ path: string }> = ({ path }) => {
             {
               Object.entries(meta).map(([k, v]) =>
                 <Typography
+                  key={k + v}
                   variant='h6'
                   sx={{ userSelect: 'text' }}
                 >{k} = {v}
