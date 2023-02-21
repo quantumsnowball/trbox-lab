@@ -52,7 +52,7 @@ const Code: FC<{ path: string }> = ({ path }) => {
         >
           <Typography
             variant='body2'
-            sx={{ whiteSpace: 'pre', fontFamily: 'monospace' }}
+            sx={{ whiteSpace: 'pre', fontFamily: 'monospace', userSelect: 'text' }}
           >
             {source}
           </Typography>
