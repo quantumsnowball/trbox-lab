@@ -27,9 +27,22 @@ const Stdout: FC<{ runResult: RunResult | undefined }> = ({ runResult }) => {
   )
 }
 
+const RunButton: FC<{ run: () => void }> = ({ run }) =>
+  <Box
+    sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+  >
+    <Button
+      variant="contained"
+      onClick={run}
+    >
+      RUN
+    </Button>
+  </Box>
+
 const Code: FC<{ path: string }> = ({ path }) => {
   const { data: source } = useGetSourceQuery(path)
   const [trigger, { data: runResult }] = useLazyRunSourceQuery()
+  const run = () => trigger(path)
 
   return (
     <>
@@ -44,16 +57,7 @@ const Code: FC<{ path: string }> = ({ path }) => {
               {source.code}
             </code>
           </Typography>
-          <Box
-            sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-          >
-            <Button
-              variant="contained"
-              onClick={() => trigger(path)}
-            >
-              RUN
-            </Button>
-          </Box>
+          <RunButton {...{ run }} />
           <Stdout {...{ runResult }} />
         </Box >
         : null
