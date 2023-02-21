@@ -1,4 +1,6 @@
+import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { Paper, styled, Typography } from '@mui/material'
+import { useEffect } from 'react';
 
 
 const ContentDiv = styled('div')`
@@ -13,7 +15,14 @@ const ContentDiv = styled('div')`
   align-items: center;
 `;
 
+
 const Result = () => {
+  const { data: rootNode } = useGetSourceTreeQuery()
+  useEffect(() => {
+  console.debug({rootNode})
+
+
+  }, [rootNode])
   return (
     <ContentDiv>
       <Paper
