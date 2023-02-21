@@ -51,11 +51,10 @@ const Code: FC<{ path: string }> = ({ path }) => {
           sx={{ m: 1, p: 1 }}
         >
           <Typography
-            sx={{ whiteSpace: 'pre-line' }}
+            variant='body2'
+            sx={{ whiteSpace: 'pre', fontFamily: 'monospace' }}
           >
-            <code>
-              {source.code}
-            </code>
+            {source}
           </Typography>
           <RunButton {...{ run }} />
           <Stdout {...{ runResult }} />
