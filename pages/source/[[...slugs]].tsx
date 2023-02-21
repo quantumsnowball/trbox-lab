@@ -1,4 +1,4 @@
-import { TreeDict } from '@/common/types';
+import { Node, TreeDict } from '@/common/types';
 import BreadCrumbs from '@/components/source/BreadCrumb';
 import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
@@ -21,36 +21,43 @@ const ContentDiv = styled('div')`
   align-items: center;
 `;
 
+const validateUrl = (slugs: string[], rootNode: Node) => {
+  let list = rootNode.children
+  let selected = [rootNode,]
+  for (let slug of slugs) {
+    const found = list.find(child => child.name === slug)
+    if (!found)
+      return false
+    else
+      list = found.children
+    selected.push(found)
+  }
+  return selected
+}
+
 const Source = () => {
-  const { data: dirTree } = useGetSourceTreeQuery()
+  const { data: rootNode } = useGetSourceTreeQuery()
   const router = useRouter()
   const { slugs } = router.query
-  const [validSlugs, setValidSlugs] = useState([] as string[])
-  const validPaths = validSlugs.map((sum => slug => sum += '/' + slug)(''))
+  const [nodes, setNodes] = useState([] as Node[])
 
   useEffect(() => {
-    const validateSlugs = (slugs: string[] | string | undefined) => {
-      // currently at root
-      if (!Array.isArray(slugs)) return []
-      // dirTree not ready, go to root
-      if (!dirTree) return []
-      // got into the tree until hit a false property
-      const valids = [] as string[]
-      slugs.reduce((node, slug, _, _arr) => {
-        if (!node.hasOwnProperty(slug)) {
-          // null property, break
-          _arr = []
-          router.push(ROOT)
-          return {}
-        }
-        // valid, append slug to valids
-        valids.push(slug)
-        return node[slug] as TreeDict
-      }, dirTree)
-      return valids
+    // node not fetched
+    if (!rootNode)
+      return
+    // at root or 
+    if (!slugs || !Array.isArray(slugs)) {
+      setNodes([rootNode,])
+      return
     }
-    setValidSlugs(validateSlugs(slugs))
-  }, [dirTree, slugs])
+    // push to root anyway if path not valid
+    const result = validateUrl(slugs, rootNode)
+    if (!result) {
+      router.push(ROOT)
+      return
+    }
+    setNodes(result)
+  }, [slugs, rootNode])
 
   return (
     <ContentDiv>
@@ -59,8 +66,8 @@ const Source = () => {
           width: '100%',
         }}
       >
-        <BreadCrumbs slugs={validSlugs} paths={validPaths} />
-        {dirTree ? <Summary slugs={validSlugs} dirTree={dirTree} /> : null}
+        <BreadCrumbs nodes={nodes} />
+        <Summary nodes={nodes} />
       </Paper>
     </ContentDiv>
   )

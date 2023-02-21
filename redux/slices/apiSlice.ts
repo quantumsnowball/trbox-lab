@@ -1,4 +1,4 @@
-import { TreeDict } from '@/common/types'
+import { TreeDict, Node } from '@/common/types'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 type ResultMeta = {
@@ -14,7 +14,7 @@ export const trboxLabApi = createApi({
   refetchOnMountOrArgChange: true,
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: builder => ({
-    getSourceTree: builder.query<TreeDict, void>({ query: () => `tree/source` }),
+    getSourceTree: builder.query<Node, void>({ query: () => `tree/source` }),
     getSource: builder.query<Source, string>({ query: (path: string) => `source/${path}` }),
     getResultMeta: builder.query<ResultMeta, string>({ query: (path: string) => path }),
   }),

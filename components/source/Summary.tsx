@@ -1,4 +1,4 @@
-import { TreeDict } from "@/common/types"
+import { Node } from "@/common/types"
 import { Box, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
@@ -7,6 +7,7 @@ import { byDirThenName } from "../common/utils"
 import { useRouter } from "next/router";
 import { useGetSourceQuery } from "@/redux/slices/apiSlice";
 
+const PREFIX = '/source'
 const SUFFIX = '.py'
 
 const Icon: FC<{ name: string }> = ({ name }) =>
@@ -18,8 +19,7 @@ const Icon: FC<{ name: string }> = ({ name }) =>
   </>
 
 type Props = {
-  slugs: string[]
-  dirTree: TreeDict
+  nodes: Node[]
 }
 
 const Code: FC<{ path: string }> = ({ path }) => {
@@ -45,43 +45,27 @@ const Code: FC<{ path: string }> = ({ path }) => {
   )
 }
 
-const Summary: FC<Props> = ({ slugs, dirTree }) => {
+const Summary: FC<Props> = ({ nodes }) => {
   const router = useRouter()
-  const lastNode = slugs.reduce((tree, name, _, _arr) => {
-    const node = tree[name]
-    // is a .py file, break the loop
-    if (node === null) {
-      _arr = []
-      return {}
-    }
-    // iter to next node
-    return tree[name] as TreeDict
-  }, dirTree)
-  const entries = Object.entries(lastNode)
-  const lastSlug = slugs.at(-1)
-  const lastPath = slugs.join('/')
+  const lastNode = nodes.at(-1)
+  const entries = lastNode && lastNode.children
+
 
   return (
     <>
-      {entries.length > 0 ?
-        entries.sort(byDirThenName).map(([name, node]) =>
+      {lastNode?.name.endsWith(SUFFIX) ?
+        <Code path={lastNode.path} />
+        :
+        entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
           <Typography
             key={name}
             variant='h6'
             sx={{ m: 1, p: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-            onClick={() => {
-              if (!slugs.at(-1)?.endsWith(SUFFIX)) {
-                router.push(`${window.location.pathname}/${name}`)
-              }
-            }}
+            onClick={() => router.push(PREFIX + path)}
           >
             <Icon name={name} />
-            {name}{node ? '/' : null}
+            {name}{type === 'folder' ? '/' : null}
           </Typography>)
-        :
-        lastSlug?.endsWith(SUFFIX) ?
-          <Code path={lastPath} />
-          : null
       }
     </>
   )
