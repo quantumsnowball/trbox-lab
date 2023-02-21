@@ -1,6 +1,8 @@
+import { Node } from '@/common/types';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { Paper, styled, Typography } from '@mui/material'
-import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 
 const ContentDiv = styled('div')`
@@ -18,11 +20,23 @@ const ContentDiv = styled('div')`
 
 const Result = () => {
   const { data: rootNode } = useGetSourceTreeQuery()
+  const router = useRouter()
+  const { slugs } = router.query
+  const [nodes, setNodes] = useState([] as Node[])
+
   useEffect(() => {
-  console.debug({rootNode})
+    // node not fetched
+    if (!rootNode)
+      return
+    // at root
+    if (!slugs || !Array.isArray(slugs)) {
+      setNodes([rootNode,])
+      return
+    }
+    console.debug(nodes)
 
 
-  }, [rootNode])
+  }, [slugs, rootNode])
   return (
     <ContentDiv>
       <Paper
