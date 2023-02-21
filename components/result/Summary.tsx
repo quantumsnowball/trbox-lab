@@ -17,6 +17,12 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
+const Brief: FC = () => {
+  return (
+    <div>fetch and then show some meta data</div>
+
+  )
+}
 
 const Summary: FC<{ nodes: Node[] }> = ({ nodes }) => {
   const router = useRouter()
@@ -25,7 +31,9 @@ const Summary: FC<{ nodes: Node[] }> = ({ nodes }) => {
 
   return (
     <>
-      {
+      {lastNode?.name.startsWith(PREFIX) ?
+        <Brief />
+        :
         entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
           <Typography
             key={name}
