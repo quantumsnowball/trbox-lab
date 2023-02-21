@@ -1,6 +1,12 @@
 import { RunResult, useGetSourceQuery, useLazyRunSourceQuery } from "@/redux/slices/apiSlice"
 import { Box, Button, Paper, Typography } from "@mui/material"
 import { FC } from "react"
+import SyntaxHighlighter from 'react-syntax-highlighter'
+// use cjs module instead of esm when using NextJS, important!
+// good looking themes you may consider: 
+//   gruvboxDark, srcery, railscasts
+//   ref: https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/
+import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 
 const Stdout: FC<{ runResult: RunResult | undefined }> = ({ runResult }) => {
   return (
@@ -61,18 +67,14 @@ const Code: FC<{ path: string }> = ({ path }) => {
             mx: 1
           }}
         >
-          <Typography
-            variant='body2'
-            sx={{
-              height: '100%',
-              overflow: 'scroll',
-              whiteSpace: 'pre',
-              fontFamily: 'monospace',
-              userSelect: 'text'
-            }}
+          <SyntaxHighlighter
+            language='python'
+            style={colorScheme}
+            showLineNumbers={false}
+            customStyle={{ fontSize: '1.0em' }}
           >
             {source}
-          </Typography>
+          </SyntaxHighlighter>
           <RunButton {...{ run }} />
           <Stdout {...{ runResult }} />
         </Box >

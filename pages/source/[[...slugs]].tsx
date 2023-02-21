@@ -2,7 +2,7 @@ import { Node } from '@/common/types';
 import BreadCrumbs from '@/components/source/BreadCrumb';
 import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
-import { Paper, styled } from '@mui/material'
+import { styled } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
