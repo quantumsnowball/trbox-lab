@@ -60,7 +60,8 @@ const Summary: FC<{ nodes: Node[] }> = ({ nodes }) => {
           <Typography
             key={name}
             variant='h6'
-            sx={{ m: 1, p: 1, display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+            className='flex row start'
+            sx={{ m: 1, p: 1, cursor: 'pointer' }}
             onClick={() => router.push(ROOT + path)}
           >
             <Icon name={name} />
