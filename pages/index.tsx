@@ -1,4 +1,4 @@
-import { styled, Typography } from '@mui/material'
+import { Paper, styled, Typography } from '@mui/material'
 
 
 const ContentDiv = styled('div')`
@@ -16,12 +16,22 @@ const ContentDiv = styled('div')`
 export default function Home() {
   return (
     <ContentDiv>
-      <Typography
-        variant='h4'
-        sx={{ textAlign: 'center' }}
-      >
-        Welcom to TrBox Lab
-      </Typography>
+      <Paper
+        sx={{
+          display: 'flex',
+          flexFlow: 'column nowrap',
+          height: '100%',
+          width: '100%',
+          overflow: 'auto',
+          justifyContent: 'Center',
+        }}>
+        <Typography
+          variant='h4'
+          sx={{ textAlign: 'center' }}
+        >
+          Welcom to TrBox Lab
+        </Typography>
+      </Paper>
     </ContentDiv>
   )
 }

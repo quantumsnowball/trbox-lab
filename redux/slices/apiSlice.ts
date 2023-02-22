@@ -1,12 +1,14 @@
 import { Node } from '@/common/types'
+import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
-type Source = {
-  code: string
-}
 
 type ResultMeta = {
   [key: string]: string
+}
+
+export type RunResult = {
+  source: string,
+  stdout: string,
 }
 
 export const trboxLabApi = createApi({
@@ -14,14 +16,30 @@ export const trboxLabApi = createApi({
   refetchOnMountOrArgChange: true,
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: builder => ({
-    getSourceTree: builder.query<Node, void>({ query: () => `tree/source` }),
-    getSource: builder.query<Source, string>({ query: (path: string) => `source/${path}` }),
-    getResultTree: builder.query<Node, void>({ query: () => `tree/result` }),
-    getResult: builder.query<ResultMeta, string>({ query: (path: string) => `result/${path}/meta.json` }),
+    runSource: builder.query<RunResult, string>({
+      query: (path: string) => cleanUrl(`run/${path}`)
+    }),
+    getSourceTree: builder.query<Node, void>({
+      query: () => `tree/source`
+    }),
+    getSource: builder.query<string, string>({
+      query: (path: string) => ({
+        url: cleanUrl(`source/${path}`),
+        responseHandler: 'text'
+      }),
+    }),
+    getResultTree: builder.query<Node, void>({
+      query: () => `tree/result`
+    }),
+    getResult: builder.query<ResultMeta, string>({
+      query: (path: string) => cleanUrl(`result/${path}/meta.json`)
+    }),
   }),
 })
 
 export const {
+  useRunSourceQuery,
+  useLazyRunSourceQuery,
   useGetSourceTreeQuery,
   useGetSourceQuery,
   useGetResultTreeQuery,

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 
 const layoutSlice = createSlice({
@@ -14,6 +14,15 @@ const layoutSlice = createSlice({
       about: {
         expanded: false,
       }
+    },
+    lastPath: {
+      source: '',
+      result: '',
+    },
+    section: {
+      source: {
+        sectionId: 0
+      }
     }
   },
   reducers: {
@@ -25,7 +34,16 @@ const layoutSlice = createSlice({
     },
     toggleAbout: s => {
       s.menuDrawer.about.expanded = !s.menuDrawer.about.expanded
-    }
+    },
+    setSourceLastPath: (s, a: PayloadAction<string | undefined>) => {
+      s.lastPath.source = a.payload ?? ''
+    },
+    setResultLastPath: (s, a: PayloadAction<string | undefined>) => {
+      s.lastPath.result = a.payload ?? ''
+    },
+    setSourceSection: (s, a: PayloadAction<number>) => {
+      s.section.source.sectionId = a.payload
+    },
   }
 })
 

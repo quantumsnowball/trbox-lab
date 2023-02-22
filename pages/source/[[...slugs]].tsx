@@ -2,9 +2,11 @@ import { Node } from '@/common/types';
 import BreadCrumbs from '@/components/source/BreadCrumb';
 import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
+import { layoutActions } from '@/redux/slices/layout';
 import { Paper, styled } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 
 const ROOT = '/source'
@@ -12,13 +14,16 @@ const ROOT = '/source'
 const ContentDiv = styled('div')`
   /* take all vertical space */
   flex: 1 1 auto;
+  height: 100%;
+  /* take all horizontal space */
+  width: 100%;
   /* single item each row */
   display: flex;
   flex-flow: column;
   /* align vertically */
-  justify-content: flex-start;
+  justify-content: stretch;
   /* align horizontally */
-  align-items: center;
+  align-items: stretch;
 `;
 
 const validateUrl = (slugs: string[], rootNode: Node) => {
@@ -36,6 +41,8 @@ const validateUrl = (slugs: string[], rootNode: Node) => {
 }
 
 const Source = () => {
+  const dispatch = useDispatch()
+  const updateLastPath = (p: string) => dispatch(layoutActions.setSourceLastPath(p))
   const { data: rootNode } = useGetSourceTreeQuery()
   const router = useRouter()
   const { slugs } = router.query
@@ -59,13 +66,21 @@ const Source = () => {
     setNodes(result)
   }, [slugs, rootNode, router])
 
+  // update last path on valid nodes update
+  useEffect(() => { updateLastPath(nodes.at(-1)?.path ?? '') }, [nodes])
+
   return (
-    <ContentDiv>
+    <ContentDiv
+      id='content-div'
+    >
       <Paper
         sx={{
+          display: 'flex',
+          flexFlow: 'column nowrap',
+          height: '100%',
           width: '100%',
-        }}
-      >
+          overflow: 'auto',
+        }}>
         <BreadCrumbs nodes={nodes} />
         <Summary nodes={nodes} />
       </Paper>

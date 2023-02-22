@@ -12,6 +12,8 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 
 
 function PagesMenu() {
+  const lastSourcePath = useSelector((s: RootState) => s.layout.lastPath.source)
+  const lastResultPath = useSelector((s: RootState) => s.layout.lastPath.result)
   const router = useRouter()
   const dispatch = useDispatch()
   const [state, toggle] = [
@@ -38,13 +40,13 @@ function PagesMenu() {
           <MenuButton
             icon={<DataObjectIcon />}
             text='Source'
-            onClick={() => router.push('/source')}
+            onClick={() => router.push(`/source${lastSourcePath}`)}
             level={1}
           />
           <MenuButton
             icon={<LeaderboardOutlinedIcon />}
             text='Result'
-            onClick={() => router.push('/result')}
+            onClick={() => router.push(`/result${lastResultPath}`)}
             level={1}
           />
         </List>
