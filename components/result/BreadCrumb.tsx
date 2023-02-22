@@ -42,16 +42,20 @@ const UpButton: FC<{ nodes: Node[] }> = ({ nodes }) => {
   )
 }
 
-const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
+type Props = {
+  nodes: Node[]
+}
+
+const BreadCrumbs = ({ nodes }: Props) => {
   const router = useRouter()
 
   return (
     <Box
-      sx={{ width: '100%', display: 'flex' }}
+      className='flex row spread'
     >
       <Breadcrumbs
         aria-label="breadcrumb"
-        sx={{ m: 1, p: 1, flex: 1 }}
+        sx={{ m: 1, p: 1 }}
       >
         {
           nodes.map(({ name, path }) => {
@@ -59,7 +63,8 @@ const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
               <Typography
                 key={path}
                 variant='h6'
-                sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                className='flex'
+                sx={{ cursor: 'pointer' }}
                 onClick={() => router.push(`${ROOT}${path}`)}
               >
                 <Icon {...{ name, path }} />
@@ -70,18 +75,6 @@ const PathBar: FC<{ nodes: Node[] }> = ({ nodes }) => {
         }
       </Breadcrumbs >
       <UpButton {...{ nodes }} />
-    </Box>
-  )
-}
-
-type Props = {
-  nodes: Node[]
-}
-
-const BreadCrumbs = ({ nodes }: Props) => {
-  return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <PathBar {...{ nodes }} />
     </Box>
   )
 }
