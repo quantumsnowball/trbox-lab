@@ -19,22 +19,25 @@ const Icon: FC<{ name: string }> = ({ name }) =>
   </>
 
 const Brief: FC<{ path: string }> = ({ path }) => {
-  const { data: meta } = useGetResultQuery(path)
+  const { data: metrics } = useGetResultQuery(path)
+  console.log(metrics)
+
 
   return (
     <>
       {
-        meta ?
+        metrics ?
           <Box
             sx={{ m: 1, p: 1 }}
           >
             {
-              Object.entries(meta).map(([k, v]) =>
+              Object.entries(metrics).map(([m, vals]) =>
                 <Typography
-                  key={k + v}
+                  key={m}
                   variant='h6'
                   sx={{ userSelect: 'text' }}
-                >{k} = {v}
+                >
+                  {m} = {vals.Benchmark}
                 </Typography>)
             }
 

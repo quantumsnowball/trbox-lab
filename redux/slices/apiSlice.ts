@@ -2,8 +2,10 @@ import { Node } from '@/common/types'
 import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-type ResultMeta = {
-  [key: string]: string
+type Metrics = {
+  [key: string]: {
+    [key: string]: number
+  }
 }
 
 export type RunResult = {
@@ -31,8 +33,8 @@ export const trboxLabApi = createApi({
     getResultTree: builder.query<Node, void>({
       query: () => `tree/result`
     }),
-    getResult: builder.query<ResultMeta, string>({
-      query: (path: string) => cleanUrl(`result/${path}/meta.json`)
+    getResult: builder.query<Metrics, string>({
+      query: (path: string) => cleanUrl(`result/${path}/metrics.json`)
     }),
   }),
 })
