@@ -35,6 +35,7 @@ const Viewer: FC<Props> = ({ path, run }) => {
   return (
 
     <Box
+    id='viewer-div'
       sx={{
         display: 'flex',
         flexFlow: 'column nowrap',
