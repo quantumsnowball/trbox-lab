@@ -3,7 +3,7 @@ import BreadCrumbs from '@/components/result/BreadCrumb';
 import Summary from '@/components/result/Summary';
 import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
-import { Paper} from '@mui/material'
+import { Paper } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -59,10 +59,11 @@ const Result = () => {
 
   return (
     <div
-      className='full flex-column expanding'
+      id='content-div'
+      className='full expanding flex-column start stretch'
     >
       <Paper
-        className='full flex-column expanding'
+        className='full expanding flex-column start stretch'
       >
         <BreadCrumbs {...{ nodes }} />
         <Summary {...{ nodes }} />

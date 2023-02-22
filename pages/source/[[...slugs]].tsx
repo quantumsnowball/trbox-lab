@@ -57,10 +57,10 @@ const Source = () => {
   return (
     <div
       id='content-div'
-      className='full flex-column expanding'
+      className='full expanding flex-column start stretch'
     >
       <Paper
-        className='full flex-column expanding'
+        className='full expanding flex-column start stretch'
       >
         <BreadCrumbs nodes={nodes} />
         <Summary nodes={nodes} />
