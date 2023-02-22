@@ -3,7 +3,7 @@ import BreadCrumbs from '@/components/source/BreadCrumb';
 import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
-import { styled } from '@mui/material'
+import { Paper, styled } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -73,8 +73,17 @@ const Source = () => {
     <ContentDiv
       id='content-div'
     >
-      <BreadCrumbs nodes={nodes} />
-      <Summary nodes={nodes} />
+      <Paper
+        sx={{
+          display: 'flex',
+          flexFlow: 'column nowrap',
+          height: '100%',
+          width: '100%',
+          overflow: 'auto',
+        }}>
+        <BreadCrumbs nodes={nodes} />
+        <Summary nodes={nodes} />
+      </Paper>
     </ContentDiv>
   )
 }
