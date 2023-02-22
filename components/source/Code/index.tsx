@@ -5,12 +5,20 @@ import Stdout from "./Stdout"
 import Viewer from "./Viewer"
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import TerminalIcon from '@mui/icons-material/Terminal';
+import { useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
+import { layoutTempActions } from "@/redux/slices/layoutTemp"
 
 
 const Code: FC<{ path: string }> = ({ path }) => {
+  const dispatch = useDispatch()
   const [trigger, { data: runResult }] = useLazyRunSourceQuery()
   const run = () => trigger(path)
-  const [navId, setNavId] = useState(0)
+  const [sectionId, setSectionId] = [
+    useSelector((s: RootState) => s.layoutTemp.source.sectionId),
+    (i: number) => dispatch(layoutTempActions.setSourceSection(i))
+  ]
 
   return (
     <Box
@@ -25,11 +33,11 @@ const Code: FC<{ path: string }> = ({ path }) => {
       {{
         0: <Viewer {...{ path, run }} />,
         1: <Stdout {...{ runResult }} />,
-      }[navId]}
+      }[sectionId]}
       <BottomNavigation
         showLabels
-        value={navId}
-        onChange={(_, newNavId) => setNavId(newNavId)}
+        value={sectionId}
+        onChange={(_, newId) => setSectionId(newId)}
       >
         <BottomNavigationAction label="Code" icon={<DataObjectIcon />} />
         <BottomNavigationAction label="Output" icon={<TerminalIcon />} />

@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 
 const layoutTempSlice = createSlice({
@@ -7,11 +7,15 @@ const layoutTempSlice = createSlice({
     menu: {
       visible: false,
     },
+    source: {
+      sectionId: 0
+    }
   },
   reducers: {
     toggleMenu: s => { s.menu.visible = !s.menu.visible },
     openMenu: s => { s.menu.visible = true },
     closeMenu: s => { s.menu.visible = false },
+    setSourceSection: (s, a: PayloadAction<number>) => { s.source.sectionId = a.payload },
   }
 })
 
