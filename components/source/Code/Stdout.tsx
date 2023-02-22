@@ -12,19 +12,14 @@ const Stdout: FC<{ runResult: RunResult | undefined }> = ({ runResult }) => {
   return (
     <Box
       id='viewer-div'
-      sx={{
-        display: 'flex',
-        flexFlow: 'column nowrap',
-        height: '100%',
-        overflow: 'auto',
-        mx: 1
-      }}
+      className='expanding scroll flex column stretch'
+      sx={{ mx: 1 }}
     >
       <SyntaxHighlighter
         language='powershell'
         style={colorScheme}
         showLineNumbers={false}
-        customStyle={{ fontSize: '1.0em', height: '100%' }}
+        customStyle={{ fontSize: '1.0em', flex: 1 }}
       >
         {runResult?.stdout ?? ''}
       </SyntaxHighlighter>

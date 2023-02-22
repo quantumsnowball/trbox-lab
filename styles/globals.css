@@ -8,6 +8,7 @@
 html,
 body {
   height: 100%;
+  width: 100%;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -16,9 +17,49 @@ body {
 
 #__next {
   height: 100%;
+  width: 100%;
 }
 
 a {
   color: inherit;
   text-decoration: none;
 }
+
+.full {
+  height: 100%;
+  width: 100%;
+}
+.expanding {
+  flex: 1 1 auto;
+}
+
+.scroll {
+  overflow: auto;
+}
+
+.flex {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.flex.row {
+  flex-flow: row;
+}
+.flex.row.start {
+  justify-content: flex-start;
+}
+.flex.row.spread {
+  justify-content: space-between;
+}
+.flex.column {
+  flex-flow: column;
+}
+.flex.column.start {
+  justify-content: flex-start;
+}
+.flex.column.stretch {
+  align-items: stretch;
+}
+

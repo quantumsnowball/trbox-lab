@@ -3,25 +3,13 @@ import BreadCrumbs from '@/components/result/BreadCrumb';
 import Summary from '@/components/result/Summary';
 import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
-import { Paper, styled } from '@mui/material'
+import { Paper } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 
 const ROOT = '/result'
-
-const ContentDiv = styled('div')`
-  /* take all vertical space */
-  flex: 1 1 auto;
-  /* single item each row */
-  display: flex;
-  flex-flow: column;
-  /* align vertically */
-  justify-content: flex-start;
-  /* align horizontally */
-  align-items: center;
-`;
 
 const validateUrl = (slugs: string[], rootNode: Node) => {
   let list = rootNode.children
@@ -70,15 +58,17 @@ const Result = () => {
   useEffect(() => { updateLastPath(nodes.at(-1)?.path ?? '') }, [nodes])
 
   return (
-    <ContentDiv>
+    <div
+      id='content-div'
+      className='full flex column start stretch'
+    >
       <Paper
-        sx={{
-          width: '100%',
-        }}>
+        className='full flex column start stretch'
+      >
         <BreadCrumbs {...{ nodes }} />
         <Summary {...{ nodes }} />
       </Paper>
-    </ContentDiv>
+    </div>
   )
 }
 

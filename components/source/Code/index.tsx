@@ -23,12 +23,7 @@ const Code: FC<{ path: string }> = ({ path }) => {
   return (
     <Box
       id='code-div'
-      sx={{
-        display: 'flex',
-        flexFlow: 'column nowrap',
-        height: '100%',
-        overflow: 'auto',
-      }}
+      className='expanding scroll flex column stretch'
     >
       {
         {
