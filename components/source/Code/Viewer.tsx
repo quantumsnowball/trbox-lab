@@ -1,6 +1,7 @@
 import { useGetSourceQuery } from "@/redux/slices/apiSlice"
 import { layoutActions } from "@/redux/slices/layout"
 import { Box, Button } from "@mui/material"
+import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined'
 import { FC } from "react"
 import { useDispatch } from "react-redux"
 import SyntaxHighlighter from "react-syntax-highlighter"
@@ -20,13 +21,15 @@ const RunButton: FC<{ run: () => void }> = ({ run }) => {
       sx={{ pt: 1, pb: 2, }}
     >
       <Button
-        variant="contained"
+        variant='text'
+        size='large'
+        startIcon={<PlayCircleOutlinedIcon />}
         onClick={() => {
           run()
           switchToTerminal()
         }}
       >
-        RUN
+        Run
       </Button>
     </Box>
   )
