@@ -5,15 +5,14 @@ export default function Home() {
   return (
     <div
       id='content-div'
-      className='full flex-column expanding'
+      className='full expanding flex column'
     >
       <Paper
-        className='full flex-column expanding'
+        className='full expanding flex column'
         sx={{ justifyContent: 'center' }}
       >
         <Typography
           variant='h4'
-          sx={{ textAlign: 'center' }}
         >
           Welcom to TrBox Lab
         </Typography>

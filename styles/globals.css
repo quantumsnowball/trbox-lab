@@ -30,27 +30,26 @@ a {
   width: 100%;
 }
 
-.flex-row {
+.flex {
   display: flex;
-  flex-flow: row;
-  justify-content: space-between;
-  align-items: stretch;
-  align-content: center;
-  overflow: auto;
-}
-
-.flex-column {
-  display: flex;
-  flex-flow: column;
   justify-content: center;
   align-items: center;
   align-content: center;
   overflow: auto;
 }
-.flex-column.start {
+.flex.row {
+  flex-flow: row;
+}
+.flex.row.start {
   justify-content: flex-start;
 }
-.flex-column.stretch {
+.flex.column {
+  flex-flow: column;
+}
+.flex.column.start {
+  justify-content: flex-start;
+}
+.flex.column.stretch {
   align-items: stretch;
 }
 

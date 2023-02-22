@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <div
       id='content-div'
-      className='full flex-column expanding'
+      className='full flex column expanding'
     >
       <Typography variant="h5">
         <code>{window.location.pathname}</code> not found
