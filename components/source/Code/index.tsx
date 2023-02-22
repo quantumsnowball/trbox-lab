@@ -1,32 +1,8 @@
-import { RunResult, useGetSourceQuery, useLazyRunSourceQuery } from "@/redux/slices/apiSlice"
-import { Box, Button, Paper, Typography } from "@mui/material"
+import { useLazyRunSourceQuery } from "@/redux/slices/apiSlice"
 import { FC } from "react"
+import Stdout from "./Stdout"
 import Viewer from "./Viewer"
 
-const Stdout: FC<{ runResult: RunResult | undefined }> = ({ runResult }) => {
-  return (
-    <>
-      {runResult ?
-        <>
-          <Typography>Stdout:</Typography>
-          <Paper
-            sx={{ m: 1, p: 1 }}
-          >
-            <Typography
-              sx={{ whiteSpace: 'pre-line' }}
-            >
-              <code>
-                {runResult.stdout}
-              </code>
-            </Typography>
-          </Paper>
-        </>
-        : null
-      }
-    </>
-
-  )
-}
 
 const Code: FC<{ path: string }> = ({ path }) => {
   const [trigger, { data: runResult }] = useLazyRunSourceQuery()
@@ -35,7 +11,7 @@ const Code: FC<{ path: string }> = ({ path }) => {
   return (
     <>
       <Viewer {...{ path, run }} />
-      {/*<Stdout {...{ runResult }} />*/}
+      <Stdout {...{ runResult }} />
     </>
   )
 }
