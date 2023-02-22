@@ -60,10 +60,10 @@ const Result = () => {
   return (
     <div
       id='content-div'
-      className='full expanding flex column start stretch'
+      className='full flex column start stretch'
     >
       <Paper
-        className='full expanding flex column start stretch'
+        className='full flex column start stretch'
       >
         <BreadCrumbs {...{ nodes }} />
         <Summary {...{ nodes }} />

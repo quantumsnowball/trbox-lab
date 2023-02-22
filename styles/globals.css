@@ -29,6 +29,13 @@ a {
   height: 100%;
   width: 100%;
 }
+.expanding {
+  flex: 1 1 auto;
+}
+
+.scroll {
+  overflow: auto;
+}
 
 .flex {
   display: flex;
@@ -36,7 +43,6 @@ a {
   justify-content: center;
   align-items: center;
   align-content: center;
-  overflow: auto;
 }
 .flex.row {
   flex-flow: row;
@@ -57,6 +63,3 @@ a {
   align-items: stretch;
 }
 
-.expanding {
-  flex: 1 1 auto;
-}

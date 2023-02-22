@@ -35,12 +35,12 @@ function App({ Component, pageProps }: AppProps) {
         </Head>
         <div
           id='app-div'
-          className='full expanding flex column'
+          className='full scroll flex column'
         >
           <MenuBar />
           <div
             id='main-div'
-            className='full expanding flex column'
+            className='full scroll flex column'
           >
             <Component {...pageProps} />
           </div>

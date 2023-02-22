@@ -5,10 +5,10 @@ export default function Home() {
   return (
     <div
       id='content-div'
-      className='full expanding flex column'
+      className='full flex column'
     >
       <Paper
-        className='full expanding flex column'
+        className='full flex column'
         sx={{ justifyContent: 'center' }}
       >
         <Typography
