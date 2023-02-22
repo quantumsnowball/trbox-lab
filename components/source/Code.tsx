@@ -71,7 +71,7 @@ const Code: FC<{ path: string }> = ({ path }) => {
             language='python'
             style={colorScheme}
             showLineNumbers={false}
-            customStyle={{ fontSize: '1.0em' }}
+            customStyle={{ fontSize: '1.0em', height: '100%' }}
           >
             {source}
           </SyntaxHighlighter>
