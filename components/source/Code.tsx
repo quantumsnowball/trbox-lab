@@ -56,31 +56,26 @@ const Code: FC<{ path: string }> = ({ path }) => {
   const run = () => trigger(path)
 
   return (
-    <>
-      {source ?
-        <Box
-          sx={{
-            display: 'flex',
-            flexFlow: 'column nowrap',
-            height: '100%',
-            overflow: 'auto',
-            mx: 1
-          }}
-        >
-          <SyntaxHighlighter
-            language='python'
-            style={colorScheme}
-            showLineNumbers={false}
-            customStyle={{ fontSize: '1.0em', height: '100%' }}
-          >
-            {source}
-          </SyntaxHighlighter>
-          <RunButton {...{ run }} />
-          <Stdout {...{ runResult }} />
-        </Box >
-        : null
-      }
-    </>
+    <Box
+      sx={{
+        display: 'flex',
+        flexFlow: 'column nowrap',
+        height: '100%',
+        overflow: 'auto',
+        mx: 1
+      }}
+    >
+      <SyntaxHighlighter
+        language='python'
+        style={colorScheme}
+        showLineNumbers={false}
+        customStyle={{ fontSize: '1.0em', height: '100%' }}
+      >
+        {source ?? ''}
+      </SyntaxHighlighter>
+      <RunButton {...{ run }} />
+      <Stdout {...{ runResult }} />
+    </Box >
   )
 }
 
