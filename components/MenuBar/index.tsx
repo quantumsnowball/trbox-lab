@@ -7,6 +7,8 @@ import MenuDrawer from "./MenuDrawer";
 import { useDispatch } from "react-redux";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { APP_TITLE } from "@/common/constants";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 
 const AppTitle = () =>
@@ -31,6 +33,9 @@ const MenuButton = () => {
 }
 
 const PageLinks = () => {
+  const lastSourcePath = useSelector((s: RootState) => s.layout.lastPath.source)
+  const lastResultPath = useSelector((s: RootState) => s.layout.lastPath.result)
+
   const PageLink = ({ title, href }: { title: string, href: string }) =>
     <Typography
       variant='h6'
@@ -44,8 +49,8 @@ const PageLinks = () => {
   return (
     <>
       <PageLink title='Home' href='/' />
-      <PageLink title='Source' href='/source' />
-      <PageLink title='Result' href='/result' />
+      <PageLink title='Source' href={`/source${lastSourcePath}`} />
+      <PageLink title='Result' href={`/result${lastResultPath}`} />
     </>
   )
 }

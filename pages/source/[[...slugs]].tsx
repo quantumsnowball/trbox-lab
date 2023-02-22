@@ -2,9 +2,11 @@ import { Node } from '@/common/types';
 import BreadCrumbs from '@/components/source/BreadCrumb';
 import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
+import { layoutActions } from '@/redux/slices/layout';
 import { styled } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 
 const ROOT = '/source'
@@ -39,6 +41,8 @@ const validateUrl = (slugs: string[], rootNode: Node) => {
 }
 
 const Source = () => {
+  const dispatch = useDispatch()
+  const updateLastPath = (p: string) => dispatch(layoutActions.setSourceLastPath(p))
   const { data: rootNode } = useGetSourceTreeQuery()
   const router = useRouter()
   const { slugs } = router.query
@@ -61,6 +65,9 @@ const Source = () => {
     }
     setNodes(result)
   }, [slugs, rootNode, router])
+
+  // update last path on valid nodes update
+  useEffect(() => { updateLastPath(nodes.at(-1)?.path ?? '') }, [nodes])
 
   return (
     <ContentDiv
