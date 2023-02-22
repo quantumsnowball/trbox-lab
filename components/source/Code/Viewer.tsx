@@ -11,12 +11,8 @@ import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/sty
 
 const RunButton: FC<{ run: () => void }> = ({ run }) =>
   <Box
-    sx={{
-      width: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      pt: 1, pb: 2,
-    }}
+    className='flex'
+    sx={{ pt: 1, pb: 2, }}
   >
     <Button
       variant="contained"
@@ -35,20 +31,16 @@ const Viewer: FC<Props> = ({ path, run }) => {
   return (
 
     <Box
-    id='viewer-div'
-      sx={{
-        display: 'flex',
-        flexFlow: 'column nowrap',
-        height: '100%',
-        overflow: 'auto',
-        mx: 1
-      }}
+      id='viewer-div'
+      className='expanding scroll flex column stretch'
+      sx={{ mx: 1 }}
     >
       <SyntaxHighlighter
         language='python'
         style={colorScheme}
         showLineNumbers={false}
-        customStyle={{ fontSize: '1.0em', height: '100%' }}
+        className='expanding'
+        customStyle={{ fontSize: '1.0em' }}
       >
         {source ?? ''}
       </SyntaxHighlighter>

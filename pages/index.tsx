@@ -9,7 +9,6 @@ export default function Home() {
     >
       <Paper
         className='full flex column'
-        sx={{ justifyContent: 'center' }}
       >
         <Typography
           variant='h4'
