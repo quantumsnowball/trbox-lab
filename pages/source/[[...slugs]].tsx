@@ -3,28 +3,13 @@ import BreadCrumbs from '@/components/source/BreadCrumb';
 import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
-import { Paper, styled } from '@mui/material'
+import { Paper } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 
 const ROOT = '/source'
-
-const ContentDiv = styled('div')`
-  /* take all vertical space */
-  flex: 1 1 auto;
-  height: 100%;
-  /* take all horizontal space */
-  width: 100%;
-  /* single item each row */
-  display: flex;
-  flex-flow: column;
-  /* align vertically */
-  justify-content: stretch;
-  /* align horizontally */
-  align-items: stretch;
-`;
 
 const validateUrl = (slugs: string[], rootNode: Node) => {
   let list = rootNode.children
@@ -70,21 +55,17 @@ const Source = () => {
   useEffect(() => { updateLastPath(nodes.at(-1)?.path ?? '') }, [nodes])
 
   return (
-    <ContentDiv
+    <div
       id='content-div'
+      className='full flex-column expanding'
     >
       <Paper
-        sx={{
-          display: 'flex',
-          flexFlow: 'column nowrap',
-          height: '100%',
-          width: '100%',
-          overflow: 'auto',
-        }}>
+        className='full flex-column expanding'
+      >
         <BreadCrumbs nodes={nodes} />
         <Summary nodes={nodes} />
       </Paper>
-    </ContentDiv>
+    </div>
   )
 }
 
