@@ -1,6 +1,8 @@
 import { useGetSourceQuery } from "@/redux/slices/apiSlice"
+import { layoutActions } from "@/redux/slices/layout"
 import { Box, Button } from "@mui/material"
 import { FC } from "react"
+import { useDispatch } from "react-redux"
 import SyntaxHighlighter from "react-syntax-highlighter"
 // use cjs module instead of esm when using NextJS, important!
 // good looking themes you may consider: 
@@ -9,18 +11,26 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 
 
-const RunButton: FC<{ run: () => void }> = ({ run }) =>
-  <Box
-    className='flex'
-    sx={{ pt: 1, pb: 2, }}
-  >
-    <Button
-      variant="contained"
-      onClick={run}
+const RunButton: FC<{ run: () => void }> = ({ run }) => {
+  const dispatch = useDispatch()
+  const switchToTerminal = () => dispatch(layoutActions.setSourceSection(1))
+  return (
+    <Box
+      className='flex'
+      sx={{ pt: 1, pb: 2, }}
     >
-      RUN
-    </Button>
-  </Box>
+      <Button
+        variant="contained"
+        onClick={() => {
+          run()
+          switchToTerminal()
+        }}
+      >
+        RUN
+      </Button>
+    </Box>
+  )
+}
 
 type Props = {
   path: string
