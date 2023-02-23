@@ -6,6 +6,8 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import { useRouter } from 'next/router';
 import { UpOneLevelButton } from '../common/buttons';
 import { Node } from '@/common/types';
+import { useDispatch } from 'react-redux';
+import { layoutTempActions } from '@/redux/slices/layoutTemp';
 
 
 const ROOT = '/source'
@@ -22,9 +24,12 @@ const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
   </>
 
 const UpButton: FC<{ nodes: Node[] }> = ({ nodes }) => {
+  const dispatch = useDispatch()
   const router = useRouter()
   const theme = useTheme()
   const isBig = useMediaQuery(theme.breakpoints.up('sm'))
+  const viewFiles = () => dispatch(layoutTempActions.goToSourceSection('files'))
+
   return (
     <>
       {
@@ -32,6 +37,7 @@ const UpButton: FC<{ nodes: Node[] }> = ({ nodes }) => {
           <UpOneLevelButton
             onClick={() => {
               router.push(`${ROOT}${nodes?.at(-2)?.path}`)
+              viewFiles()
             }}
           />
           :
@@ -47,7 +53,9 @@ type Props = {
 }
 
 const BreadCrumbs = ({ nodes }: Props) => {
+  const dispatch = useDispatch()
   const router = useRouter()
+  const viewFiles = () => dispatch(layoutTempActions.goToSourceSection('files'))
 
   return (
     <Box
@@ -65,7 +73,10 @@ const BreadCrumbs = ({ nodes }: Props) => {
                 variant='h6'
                 className='flex'
                 sx={{ cursor: 'pointer' }}
-                onClick={() => router.push(`${ROOT}${path}`)}
+                onClick={() => {
+                  router.push(`${ROOT}${path}`)
+                  viewFiles()
+                }}
               >
                 <Icon {...{ name, path }} />
                 {name}
