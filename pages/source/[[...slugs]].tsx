@@ -1,8 +1,9 @@
 import { Node } from '@/common/types';
 import BottomNav from '@/components/source/BottomNav';
 import BreadCrumbs from '@/components/source/BreadCrumb';
+import Code from '@/components/source/Code';
 import Summary from '@/components/source/Summary';
-import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
+import { useGetSourceTreeQuery, useLazyRunSourceQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
 import { RootState } from '@/redux/store';
 import { Paper } from '@mui/material'
@@ -69,6 +70,7 @@ const Source = () => {
         {
           [
             <Summary nodes={nodes} />,
+            <Code nodes={nodes} />,
           ][sectionId]
         }
         <BottomNav />
