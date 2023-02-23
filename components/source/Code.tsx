@@ -1,5 +1,4 @@
 import { useGetSourceQuery, useLazyRunSourceQuery } from "@/redux/slices/apiSlice"
-import { layoutActions } from "@/redux/slices/layout"
 import { Box, Button, Typography } from "@mui/material"
 import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined'
 import { FC } from "react"
@@ -12,11 +11,13 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 //   ref: https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/
 import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 import { SOURCE_FILE_SUFFIX } from "./constants"
+import { layoutTempActions } from "@/redux/slices/layoutTemp"
 
 
 const RunButton: FC<{ run: () => void }> = ({ run }) => {
   const dispatch = useDispatch()
-  const switchToTerminal = () => dispatch(layoutActions.setSourceSection(1))
+  const switchToTerminal = () => dispatch(layoutTempActions.goToSourceSection('output'))
+
   return (
     <Box
       className='flex'
@@ -74,7 +75,7 @@ const Code: FC<Props> = ({ nodes }) => {
             <RunButton {...{ run }} />
           </>
           :
-          <Typography sx={{textAlign:'center'}}>
+          <Typography sx={{ textAlign: 'center' }}>
             Please select a python source file to run
           </Typography>
       }
