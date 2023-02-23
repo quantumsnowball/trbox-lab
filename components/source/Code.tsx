@@ -1,6 +1,6 @@
 import { useGetSourceQuery, useLazyRunSourceQuery } from "@/redux/slices/apiSlice"
 import { layoutActions } from "@/redux/slices/layout"
-import { Box, Button } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
 import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined'
 import { FC } from "react"
 import { useDispatch } from "react-redux"
@@ -11,6 +11,7 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 //   gruvboxDark, srcery, railscasts
 //   ref: https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/
 import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
+import { SOURCE_FILE_SUFFIX } from "./constants"
 
 
 const RunButton: FC<{ run: () => void }> = ({ run }) => {
@@ -66,8 +67,17 @@ const Code: FC<Props> = ({ nodes }) => {
       className='expanding scroll flex column stretch'
       sx={{ mx: 1 }}
     >
-      {path ? <Content path={path} /> : ''}
-      <RunButton {...{ run }} />
+      {
+        (path && path.endsWith(SOURCE_FILE_SUFFIX)) ?
+          <>
+            <Content path={path} />
+            <RunButton {...{ run }} />
+          </>
+          :
+          <Typography sx={{textAlign:'center'}}>
+            Please select a python source file to run
+          </Typography>
+      }
     </Box >
   )
 
