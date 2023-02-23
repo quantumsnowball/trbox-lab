@@ -11,6 +11,7 @@ type Metrics = {
 export type RunResult = {
   source: string,
   stdout: string,
+  stderr: string,
 }
 
 export const trboxLabApi = createApi({

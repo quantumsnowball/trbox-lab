@@ -9,6 +9,7 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 
 const Stdout: FC<{ runResult: RunResult | undefined }> = ({ runResult }) => {
+  console.log(runResult)
   return (
     <Box
       id='viewer-div'
@@ -22,6 +23,14 @@ const Stdout: FC<{ runResult: RunResult | undefined }> = ({ runResult }) => {
         customStyle={{ fontSize: '1.0em', flex: 1 }}
       >
         {runResult?.stdout ?? ''}
+      </SyntaxHighlighter>
+      <SyntaxHighlighter
+        language='powershell'
+        style={colorScheme}
+        showLineNumbers={false}
+        customStyle={{ fontSize: '1.0em', flex: 1 }}
+      >
+        {runResult?.stderr ?? ''}
       </SyntaxHighlighter>
     </Box >
   )
