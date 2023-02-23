@@ -2,8 +2,10 @@ import { FileNode } from '@/common/types';
 import BottomNav from '@/components/result/BottomNav';
 import BreadCrumbs from '@/components/result/BreadCrumb';
 import { RESULT_ROOT } from '@/components/result/constants';
+import Equity from '@/components/result/Equity';
 import Metrics from '@/components/result/Metrics';
 import Summary from '@/components/result/Summary';
+import Trades from '@/components/result/Trades';
 import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
 import { RootState } from '@/redux/store';
@@ -73,8 +75,8 @@ const Result = () => {
           {
             'files': <Summary {...{ nodes }} />,
             'metrics': <Metrics {...{ nodes }} />,
-            'equity': null,
-            'trades': null,
+            'equity': <Equity />,
+            'trades': <Trades />,
           }[sectionTag]
         }
         <BottomNav {...{ nodes }} />
