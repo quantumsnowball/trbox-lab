@@ -78,7 +78,7 @@ const Result = () => {
           {
             'files': <Summary {...{ nodes }} />,
             'metrics': <Metrics {...{ nodes }} />,
-            'equity': <Equity />,
+            'equity': <Equity {...{ nodes }} />,
             'trades': <Trades />,
           }[sectionTag]
         }
