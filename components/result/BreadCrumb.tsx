@@ -25,9 +25,12 @@ const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
   </>
 
 const UpButton: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
+  const dispatch = useDispatch()
   const router = useRouter()
   const theme = useTheme()
   const isBig = useMediaQuery(theme.breakpoints.up('sm'))
+  const viewFiles = () => dispatch(layoutTempActions.goToResultSection('files'))
+
   return (
     <>
       {
@@ -35,6 +38,7 @@ const UpButton: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
           <UpOneLevelButton
             onClick={() => {
               router.push(`${ROOT}${nodes?.at(-2)?.path}`)
+              viewFiles()
             }}
           />
           :
