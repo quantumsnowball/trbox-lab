@@ -36,7 +36,7 @@ const Source = () => {
   const router = useRouter()
   const { slugs } = router.query
   const [nodes, setNodes] = useState([] as Node[])
-  const sectionId = useSelector((s: RootState) => s.layoutTemp.source.section)
+  const sectionTag = useSelector((s: RootState) => s.layoutTemp.source.section)
 
   useEffect(() => {
     // node not fetched
@@ -69,12 +69,12 @@ const Source = () => {
       >
         <BreadCrumbs {...{ nodes }} />
         {
-          [
-            <Summary {...{ nodes }} />,
-            <Code {...{ nodes }} />,
-            <Output {...{ nodes }} />,
-            <Error {...{ nodes }} />,
-          ][sectionId]
+          {
+            'files': <Summary {...{ nodes }} />,
+            'source': <Code {...{ nodes }} />,
+            'output': <Output {...{ nodes }} />,
+            'error': <Error {...{ nodes }} />,
+          }[sectionTag]
         }
         <BottomNav {...{ nodes }} />
       </Paper>

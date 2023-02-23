@@ -8,14 +8,14 @@ import { RootState } from "@/redux/store"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
 import { Node } from '@/common/types'
 import { FC } from "react"
-import { SOURCE_FILE_SUFFIX } from "./constants"
+import { BottomNavTag, SOURCE_FILE_SUFFIX } from "./constants"
 
 
 const BottomNav: FC<{ nodes: Node[] }> = ({ nodes }) => {
   const dispatch = useDispatch()
-  const [id, setId] = [
+  const [tag, setTag] = [
     useSelector((s: RootState) => s.layoutTemp.source.section),
-    (i: number) => dispatch(layoutTempActions.setSourceSection(i)),
+    (tag: BottomNavTag) => dispatch(layoutTempActions.goToSourceSection(tag)),
   ]
   const lastNode = nodes?.at(-1)
   const notDir = lastNode?.path.endsWith(SOURCE_FILE_SUFFIX)
@@ -24,26 +24,30 @@ const BottomNav: FC<{ nodes: Node[] }> = ({ nodes }) => {
   return (
     <BottomNavigation
       showLabels
-      value={id}
-      onChange={(_, newId) => setId(newId)}
+      value={tag}
+      onChange={(_, newTag) => setTag(newTag)}
     >
       <BottomNavigationAction
         disabled={notDir}
         label="Files"
+        value='files'
         icon={<FormatListBulletedIcon />}
       />
       <BottomNavigationAction
         disabled={notSource}
         label="Source"
+        value='source'
         icon={<DataObjectIcon />} />
       <BottomNavigationAction
         disabled={notSource}
         label="Output"
+        value='output'
         icon={<TerminalIcon />}
       />
       <BottomNavigationAction
         disabled={notSource}
         label="Error"
+        value='error'
         icon={<ErrorOutlineOutlinedIcon />}
       />
     </BottomNavigation>
