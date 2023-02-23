@@ -4,10 +4,11 @@ import BreadCrumbs from '@/components/source/BreadCrumb';
 import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
+import { RootState } from '@/redux/store';
 import { Paper } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const ROOT = '/source'
@@ -33,6 +34,7 @@ const Source = () => {
   const router = useRouter()
   const { slugs } = router.query
   const [nodes, setNodes] = useState([] as Node[])
+  const sectionId = useSelector((s: RootState) => s.layoutTemp.source.section)
 
   useEffect(() => {
     // node not fetched
@@ -64,9 +66,13 @@ const Source = () => {
         className='full flex column start stretch'
       >
         <BreadCrumbs nodes={nodes} />
-        <Summary nodes={nodes} />
+        {
+          [
+            <Summary nodes={nodes} />,
+          ][sectionId]
+        }
+        <BottomNav />
       </Paper>
-      <BottomNav />
     </div>
   )
 }

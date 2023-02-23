@@ -4,18 +4,19 @@ import DataObjectIcon from '@mui/icons-material/DataObject'
 import TerminalIcon from '@mui/icons-material/Terminal'
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
 import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
+import { layoutTempActions } from "@/redux/slices/layoutTemp"
 
 
-
-export const NAVIGATION = {
-  'files': 0,
-  'source': 1,
-  'output': 2,
-  'error': 3,
-}
+export const SOURCE_BOTTOM_NAVIGATION = ['files', 'source', 'output', 'error',] as const
 
 const BottomNav = () => {
-  const [id, setId] = useState(0)
+  const dispatch = useDispatch()
+  const [id, setId] = [
+    useSelector((s: RootState) => s.layoutTemp.source.section),
+    (i: number) => dispatch(layoutTempActions.setSourceSection(i)),
+  ]
 
   return (
     <BottomNavigation
