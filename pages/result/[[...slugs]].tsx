@@ -2,6 +2,7 @@ import { FileNode } from '@/common/types';
 import BottomNav from '@/components/result/BottomNav';
 import BreadCrumbs from '@/components/result/BreadCrumb';
 import { RESULT_ROOT } from '@/components/result/constants';
+import Metrics from '@/components/result/Metrics';
 import Summary from '@/components/result/Summary';
 import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
@@ -71,7 +72,7 @@ const Result = () => {
         {
           {
             'files': <Summary {...{ nodes }} />,
-            'metrics': null,
+            'metrics': <Metrics {...{ nodes }} />,
             'equity': null,
             'trades': null,
           }[sectionTag]

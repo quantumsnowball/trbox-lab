@@ -21,49 +21,6 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-const MetricsTable: FC<{ path: string }> = ({ path }) => {
-  const { data: metrics } = useGetResultQuery(path)
-
-  return (
-    <TableContainer component={Paper}>
-      <Table size='small'>
-        <TableHead>
-          <TableRow>
-            <TableCell>name</TableCell>
-            {metrics?.columns.map(colname =>
-              <TableCell
-                key={colname}
-                align='right'
-              >
-                {colname}
-              </TableCell>)}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {metrics?.data.map((r, i) => {
-            const name = metrics.index[i]
-            return (
-              <TableRow
-                key={name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row"> {name} </TableCell>
-
-                {r.map((val, i) =>
-                  <TableCell
-                    key={i}
-                    align='right'>
-                    {val.toFixed(4)}
-                  </TableCell>
-                )}
-              </TableRow>
-            )
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  )
-}
 
 const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const dispatch = useDispatch()
@@ -76,9 +33,7 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
     <Box
       className='expanding scroll'
     >
-      {lastNode?.name.startsWith(PREFIX) ?
-        <MetricsTable path={lastNode.path} />
-        :
+      {
         entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
           <Typography
             key={name}
