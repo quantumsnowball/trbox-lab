@@ -1,4 +1,5 @@
 import { FileNode } from '@/common/types';
+import BottomNav from '@/components/result/BottomNav';
 import BreadCrumbs from '@/components/result/BreadCrumb';
 import { RESULT_ROOT } from '@/components/result/constants';
 import Summary from '@/components/result/Summary';
@@ -66,6 +67,7 @@ const Result = () => {
       >
         <BreadCrumbs {...{ nodes }} />
         <Summary {...{ nodes }} />
+        <BottomNav {...{ nodes }} />
       </Paper>
     </div>
   )
