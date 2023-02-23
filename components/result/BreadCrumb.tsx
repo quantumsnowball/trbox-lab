@@ -6,6 +6,9 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import { useRouter } from 'next/router';
 import { UpOneLevelButton } from '../common/buttons';
 import { FileNode } from '@/common/types';
+import { layoutTempActions } from '@/redux/slices/layoutTemp';
+import { useDispatch } from 'react-redux';
+import { RESULT_DIR_PREFIX } from './constants';
 
 
 const ROOT = '/result'
@@ -47,7 +50,9 @@ type Props = {
 }
 
 const BreadCrumbs = ({ nodes }: Props) => {
+  const dispatch = useDispatch()
   const router = useRouter()
+  const viewFiles = () => dispatch(layoutTempActions.goToResultSection('files'))
 
   return (
     <Box
@@ -65,7 +70,12 @@ const BreadCrumbs = ({ nodes }: Props) => {
                 variant='h6'
                 className='flex'
                 sx={{ cursor: 'pointer' }}
-                onClick={() => router.push(`${ROOT}${path}`)}
+                onClick={() => {
+                  if (!name.startsWith(RESULT_DIR_PREFIX)) {
+                    router.push(`${ROOT}${path}`)
+                    viewFiles()
+                  }
+                }}
               >
                 <Icon {...{ name, path }} />
                 {name}
