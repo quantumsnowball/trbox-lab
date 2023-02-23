@@ -1,5 +1,6 @@
 import { FileNode } from '@/common/types';
 import BreadCrumbs from '@/components/result/BreadCrumb';
+import { RESULT_ROOT } from '@/components/result/constants';
 import Summary from '@/components/result/Summary';
 import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
@@ -8,8 +9,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-
-const ROOT = '/result'
 
 const validateUrl = (slugs: string[], rootNode: FileNode) => {
   let list = rootNode.children
@@ -46,7 +45,7 @@ const Result = () => {
     // push to root anyway if path not valid
     const result = validateUrl(slugs, rootNode)
     if (!result) {
-      router.push(ROOT)
+      router.push(RESULT_ROOT)
       return
     }
     setNodes(result)
