@@ -3,7 +3,6 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import DataObjectIcon from '@mui/icons-material/DataObject'
 import TerminalIcon from '@mui/icons-material/Terminal'
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
-import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
@@ -26,8 +25,8 @@ const BottomNav = () => {
     >
       <BottomNavigationAction label="Files" icon={<FormatListBulletedIcon />} />
       <BottomNavigationAction label="Source" icon={<DataObjectIcon />} />
-      <BottomNavigationAction label="Output" icon={<TerminalIcon />} />
-      <BottomNavigationAction label="Error" icon={<ErrorOutlineOutlinedIcon />} />
+      <BottomNavigationAction disabled label="Output" icon={<TerminalIcon />} />
+      <BottomNavigationAction disabled label="Error" icon={<ErrorOutlineOutlinedIcon />} />
     </BottomNavigation>
   )
 }
