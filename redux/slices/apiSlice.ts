@@ -22,7 +22,7 @@ export const trboxLabApi = createApi({
     runSource: builder.query<RunResult, string>({
       query: (path: string) => cleanUrl(`run/${path}`)
     }),
-    getSourceTree: builder.query<Node, void>({
+    getSourceTree: builder.query<FileNode, void>({
       query: () => `tree/source`
     }),
     getSource: builder.query<string, string>({
@@ -31,7 +31,7 @@ export const trboxLabApi = createApi({
         responseHandler: 'text'
       }),
     }),
-    getResultTree: builder.query<Node, void>({
+    getResultTree: builder.query<FileNode, void>({
       query: () => `tree/result`
     }),
     getResult: builder.query<Metrics, string>({
