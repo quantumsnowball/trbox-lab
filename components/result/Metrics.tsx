@@ -1,11 +1,11 @@
 import { FileNode } from "@/common/types"
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import { FC } from "react"
-import { useGetResultQuery } from "@/redux/slices/apiSlice";
+import { useGetMetricsQuery } from "@/redux/slices/apiSlice";
 
 
 const Content: FC<{ path: string }> = ({ path }) => {
-  const { data: metrics } = useGetResultQuery(path)
+  const { data: metrics } = useGetMetricsQuery(path)
   return (
     <TableContainer component={Paper}>
       <Table size='small'>
