@@ -1,5 +1,5 @@
 import { Node } from "@/common/types"
-import { Box, Typography } from "@mui/material"
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { FC } from "react"
@@ -18,34 +18,49 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-const Brief: FC<{ path: string }> = ({ path }) => {
+const MetricsTable: FC<{ path: string }> = ({ path }) => {
   const { data: metrics } = useGetResultQuery(path)
   console.log(metrics)
 
 
   return (
-    <>
-      {
-        metrics ?
-          <Box
-            sx={{ m: 1, p: 1 }}
-          >
-            {
-              Object.entries(metrics).map(([m, vals]) =>
-                <Typography
-                  key={m}
-                  variant='h6'
-                  sx={{ userSelect: 'text' }}
-                >
-                  {m} = {vals.Benchmark}
-                </Typography>)
-            }
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>name</TableCell>
+            {metrics?.columns.map(colname =>
+              <TableCell
+                key={colname}
+                align='right'
+              >
+                {colname}
+              </TableCell>)}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {metrics?.data.map((r, i) => {
+            const name = metrics.index[i]
+            return (
+              <TableRow
+                key={name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row"> {name} </TableCell>
 
-          </Box>
-          : null
-      }
-    </>
-
+                {r.map((val, i) =>
+                  <TableCell
+                    key={i}
+                    align='right'>
+                    {val}
+                  </TableCell>
+                )}
+              </TableRow>
+            )
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
 
@@ -57,7 +72,7 @@ const Summary: FC<{ nodes: Node[] }> = ({ nodes }) => {
   return (
     <>
       {lastNode?.name.startsWith(PREFIX) ?
-        <Brief path={lastNode.path} />
+        <MetricsTable path={lastNode.path} />
         :
         entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
           <Typography

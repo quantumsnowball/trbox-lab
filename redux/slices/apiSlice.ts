@@ -3,9 +3,9 @@ import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 type Metrics = {
-  [key: string]: {
-    [key: string]: number
-  }
+  columns: string[],
+  index: string[],
+  data: (string | number)[][],
 }
 
 export type RunResult = {
