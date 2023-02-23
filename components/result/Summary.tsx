@@ -20,12 +20,10 @@ const Icon: FC<{ name: string }> = ({ name }) =>
 
 const MetricsTable: FC<{ path: string }> = ({ path }) => {
   const { data: metrics } = useGetResultQuery(path)
-  console.log(metrics)
-
 
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table size='small'>
         <TableHead>
           <TableRow>
             <TableCell>name</TableCell>
@@ -52,7 +50,7 @@ const MetricsTable: FC<{ path: string }> = ({ path }) => {
                   <TableCell
                     key={i}
                     align='right'>
-                    {val}
+                    {val.toFixed(4)}
                   </TableCell>
                 )}
               </TableRow>

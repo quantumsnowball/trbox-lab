@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 type Metrics = {
   columns: string[],
   index: string[],
-  data: (string | number)[][],
+  data: number[][],
 }
 
 export type RunResult = {
