@@ -68,16 +68,16 @@ const Source = () => {
       <Paper
         className='full flex column start stretch'
       >
-        <BreadCrumbs nodes={nodes} />
+        <BreadCrumbs {...{ nodes }} />
         {
           [
-            <Summary nodes={nodes} />,
-            <Code nodes={nodes} />,
-            <Output nodes={nodes} />,
-            <Error nodes={nodes} />,
+            <Summary {...{ nodes }} />,
+            <Code {...{ nodes }} />,
+            <Output {...{ nodes }} />,
+            <Error {...{ nodes }} />,
           ][sectionId]
         }
-        <BottomNav />
+        <BottomNav {...{ nodes }} />
       </Paper>
     </div>
   )
