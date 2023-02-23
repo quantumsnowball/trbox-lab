@@ -1,4 +1,5 @@
 import { Node } from '@/common/types';
+import BottomNav from '@/components/source/BottomNav';
 import BreadCrumbs from '@/components/source/BreadCrumb';
 import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
@@ -65,6 +66,7 @@ const Source = () => {
         <BreadCrumbs nodes={nodes} />
         <Summary nodes={nodes} />
       </Paper>
+      <BottomNav />
     </div>
   )
 }
