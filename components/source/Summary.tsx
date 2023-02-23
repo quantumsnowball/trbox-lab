@@ -43,7 +43,6 @@ const Summary: FC<Props> = ({ nodes }) => {
             className='flex row start'
             sx={{ m: 1, p: 1, cursor: 'pointer' }}
             onClick={() => {
-              console.log(name)
               if (name.endsWith(SOURCE_FILE_SUFFIX)) {
                 viewSource()
               }

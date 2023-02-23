@@ -6,6 +6,9 @@ import { FC } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from 'next/router'
 import { useGetResultQuery } from "@/redux/slices/apiSlice";
+import { layoutTempActions } from "@/redux/slices/layoutTemp";
+import { RESULT_DIR_PREFIX } from "./constants";
+import { useDispatch } from "react-redux";
 
 const ROOT = '/result'
 const PREFIX = '.result'
@@ -63,9 +66,11 @@ const MetricsTable: FC<{ path: string }> = ({ path }) => {
 }
 
 const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
+  const dispatch = useDispatch()
   const router = useRouter()
   const lastNode = nodes.at(-1)
   const entries = lastNode && lastNode.children
+  const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
 
   return (
     <>
@@ -78,7 +83,12 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
             variant='h6'
             className='flex row start'
             sx={{ m: 1, p: 1, cursor: 'pointer' }}
-            onClick={() => router.push(ROOT + path)}
+            onClick={() => {
+              if (name.startsWith(RESULT_DIR_PREFIX)) {
+                viewMetrics()
+              }
+              router.push(ROOT + path)
+            }}
           >
             <Icon name={name} />
             {name}{type === 'folder' ? '/' : null}
