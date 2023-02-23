@@ -1,4 +1,4 @@
-import { SOURCE_BOTTOM_NAVIGATION } from '@/components/source/BottomNav'
+import { SOURCE_BOTTOM_NAVIGATION } from '@/components/source/constants'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 

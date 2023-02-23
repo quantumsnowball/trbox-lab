@@ -11,8 +11,6 @@ import { FC } from "react"
 import { SOURCE_FILE_SUFFIX } from "./constants"
 
 
-export const SOURCE_BOTTOM_NAVIGATION = ['files', 'source', 'output', 'error',] as const
-
 const BottomNav: FC<{ nodes: Node[] }> = ({ nodes }) => {
   const dispatch = useDispatch()
   const [id, setId] = [
