@@ -41,10 +41,14 @@ export const trboxLabApi = createApi({
 })
 
 export const {
-  useRunSourceQuery,
   useLazyRunSourceQuery,
   useGetSourceTreeQuery,
   useGetSourceQuery,
   useGetResultTreeQuery,
   useGetResultQuery,
 } = trboxLabApi
+
+export const {
+  useQueryState: useRunSourceQueryState
+} = trboxLabApi.endpoints.runSource
+

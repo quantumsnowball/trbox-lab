@@ -25,8 +25,8 @@ const BottomNav = () => {
     >
       <BottomNavigationAction label="Files" icon={<FormatListBulletedIcon />} />
       <BottomNavigationAction label="Source" icon={<DataObjectIcon />} />
-      <BottomNavigationAction disabled label="Output" icon={<TerminalIcon />} />
-      <BottomNavigationAction disabled label="Error" icon={<ErrorOutlineOutlinedIcon />} />
+      <BottomNavigationAction label="Output" icon={<TerminalIcon />} />
+      <BottomNavigationAction label="Error" icon={<ErrorOutlineOutlinedIcon />} />
     </BottomNavigation>
   )
 }
