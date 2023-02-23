@@ -1,4 +1,4 @@
-import { Node } from "@/common/types"
+import { FileNode } from "@/common/types"
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
@@ -62,7 +62,7 @@ const MetricsTable: FC<{ path: string }> = ({ path }) => {
   )
 }
 
-const Summary: FC<{ nodes: Node[] }> = ({ nodes }) => {
+const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const router = useRouter()
   const lastNode = nodes.at(-1)
   const entries = lastNode && lastNode.children

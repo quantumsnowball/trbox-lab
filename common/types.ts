@@ -30,10 +30,10 @@ export type TreeDict = {
   [key: string]: TreeDict | null
 }
 
-export type Node = {
+export type FileNode = {
   name: string
   type: 'folder' | 'file'
   path: string
-  parent: Node | null
-  children: Node[]
+  parent: FileNode | null
+  children: FileNode[]
 }

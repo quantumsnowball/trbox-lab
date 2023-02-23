@@ -1,4 +1,4 @@
-import { Node } from '@/common/types'
+import { FileNode } from '@/common/types'
 import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
@@ -41,10 +41,14 @@ export const trboxLabApi = createApi({
 })
 
 export const {
-  useRunSourceQuery,
   useLazyRunSourceQuery,
   useGetSourceTreeQuery,
   useGetSourceQuery,
   useGetResultTreeQuery,
   useGetResultQuery,
 } = trboxLabApi
+
+export const {
+  useQueryState: useRunSourceQueryState
+} = trboxLabApi.endpoints.runSource
+

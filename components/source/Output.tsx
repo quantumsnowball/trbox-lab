@@ -1,6 +1,7 @@
-import { RunResult } from "@/redux/slices/apiSlice"
+import { useRunSourceQueryState } from "@/redux/slices/apiSlice"
 import { Box } from "@mui/material"
 import { FC } from "react"
+import { FileNode } from "@/common/types"
 import SyntaxHighlighter from "react-syntax-highlighter"
 // use cjs module instead of esm when using NextJS, important!
 // good looking themes you may consider: 
@@ -8,8 +9,10 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 //   ref: https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/
 import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 
-const Stdout: FC<{ runResult: RunResult | undefined }> = ({ runResult }) => {
-  console.log(runResult)
+
+const Output: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
+  const { data: runResult } = useRunSourceQueryState(nodes?.at(-1)?.path ?? '')
+
   return (
     <Box
       id='viewer-div'
@@ -24,16 +27,8 @@ const Stdout: FC<{ runResult: RunResult | undefined }> = ({ runResult }) => {
       >
         {runResult?.stdout ?? ''}
       </SyntaxHighlighter>
-      <SyntaxHighlighter
-        language='powershell'
-        style={colorScheme}
-        showLineNumbers={false}
-        customStyle={{ fontSize: '1.0em', flex: 1 }}
-      >
-        {runResult?.stderr ?? ''}
-      </SyntaxHighlighter>
     </Box >
   )
 }
 
-export default Stdout
+export default Output
