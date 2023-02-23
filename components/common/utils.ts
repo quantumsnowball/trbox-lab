@@ -1,8 +1,8 @@
-import { Node } from "@/common/types"
+import { FileNode } from "@/common/types"
 
 
 // sorting
-export const byDirThenName = (a: Node, b: Node) => {
+export const byDirThenName = (a: FileNode, b: FileNode) => {
   // folder always on top
   if (a.type === 'folder' && b.type === 'file') return -1
   if (b.type === 'folder' && a.type === 'file') return +1

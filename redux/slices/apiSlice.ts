@@ -1,4 +1,4 @@
-import { Node } from '@/common/types'
+import { FileNode } from '@/common/types'
 import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 

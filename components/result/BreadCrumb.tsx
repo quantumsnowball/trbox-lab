@@ -5,7 +5,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { useRouter } from 'next/router';
 import { UpOneLevelButton } from '../common/buttons';
-import { Node } from '@/common/types';
+import { FileNode } from '@/common/types';
 
 
 const ROOT = '/result'
@@ -21,7 +21,7 @@ const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
         <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-const UpButton: FC<{ nodes: Node[] }> = ({ nodes }) => {
+const UpButton: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const router = useRouter()
   const theme = useTheme()
   const isBig = useMediaQuery(theme.breakpoints.up('sm'))
@@ -43,7 +43,7 @@ const UpButton: FC<{ nodes: Node[] }> = ({ nodes }) => {
 }
 
 type Props = {
-  nodes: Node[]
+  nodes: FileNode[]
 }
 
 const BreadCrumbs = ({ nodes }: Props) => {

@@ -3,7 +3,7 @@ import { Box, Button, Typography } from "@mui/material"
 import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined'
 import { FC } from "react"
 import { useDispatch } from "react-redux"
-import { Node } from "@/common/types"
+import { FileNode } from "@/common/types"
 import SyntaxHighlighter from "react-syntax-highlighter"
 // use cjs module instead of esm when using NextJS, important!
 // good looking themes you may consider: 
@@ -54,7 +54,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
 }
 
 type Props = {
-  nodes: Node[]
+  nodes: FileNode[]
 }
 const Code: FC<Props> = ({ nodes }) => {
   const lastNode = nodes?.at(-1)

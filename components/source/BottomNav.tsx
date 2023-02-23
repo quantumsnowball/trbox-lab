@@ -6,12 +6,12 @@ import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
-import { Node } from '@/common/types'
+import { FileNode } from '@/common/types'
 import { FC } from "react"
 import { BottomNavTag, SOURCE_FILE_SUFFIX } from "./constants"
 
 
-const BottomNav: FC<{ nodes: Node[] }> = ({ nodes }) => {
+const BottomNav: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const dispatch = useDispatch()
   const [tag, setTag] = [
     useSelector((s: RootState) => s.layoutTemp.source.section),

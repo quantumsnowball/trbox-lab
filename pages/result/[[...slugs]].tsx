@@ -1,4 +1,4 @@
-import { Node } from '@/common/types';
+import { FileNode } from '@/common/types';
 import BreadCrumbs from '@/components/result/BreadCrumb';
 import Summary from '@/components/result/Summary';
 import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 
 const ROOT = '/result'
 
-const validateUrl = (slugs: string[], rootNode: Node) => {
+const validateUrl = (slugs: string[], rootNode: FileNode) => {
   let list = rootNode.children
   let selected = [rootNode,]
   for (let slug of slugs) {
@@ -32,7 +32,7 @@ const Result = () => {
   const { data: rootNode } = useGetResultTreeQuery()
   const router = useRouter()
   const { slugs } = router.query
-  const [nodes, setNodes] = useState([] as Node[])
+  const [nodes, setNodes] = useState([] as FileNode[])
 
   useEffect(() => {
     // node not fetched

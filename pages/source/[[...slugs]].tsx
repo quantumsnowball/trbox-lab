@@ -1,4 +1,4 @@
-import { Node } from '@/common/types';
+import { FileNode } from '@/common/types';
 import BottomNav from '@/components/source/BottomNav';
 import BreadCrumbs from '@/components/source/BreadCrumb';
 import Code from '@/components/source/Code';
@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 
-const validateUrl = (slugs: string[], rootNode: Node) => {
+const validateUrl = (slugs: string[], rootNode: FileNode) => {
   let list = rootNode.children
   let selected = [rootNode,]
   for (let slug of slugs) {
@@ -35,7 +35,7 @@ const Source = () => {
   const { data: rootNode } = useGetSourceTreeQuery()
   const router = useRouter()
   const { slugs } = router.query
-  const [nodes, setNodes] = useState([] as Node[])
+  const [nodes, setNodes] = useState([] as FileNode[])
   const sectionTag = useSelector((s: RootState) => s.layoutTemp.source.section)
 
   useEffect(() => {

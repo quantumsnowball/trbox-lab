@@ -1,4 +1,4 @@
-import { Node } from "@/common/types"
+import { FileNode } from "@/common/types"
 import { Box, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
@@ -19,7 +19,7 @@ const Icon: FC<{ name: string }> = ({ name }) =>
   </>
 
 type Props = {
-  nodes: Node[]
+  nodes: FileNode[]
 }
 
 
