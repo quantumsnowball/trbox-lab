@@ -2,10 +2,11 @@ import { Node } from '@/common/types';
 import BottomNav from '@/components/source/BottomNav';
 import BreadCrumbs from '@/components/source/BreadCrumb';
 import Code from '@/components/source/Code';
+import { SOURCE_ROOT } from '@/components/source/constants';
 import Error from '@/components/source/Error';
 import Output from '@/components/source/Output';
 import Summary from '@/components/source/Summary';
-import { useGetSourceTreeQuery, useLazyRunSourceQuery } from '@/redux/slices/apiSlice';
+import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
 import { RootState } from '@/redux/store';
 import { Paper } from '@mui/material'
@@ -13,8 +14,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-
-const ROOT = '/source'
 
 const validateUrl = (slugs: string[], rootNode: Node) => {
   let list = rootNode.children
@@ -51,7 +50,7 @@ const Source = () => {
     // push to root anyway if path not valid
     const result = validateUrl(slugs, rootNode)
     if (!result) {
-      router.push(ROOT)
+      router.push(SOURCE_ROOT)
       return
     }
     setNodes(result)
