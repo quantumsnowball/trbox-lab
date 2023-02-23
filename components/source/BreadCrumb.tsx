@@ -8,6 +8,7 @@ import { UpOneLevelButton } from '../common/buttons';
 import { FileNode } from '@/common/types';
 import { useDispatch } from 'react-redux';
 import { layoutTempActions } from '@/redux/slices/layoutTemp';
+import { SOURCE_FILE_SUFFIX } from './constants';
 
 
 const ROOT = '/source'
@@ -74,8 +75,10 @@ const BreadCrumbs = ({ nodes }: Props) => {
                 className='flex'
                 sx={{ cursor: 'pointer' }}
                 onClick={() => {
-                  router.push(`${ROOT}${path}`)
-                  viewFiles()
+                  if (!name.endsWith(SOURCE_FILE_SUFFIX)) {
+                    router.push(`${ROOT}${path}`)
+                    viewFiles()
+                  }
                 }}
               >
                 <Icon {...{ name, path }} />
