@@ -23,7 +23,6 @@ const BottomNav: FC<{ nodes: Node[] }> = ({ nodes }) => {
 
   return (
     <BottomNavigation
-      showLabels
       value={tag}
       onChange={(_, newTag) => setTag(newTag)}
     >
@@ -31,24 +30,24 @@ const BottomNav: FC<{ nodes: Node[] }> = ({ nodes }) => {
         disabled={notDir}
         label="Files"
         value='files'
-        icon={<FormatListBulletedIcon />}
+        icon={notDir ? null : <FormatListBulletedIcon />}
       />
       <BottomNavigationAction
         disabled={notSource}
         label="Source"
         value='source'
-        icon={<DataObjectIcon />} />
+        icon={notSource ? null : <DataObjectIcon />} />
       <BottomNavigationAction
         disabled={notSource}
         label="Output"
         value='output'
-        icon={<TerminalIcon />}
+        icon={notSource ? null : <TerminalIcon />}
       />
       <BottomNavigationAction
         disabled={notSource}
         label="Error"
         value='error'
-        icon={<ErrorOutlineOutlinedIcon />}
+        icon={notSource ? null : <ErrorOutlineOutlinedIcon />}
       />
     </BottomNavigation>
   )
