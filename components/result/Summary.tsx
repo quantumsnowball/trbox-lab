@@ -73,7 +73,9 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
 
   return (
-    <>
+    <Box
+      className='expanding scroll'
+    >
       {lastNode?.name.startsWith(PREFIX) ?
         <MetricsTable path={lastNode.path} />
         :
@@ -94,7 +96,7 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
             {name}{type === 'folder' ? '/' : null}
           </Typography>)
       }
-    </>
+    </Box>
   )
 }
 export default Summary
