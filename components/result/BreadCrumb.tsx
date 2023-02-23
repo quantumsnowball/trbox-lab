@@ -8,18 +8,15 @@ import { UpOneLevelButton } from '../common/buttons';
 import { FileNode } from '@/common/types';
 import { layoutTempActions } from '@/redux/slices/layoutTemp';
 import { useDispatch } from 'react-redux';
-import { RESULT_DIR_PREFIX } from './constants';
+import { RESULT_DIR_PREFIX, RESULT_ROOT } from './constants';
 
-
-const ROOT = '/result'
-const PREFIX = '.result'
 
 const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
   // if no .py ext, consider a dir
   <>
     {path === '' ?
       <HomeIcon sx={{ mr: 1 }} fontSize="inherit" />
-      : name.startsWith(PREFIX) ?
+      : name.startsWith(RESULT_DIR_PREFIX) ?
         <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
         <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
@@ -37,7 +34,7 @@ const UpButton: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         (isBig && nodes.length > 1) ?
           <UpOneLevelButton
             onClick={() => {
-              router.push(`${ROOT}${nodes?.at(-2)?.path}`)
+              router.push(`${RESULT_ROOT}${nodes?.at(-2)?.path}`)
               viewFiles()
             }}
           />
@@ -76,7 +73,7 @@ const BreadCrumbs = ({ nodes }: Props) => {
                 sx={{ cursor: 'pointer' }}
                 onClick={() => {
                   if (!name.startsWith(RESULT_DIR_PREFIX)) {
-                    router.push(`${ROOT}${path}`)
+                    router.push(`${RESULT_ROOT}${path}`)
                     viewFiles()
                   }
                 }}

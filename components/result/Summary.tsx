@@ -7,16 +7,14 @@ import { byDirThenName } from "../common/utils"
 import { useRouter } from 'next/router'
 import { useGetResultQuery } from "@/redux/slices/apiSlice";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
-import { RESULT_DIR_PREFIX } from "./constants";
+import { RESULT_DIR_PREFIX, RESULT_ROOT } from "./constants";
 import { useDispatch } from "react-redux";
 
-const ROOT = '/result'
-const PREFIX = '.result'
 
 const Icon: FC<{ name: string }> = ({ name }) =>
   // if no .py ext, consider a dir
   <>
-    {name.startsWith(PREFIX) ?
+    {name.startsWith(RESULT_DIR_PREFIX) ?
       <LeaderboardOutlinedIcon sx={{ mr: 1 }} fontSize="inherit" /> :
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
@@ -44,7 +42,7 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
               if (name.startsWith(RESULT_DIR_PREFIX)) {
                 viewMetrics()
               }
-              router.push(ROOT + path)
+              router.push(RESULT_ROOT + path)
             }}
           >
             <Icon name={name} />
