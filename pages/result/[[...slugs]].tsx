@@ -5,10 +5,11 @@ import { RESULT_ROOT } from '@/components/result/constants';
 import Summary from '@/components/result/Summary';
 import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
+import { RootState } from '@/redux/store';
 import { Paper } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const validateUrl = (slugs: string[], rootNode: FileNode) => {
@@ -33,6 +34,7 @@ const Result = () => {
   const router = useRouter()
   const { slugs } = router.query
   const [nodes, setNodes] = useState([] as FileNode[])
+  const sectionTag = useSelector((s: RootState) => s.layoutTemp.result.section)
 
   useEffect(() => {
     // node not fetched
@@ -66,7 +68,14 @@ const Result = () => {
         className='full flex column start stretch'
       >
         <BreadCrumbs {...{ nodes }} />
-        <Summary {...{ nodes }} />
+        {
+          {
+            'files': <Summary {...{ nodes }} />,
+            'metrics': null,
+            'equity': null,
+            'trades': null,
+          }[sectionTag]
+        }
         <BottomNav {...{ nodes }} />
       </Paper>
     </div>
