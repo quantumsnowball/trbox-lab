@@ -1,8 +1,8 @@
 import { BottomNavigation, BottomNavigationAction } from "@mui/material"
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
-import DataObjectIcon from '@mui/icons-material/DataObject'
-import TerminalIcon from '@mui/icons-material/Terminal'
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined'
+import TimelineIcon from '@mui/icons-material/Timeline'
+import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined'
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
@@ -35,18 +35,18 @@ const BottomNav: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         disabled={!isResult}
         label="Metrics"
         value='metrics'
-        icon={isResult ? <DataObjectIcon /> : null} />
+        icon={isResult ? <LeaderboardOutlinedIcon /> : null} />
       <BottomNavigationAction
         disabled={!isResult}
         label="Equity"
         value='equity'
-        icon={isResult ? <TerminalIcon /> : null}
+        icon={isResult ? <TimelineIcon /> : null}
       />
       <BottomNavigationAction
         disabled={!isResult}
         label="Trades"
         value='trades'
-        icon={isResult ? <ErrorOutlineOutlinedIcon /> : null}
+        icon={isResult ? <ReceiptLongOutlinedIcon /> : null}
       />
     </BottomNavigation>
   )
