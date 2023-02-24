@@ -12,12 +12,15 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 import { SOURCE_FILE_SUFFIX } from "./constants"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
+import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
 
 
 const RunButton: FC<{ path: string }> = ({ path }) => {
   const dispatch = useDispatch()
   const switchToTerminal = () => dispatch(layoutTempActions.goToSourceSection('output'))
   const [trigger] = useLazyRunSourceQuery()
+  const wsConnected = useSelector((s: RootState) => s.layoutTemp.wsConnected)
 
   return (
     <Box
@@ -25,6 +28,7 @@ const RunButton: FC<{ path: string }> = ({ path }) => {
       sx={{ pt: 1, pb: 2, }}
     >
       <Button
+        disabled={wsConnected}
         variant='text'
         size='large'
         startIcon={<PlayCircleOutlinedIcon />}
