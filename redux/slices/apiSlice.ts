@@ -15,17 +15,18 @@ export type Equities = {
   [name: string]: Equity
 }
 
-export type RunResult = {
-  stdout: string[],
-  stderr: string,
+export type Line = {
+  type: 'stdout' | 'stderr'
+  text: string
 }
+export type Lines = Line[]
 
 export const trboxLabApi = createApi({
   reducerPath: 'trboxLabApi',
   refetchOnMountOrArgChange: true,
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: builder => ({
-    runSource: builder.query<string[], string>({
+    runSource: builder.query<Lines, string>({
       query: (path: string) => cleanUrl(`run/init/${path}`),
       async onCacheEntryAdded(
         path,
@@ -42,14 +43,11 @@ export const trboxLabApi = createApi({
           // if it is a message and for the appropriate channel,
           // update our query result with the received message
           const listener = (event: MessageEvent) => {
-            console.debug(event)
-            // const data: string = JSON.parse(event.data)
-            const data: string = event.data
+            // console.debug(event)
+            const line: Line = JSON.parse(event.data)
             // if (!isMessage(data) || data.channel !== arg) return
 
-            updateCachedData((draft) => {
-              draft.push(data)
-            })
+            updateCachedData((lines) => { lines.push(line) })
           }
 
           ws.addEventListener('message', listener)
