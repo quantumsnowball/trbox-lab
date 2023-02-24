@@ -11,7 +11,7 @@ import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/sty
 
 
 const Output: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
-  const { data: runResult } = useRunSourceQueryState(nodes?.at(-1)?.path ?? '')
+  const { data: lines } = useRunSourceQueryState(nodes?.at(-1)?.path ?? '')
 
   return (
     <Box
@@ -25,7 +25,7 @@ const Output: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         showLineNumbers={false}
         customStyle={{ fontSize: '1.0em', flex: 1 }}
       >
-        {runResult ? runResult.join('\n') : ''}
+        {lines ? lines.join('') : ''}
       </SyntaxHighlighter>
     </Box >
   )
