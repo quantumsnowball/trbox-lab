@@ -2,14 +2,17 @@ import { FileNode } from '@/common/types'
 import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-type Metrics = {
+export type Metrics = {
   columns: string[],
   index: string[],
   data: number[][],
 }
 
-type Equity = {
+export type Equity = {
   [timestamp: string]: number
+}
+export type Equities = {
+  [name: string]: Equity
 }
 
 export type RunResult = {
@@ -41,7 +44,7 @@ export const trboxLabApi = createApi({
     getMetrics: builder.query<Metrics, string>({
       query: (path: string) => cleanUrl(`result/${path}/metrics`)
     }),
-    getEquity: builder.query<Equity, string>({
+    getEquity: builder.query<Equities, string>({
       query: (path: string) => cleanUrl(`result/${path}/equity`)
     }),
   }),

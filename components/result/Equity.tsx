@@ -1,20 +1,60 @@
 import { FileNode } from "@/common/types";
-import { useGetEquityQuery } from "@/redux/slices/apiSlice";
+import { Equities, useGetEquityQuery } from "@/redux/slices/apiSlice";
 import { Box } from "@mui/material";
-import { FC } from "react";
+import { ColorType, createChart, IChartApi, ISeriesApi } from "lightweight-charts";
+import { FC, useEffect, useRef } from "react";
 
 
 
 const Content: FC<{ path: string }> = ({ path }) => {
-  const { data: equity } = useGetEquityQuery(path)
-  console.log({ equity })
+  const { data: equities } = useGetEquityQuery(path)
+  const ctnRef = useRef<HTMLDivElement | null>(null)
+  // const series = useRef<ISeriesApi<'Area'> | null>(null)
+  const chart = useRef<IChartApi | null>(null)
+  console.log({ equities })
+
+  useEffect(() => {
+    if (!equities)
+      return
+    // create chart only if not already exists
+    if (chart.current)
+      return
+    // create chart
+    chart.current = createChart(ctnRef?.current ? ctnRef.current : '',
+      {
+        layout: {
+          background: {
+            type: ColorType.Solid,
+            color: 'white',
+          },
+          textColor: 'black',
+        },
+        width: ctnRef?.current?.clientWidth,
+        height: 300,
+      },
+    );
+    console.debug('chart created')
+    // add data
+    const series = chart.current.addAreaSeries({
+      lineColor: '#2962FF',
+      topColor: '#2962FF',
+      bottomColor: 'rgba(41, 98, 255, 0.28)'
+    });
+    Object.entries(equities).forEach(([name, equity]) => {
+      const equityParsed = Object.entries(equity).map(([time, value]) =>
+        ({ time: time.split('T')[0], value }))
+      console.debug(equityParsed)
+      series.setData(equityParsed);
+    })
+    chart.current.timeScale().fitContent();
+    console.debug('data injected')
+  }, [equities])
 
   return (
     <Box
+      ref={ctnRef}
       className='expanding flex row'
-    >
-      Equity
-    </Box>
+    />
   )
 }
 
