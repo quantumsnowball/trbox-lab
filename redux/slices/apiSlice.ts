@@ -16,7 +16,7 @@ export type Equities = {
 }
 
 export type Line = {
-  type: 'stdout' | 'stderr'
+  type: 'stdout' | 'stderr' | 'system'
   text: string
 }
 export type Lines = Line[]
@@ -28,38 +28,23 @@ export const trboxLabApi = createApi({
   endpoints: builder => ({
     runSource: builder.query<Lines, string>({
       query: (path: string) => cleanUrl(`run/init/${path}`),
-      async onCacheEntryAdded(
-        path,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
-      ) {
+      keepUnusedDataFor: 86400, // one day
+      onQueryStarted: async (path, { updateCachedData }) => {
         // create a websocket connection when the cache subscription starts
         const ws = new WebSocket(cleanUrl(`ws://${window.location.host}/api/run/output/${path}`))
-        console.debug('ws connected, waiting cacheDataLoaded')
-        try {
-          // wait for the initial query to resolve before proceeding
-          await cacheDataLoaded
-          console.debug('ws init request resoved, listening to ws message updates')
-          // when data is received from the socket connection to the server,
-          // if it is a message and for the appropriate channel,
-          // update our query result with the received message
-          const listener = (event: MessageEvent) => {
-            // console.debug(event)
-            const line: Line = JSON.parse(event.data)
-            // if (!isMessage(data) || data.channel !== arg) return
-
-            updateCachedData((lines) => { lines.push(line) })
+        console.debug('ws connected')
+        // listen to ws message and update the cache value
+        ws.addEventListener('message', (event: MessageEvent) => {
+          const line: Line = JSON.parse(event.data)
+          updateCachedData((lines) => { lines.push(line) })
+          // server side indicate process has completed, exiting
+          if (line.type === 'system' && line.text === 'exit') {
+            ws.close()
+            console.debug('ws.close()')
+            return
           }
-
-          ws.addEventListener('message', listener)
-        } catch {
-          // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
-          // in which case `cacheDataLoaded` will throw
-          console.log('here? exception')
-        }
-        // cacheEntryRemoved will resolve when the cache subscription is no longer active
-        await cacheEntryRemoved
-        // perform cleanup steps once the `cacheEntryRemoved` promise resolves
-        ws.close()
+        })
+        console.debug('listening to ws message updates')
       }
     }),
     getSourceTree: builder.query<FileNode, void>({

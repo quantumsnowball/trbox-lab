@@ -29,9 +29,10 @@ const RunButton: FC<{ path: string }> = ({ path }) => {
         size='large'
         startIcon={<PlayCircleOutlinedIcon />}
         onClick={() => {
-          if (path)
+          if (path) {
             trigger(path)
-          switchToTerminal()
+            switchToTerminal()
+          }
         }}
       >
         Run
