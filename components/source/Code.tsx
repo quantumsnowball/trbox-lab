@@ -1,4 +1,4 @@
-import { useGetSourceQuery, useLazyRunSourceQuery } from "@/redux/slices/apiSlice"
+import { useGetSourceQuery, useLazyRunSourceQuery, useLazyTestWSQuery } from "@/redux/slices/apiSlice"
 import { Box, Button, Typography } from "@mui/material"
 import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined'
 import { FC } from "react"
@@ -60,6 +60,7 @@ const Code: FC<Props> = ({ nodes }) => {
   const lastNode = nodes?.at(-1)
   const path = lastNode?.path
   const [trigger, _] = useLazyRunSourceQuery()
+  const [testWSNow,] = useLazyTestWSQuery()
   const run = () => { if (path) trigger(path) }
 
   return (
@@ -73,6 +74,17 @@ const Code: FC<Props> = ({ nodes }) => {
           <>
             <Content path={path} />
             <RunButton {...{ run }} />
+            <Button
+              onClick={() => {
+                testWSNow()
+                // const socket = new WebSocket(`ws://${window.location.hostname}/api/ws`)
+                // console.log('ws')
+                // socket.addEventListener('open', () => {
+                //   socket.send('TradeLogHistoryRequest')
+                // })
+                // fetch('/api/ws').then(() => console.debug('ws connected'))
+              }}
+            >WS</Button>
           </>
           :
           <Typography sx={{ textAlign: 'center' }}>
