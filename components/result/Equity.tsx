@@ -35,16 +35,12 @@ const Content: FC<{ path: string }> = ({ path }) => {
     );
     console.debug('chart created')
     // add data
-    const series = chart.current.addAreaSeries({
-      lineColor: '#2962FF',
-      topColor: '#2962FF',
-      bottomColor: 'rgba(41, 98, 255, 0.28)'
-    });
     Object.entries(equities).forEach(([name, equity]) => {
+      const series = chart.current?.addLineSeries();
       const equityParsed = Object.entries(equity).map(([time, value]) =>
         ({ time: time.split('T')[0], value }))
       console.debug(equityParsed)
-      series.setData(equityParsed);
+      series?.setData(equityParsed);
     })
     chart.current.timeScale().fitContent();
     console.debug('data injected')
