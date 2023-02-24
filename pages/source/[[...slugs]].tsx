@@ -57,7 +57,10 @@ const Source = () => {
   }, [slugs, rootNode, router])
 
   // update last path on valid nodes update
-  useEffect(() => { updateLastPath(nodes.at(-1)?.path ?? '') }, [nodes])
+  useEffect(() => {
+    updateLastPath(nodes.at(-1)?.path ?? '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodes])
 
   return (
     <div

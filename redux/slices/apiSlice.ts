@@ -8,6 +8,10 @@ type Metrics = {
   data: number[][],
 }
 
+type Equity = {
+  [timestamp: string]: number
+}
+
 export type RunResult = {
   source: string,
   stdout: string,
@@ -22,7 +26,7 @@ export const trboxLabApi = createApi({
     runSource: builder.query<RunResult, string>({
       query: (path: string) => cleanUrl(`run/${path}`)
     }),
-    getSourceTree: builder.query<Node, void>({
+    getSourceTree: builder.query<FileNode, void>({
       query: () => `tree/source`
     }),
     getSource: builder.query<string, string>({
@@ -31,11 +35,14 @@ export const trboxLabApi = createApi({
         responseHandler: 'text'
       }),
     }),
-    getResultTree: builder.query<Node, void>({
+    getResultTree: builder.query<FileNode, void>({
       query: () => `tree/result`
     }),
-    getResult: builder.query<Metrics, string>({
+    getMetrics: builder.query<Metrics, string>({
       query: (path: string) => cleanUrl(`result/${path}/metrics.json`)
+    }),
+    getEquity: builder.query<Equity, string>({
+      query: (path: string) => cleanUrl(`result/${path}/equity.json`)
     }),
   }),
 })
@@ -45,7 +52,8 @@ export const {
   useGetSourceTreeQuery,
   useGetSourceQuery,
   useGetResultTreeQuery,
-  useGetResultQuery,
+  useGetMetricsQuery,
+  useGetEquityQuery,
 } = trboxLabApi
 
 export const {

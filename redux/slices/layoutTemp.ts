@@ -1,4 +1,5 @@
-import { BottomNavTag } from '@/components/source/constants'
+import { SourceBottomNavTag } from '@/components/source/constants'
+import { ResultBottomNavTag } from '@/components/result/constants'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 
@@ -9,14 +10,18 @@ const layoutTempSlice = createSlice({
       visible: false,
     },
     source: {
-      section: 'files' as BottomNavTag,
-    }
+      section: 'files' as SourceBottomNavTag,
+    },
+    result: {
+      section: 'files' as ResultBottomNavTag,
+    },
   },
   reducers: {
     toggleMenu: s => { s.menu.visible = !s.menu.visible },
     openMenu: s => { s.menu.visible = true },
     closeMenu: s => { s.menu.visible = false },
-    goToSourceSection: (s, a: PayloadAction<BottomNavTag>) => { s.source.section = a.payload }
+    goToSourceSection: (s, a: PayloadAction<SourceBottomNavTag>) => { s.source.section = a.payload },
+    goToResultSection: (s, a: PayloadAction<ResultBottomNavTag>) => { s.result.section = a.payload },
   }
 })
 

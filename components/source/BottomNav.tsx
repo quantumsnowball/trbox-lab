@@ -8,14 +8,14 @@ import { RootState } from "@/redux/store"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
 import { FileNode } from '@/common/types'
 import { FC } from "react"
-import { BottomNavTag, SOURCE_FILE_SUFFIX } from "./constants"
+import { SourceBottomNavTag, SOURCE_FILE_SUFFIX } from "./constants"
 
 
 const BottomNav: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const dispatch = useDispatch()
   const [tag, setTag] = [
     useSelector((s: RootState) => s.layoutTemp.source.section),
-    (tag: BottomNavTag) => dispatch(layoutTempActions.goToSourceSection(tag)),
+    (tag: SourceBottomNavTag) => dispatch(layoutTempActions.goToSourceSection(tag)),
   ]
   const lastNode = nodes?.at(-1)
   const notDir = lastNode?.path.endsWith(SOURCE_FILE_SUFFIX)

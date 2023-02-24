@@ -8,17 +8,15 @@ import { UpOneLevelButton } from '../common/buttons';
 import { FileNode } from '@/common/types';
 import { useDispatch } from 'react-redux';
 import { layoutTempActions } from '@/redux/slices/layoutTemp';
+import { SOURCE_FILE_SUFFIX, SOURCE_ROOT } from './constants';
 
-
-const ROOT = '/source'
-const SUFFIX = '.py'
 
 const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
   // if no .py ext, consider a dir
   <>
     {path === '' ?
       <HomeIcon sx={{ mr: 1 }} fontSize="inherit" />
-      : name.endsWith(SUFFIX) ?
+      : name.endsWith(SOURCE_FILE_SUFFIX) ?
         <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
         <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
@@ -36,7 +34,7 @@ const UpButton: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         (isBig && nodes.length > 1) ?
           <UpOneLevelButton
             onClick={() => {
-              router.push(`${ROOT}${nodes?.at(-2)?.path}`)
+              router.push(`${SOURCE_ROOT}${nodes?.at(-2)?.path}`)
               viewFiles()
             }}
           />
@@ -74,8 +72,10 @@ const BreadCrumbs = ({ nodes }: Props) => {
                 className='flex'
                 sx={{ cursor: 'pointer' }}
                 onClick={() => {
-                  router.push(`${ROOT}${path}`)
-                  viewFiles()
+                  if (!name.endsWith(SOURCE_FILE_SUFFIX)) {
+                    router.push(`${SOURCE_ROOT}${path}`)
+                    viewFiles()
+                  }
                 }}
               >
                 <Icon {...{ name, path }} />

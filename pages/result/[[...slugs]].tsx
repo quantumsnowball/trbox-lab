@@ -1,15 +1,19 @@
 import { FileNode } from '@/common/types';
+import BottomNav from '@/components/result/BottomNav';
 import BreadCrumbs from '@/components/result/BreadCrumb';
+import { RESULT_ROOT } from '@/components/result/constants';
+import Equity from '@/components/result/Equity';
+import Metrics from '@/components/result/Metrics';
 import Summary from '@/components/result/Summary';
+import Trades from '@/components/result/Trades';
 import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
+import { RootState } from '@/redux/store';
 import { Paper } from '@mui/material'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-
-const ROOT = '/result'
 
 const validateUrl = (slugs: string[], rootNode: FileNode) => {
   let list = rootNode.children
@@ -33,6 +37,7 @@ const Result = () => {
   const router = useRouter()
   const { slugs } = router.query
   const [nodes, setNodes] = useState([] as FileNode[])
+  const sectionTag = useSelector((s: RootState) => s.layoutTemp.result.section)
 
   useEffect(() => {
     // node not fetched
@@ -46,7 +51,7 @@ const Result = () => {
     // push to root anyway if path not valid
     const result = validateUrl(slugs, rootNode)
     if (!result) {
-      router.push(ROOT)
+      router.push(RESULT_ROOT)
       return
     }
     setNodes(result)
@@ -55,7 +60,10 @@ const Result = () => {
   }, [slugs, rootNode, router])
 
   // update last path on valid nodes update
-  useEffect(() => { updateLastPath(nodes.at(-1)?.path ?? '') }, [nodes])
+  useEffect(() => {
+    updateLastPath(nodes.at(-1)?.path ?? '')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodes])
 
   return (
     <div
@@ -66,7 +74,15 @@ const Result = () => {
         className='full flex column start stretch'
       >
         <BreadCrumbs {...{ nodes }} />
-        <Summary {...{ nodes }} />
+        {
+          {
+            'files': <Summary {...{ nodes }} />,
+            'metrics': <Metrics {...{ nodes }} />,
+            'equity': <Equity {...{ nodes }} />,
+            'trades': <Trades />,
+          }[sectionTag]
+        }
+        <BottomNav {...{ nodes }} />
       </Paper>
     </div>
   )
