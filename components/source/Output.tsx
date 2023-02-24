@@ -10,21 +10,25 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 //   ref: https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/
 import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 import { ws } from '@/redux/slices/apiSlice'
+import { RootState } from "@/redux/store"
+import { useSelector } from "react-redux"
 
 
 const StopButton: FC<{ path: string | undefined }> = ({ path }) => {
+  const wsConnected = useSelector((s: RootState) => s.layoutTemp.wsConnected)
   return (
     <Box
       className='flex'
       sx={{ pt: 1, pb: 2, }}
     >
       <Button
+        disabled={!wsConnected}
         variant='text'
         size='large'
         color='error'
         startIcon={<StopCircleOutlinedIcon />}
         onClick={() => {
-          if (path && ws.readyState === ws.OPEN) {
+          if (path && ws.readyState === 1) {
             ws.send(JSON.stringify({
               type: 'system',
               text: 'stop'

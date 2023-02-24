@@ -1,6 +1,7 @@
 import { FileNode } from '@/common/types'
 import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { layoutTempActions } from './layoutTemp'
 
 export var ws: WebSocket
 
@@ -31,9 +32,11 @@ export const trboxLabApi = createApi({
     runSource: builder.query<Lines, string>({
       query: (path: string) => cleanUrl(`run/init/${path}`),
       keepUnusedDataFor: 86400, // one day
-      onQueryStarted: async (path, { updateCachedData }) => {
+      onQueryStarted: async (path, { updateCachedData, dispatch }) => {
         // create a websocket connection when the cache subscription starts
         ws = new WebSocket(cleanUrl(`ws://${window.location.host}/api/run/output/${path}`))
+        ws.addEventListener('open', () => dispatch(layoutTempActions.setWsConnected(true)))
+        ws.addEventListener('close', () => dispatch(layoutTempActions.setWsConnected(false)))
         console.debug('ws connected')
         // listen to ws message and update the cache value
         ws.addEventListener('message', (event: MessageEvent) => {

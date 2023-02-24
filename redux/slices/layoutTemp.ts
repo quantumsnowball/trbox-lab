@@ -15,6 +15,7 @@ const layoutTempSlice = createSlice({
     result: {
       section: 'files' as ResultBottomNavTag,
     },
+    wsConnected: false
   },
   reducers: {
     toggleMenu: s => { s.menu.visible = !s.menu.visible },
@@ -22,6 +23,7 @@ const layoutTempSlice = createSlice({
     closeMenu: s => { s.menu.visible = false },
     goToSourceSection: (s, a: PayloadAction<SourceBottomNavTag>) => { s.source.section = a.payload },
     goToResultSection: (s, a: PayloadAction<ResultBottomNavTag>) => { s.result.section = a.payload },
+    setWsConnected: (s, a: PayloadAction<boolean>) => { s.wsConnected = a.payload },
   }
 })
 
