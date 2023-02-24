@@ -84,10 +84,15 @@ export const trboxLabApi = createApi({
 })
 
 export const {
+  // run
   useLazyRunSourceQuery,
+  // source
   useGetSourceTreeQuery,
+  useLazyGetSourceTreeQuery,
   useGetSourceQuery,
+  // result
   useGetResultTreeQuery,
+  useLazyGetResultTreeQuery,
   useGetMetricsQuery,
   useGetEquityQuery,
 } = trboxLabApi

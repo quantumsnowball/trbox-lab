@@ -4,11 +4,12 @@ import { Box, Breadcrumbs, Typography, useMediaQuery, useTheme } from '@mui/mate
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { useRouter } from 'next/router';
-import { UpOneLevelButton } from '../common/buttons';
+import { RefreshButton, UpOneLevelButton } from '../common/buttons';
 import { FileNode } from '@/common/types';
 import { useDispatch } from 'react-redux';
 import { layoutTempActions } from '@/redux/slices/layoutTemp';
 import { SOURCE_FILE_SUFFIX, SOURCE_ROOT } from './constants';
+import { useLazyGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 
 
 const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
@@ -21,7 +22,14 @@ const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
         <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-const UpButton: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
+const Refresh: FC = () => {
+  const [trigger,] = useLazyGetSourceTreeQuery()
+  return (
+    <RefreshButton onClick={() => trigger()} />
+  )
+}
+
+const Up: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const dispatch = useDispatch()
   const router = useRouter()
   const theme = useTheme()
@@ -60,8 +68,9 @@ const BreadCrumbs = ({ nodes }: Props) => {
       className='flex row spread'
     >
       <Breadcrumbs
+        className='expanding'
         aria-label="breadcrumb"
-        sx={{ m: 1 }}
+        sx={{ ml: 2 }}
       >
         {
           nodes.map(({ name, path }) => {
@@ -85,7 +94,8 @@ const BreadCrumbs = ({ nodes }: Props) => {
           })
         }
       </Breadcrumbs >
-      <UpButton {...{ nodes }} />
+      <Up {...{ nodes }} />
+      <Refresh />
     </Box>
   )
 }
