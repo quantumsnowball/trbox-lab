@@ -36,17 +36,17 @@ export const trboxLabApi = createApi({
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
         // create a websocket connection when the cache subscription starts
-        const ws = new WebSocket('ws://localhost:7000/api/ws')
-        console.log('something connected')
+        const ws = new WebSocket(`ws://${window.location.host}/api/ws`)
+        console.debug('ws connected, waiting cacheDataLoaded')
         try {
           // wait for the initial query to resolve before proceeding
           await cacheDataLoaded
-          console.log({ ws })
+          console.debug('ws init request resoved, listening to ws message updates')
           // when data is received from the socket connection to the server,
           // if it is a message and for the appropriate channel,
           // update our query result with the received message
           const listener = (event: MessageEvent) => {
-            console.log(event)
+            console.debug(event)
             // const data: string = JSON.parse(event.data)
             const data: string = event.data
             // if (!isMessage(data) || data.channel !== arg) return
