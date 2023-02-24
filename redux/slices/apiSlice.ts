@@ -27,16 +27,16 @@ export const trboxLabApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: builder => ({
     runSource: builder.query<RunResult, string>({
-      query: (path: string) => cleanUrl(`run/${path}`)
+      query: (path: string) => cleanUrl(`run/init/${path}`)
     }),
-    testWS: builder.query<string[], void>({
-      query: () => 'wsinit',
+    testWS: builder.query<string[], string>({
+      query: (path: string) => cleanUrl(`run/init/${path}`),
       async onCacheEntryAdded(
-        arg,
+        path,
         { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
       ) {
         // create a websocket connection when the cache subscription starts
-        const ws = new WebSocket(`ws://${window.location.host}/api/ws`)
+        const ws = new WebSocket(cleanUrl(`ws://${window.location.host}/api/run/output/${path}`))
         console.debug('ws connected, waiting cacheDataLoaded')
         try {
           // wait for the initial query to resolve before proceeding

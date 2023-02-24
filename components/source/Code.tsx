@@ -76,7 +76,7 @@ const Code: FC<Props> = ({ nodes }) => {
             <RunButton {...{ run }} />
             <Button
               onClick={() => {
-                testWSNow()
+                testWSNow(path)
                 // const socket = new WebSocket(`ws://${window.location.hostname}/api/ws`)
                 // console.log('ws')
                 // socket.addEventListener('open', () => {
