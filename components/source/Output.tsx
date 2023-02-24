@@ -25,7 +25,7 @@ const Output: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         showLineNumbers={false}
         customStyle={{ fontSize: '1.0em', flex: 1 }}
       >
-        {runResult?.stdout ?? ''}
+        {runResult ? runResult.join('\n') : ''}
       </SyntaxHighlighter>
     </Box >
   )

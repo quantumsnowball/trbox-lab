@@ -16,8 +16,7 @@ export type Equities = {
 }
 
 export type RunResult = {
-  source: string,
-  stdout: string,
+  stdout: string[],
   stderr: string,
 }
 
@@ -26,10 +25,7 @@ export const trboxLabApi = createApi({
   refetchOnMountOrArgChange: true,
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: builder => ({
-    runSource: builder.query<RunResult, string>({
-      query: (path: string) => cleanUrl(`run/init/${path}`)
-    }),
-    testWS: builder.query<string[], string>({
+    runSource: builder.query<string[], string>({
       query: (path: string) => cleanUrl(`run/init/${path}`),
       async onCacheEntryAdded(
         path,
@@ -90,7 +86,6 @@ export const trboxLabApi = createApi({
 })
 
 export const {
-  useLazyTestWSQuery,
   useLazyRunSourceQuery,
   useGetSourceTreeQuery,
   useGetSourceQuery,
