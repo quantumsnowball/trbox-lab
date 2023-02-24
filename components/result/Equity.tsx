@@ -1,7 +1,7 @@
 import { FileNode } from "@/common/types";
 import { Equities, useGetEquityQuery } from "@/redux/slices/apiSlice";
-import { Box } from "@mui/material";
-import { ColorType, createChart, IChartApi, ISeriesApi } from "lightweight-charts";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { ColorType, createChart, IChartApi, ISeriesApi, PriceScaleMode } from "lightweight-charts";
 import { FC, useEffect, useRef } from "react";
 
 
@@ -11,6 +11,8 @@ const Content: FC<{ path: string }> = ({ path }) => {
   const ctnRef = useRef<HTMLDivElement | null>(null)
   // const series = useRef<ISeriesApi<'Area'> | null>(null)
   const chart = useRef<IChartApi | null>(null)
+  const theme = useTheme()
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
 
   useEffect(() => {
     if (!equities)
@@ -19,24 +21,25 @@ const Content: FC<{ path: string }> = ({ path }) => {
     if (chart.current)
       return
     // create chart
-    chart.current = createChart(ctnRef?.current ?? '');
+    chart.current = createChart(ctnRef?.current ?? '', {
+      autoSize: true,
+    });
     console.debug('chart created')
     // add data
     Object.entries(equities).forEach(([name, equity]) => {
+      // create series
       const series = chart.current?.addLineSeries();
+      // add data
       const equityParsed = Object.entries(equity).map(([time, value]) =>
         ({ time: time.split('T')[0], value }))
       series?.setData(equityParsed);
       // customization
       series?.applyOptions({
-        priceFormat: {
-          type: 'volume',
-          precision: 2,
-        }
+        priceFormat: { type: 'volume', precision: 2, }
       })
+      console.debug('series data injected')
     })
-    chart.current.timeScale().fitContent();
-    console.debug('data injected')
+    chart.current.timeScale().fitContent()
   }, [equities])
 
   return (
