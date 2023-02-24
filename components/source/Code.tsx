@@ -14,9 +14,10 @@ import { SOURCE_FILE_SUFFIX } from "./constants"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
 
 
-const RunButton: FC<{ run: () => void }> = ({ run }) => {
+const RunButton: FC<{ path: string }> = ({ path }) => {
   const dispatch = useDispatch()
   const switchToTerminal = () => dispatch(layoutTempActions.goToSourceSection('output'))
+  const [trigger] = useLazyRunSourceQuery()
 
   return (
     <Box
@@ -28,7 +29,8 @@ const RunButton: FC<{ run: () => void }> = ({ run }) => {
         size='large'
         startIcon={<PlayCircleOutlinedIcon />}
         onClick={() => {
-          run()
+          if (path)
+            trigger(path)
           switchToTerminal()
         }}
       >
@@ -59,8 +61,6 @@ type Props = {
 const Code: FC<Props> = ({ nodes }) => {
   const lastNode = nodes?.at(-1)
   const path = lastNode?.path
-  const [trigger, _] = useLazyRunSourceQuery()
-  const run = () => { if (path) trigger(path) }
 
   return (
     <Box
@@ -71,8 +71,8 @@ const Code: FC<Props> = ({ nodes }) => {
       {
         (path && path.endsWith(SOURCE_FILE_SUFFIX)) ?
           <>
-            <Content path={path} />
-            <RunButton {...{ run }} />
+            <Content {...{ path }} />
+            <RunButton {...{ path }} />
           </>
           :
           <Typography sx={{ textAlign: 'center' }}>
