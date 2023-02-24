@@ -39,10 +39,10 @@ export const trboxLabApi = createApi({
       query: () => `tree/result`
     }),
     getMetrics: builder.query<Metrics, string>({
-      query: (path: string) => cleanUrl(`result/${path}/metrics.json`)
+      query: (path: string) => cleanUrl(`result/${path}/metrics`)
     }),
     getEquity: builder.query<Equity, string>({
-      query: (path: string) => cleanUrl(`result/${path}/equity.json`)
+      query: (path: string) => cleanUrl(`result/${path}/equity`)
     }),
   }),
 })
