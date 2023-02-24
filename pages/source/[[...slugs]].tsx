@@ -2,12 +2,13 @@ import { FileNode } from '@/common/types';
 import BottomNav from '@/components/source/BottomNav';
 import BreadCrumbs from '@/components/source/BreadCrumb';
 import Code from '@/components/source/Code';
-import { SOURCE_ROOT } from '@/components/source/constants';
+import { SourceBottomNavTag, SOURCE_FILE_SUFFIX, SOURCE_ROOT } from '@/components/source/constants';
 import Error from '@/components/source/Error';
 import Output from '@/components/source/Output';
 import Summary from '@/components/source/Summary';
 import { useGetSourceTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
+import { layoutTempActions } from '@/redux/slices/layoutTemp';
 import { RootState } from '@/redux/store';
 import { Paper } from '@mui/material'
 import { useRouter } from 'next/router';
@@ -37,6 +38,7 @@ const Source = () => {
   const { slugs } = router.query
   const [nodes, setNodes] = useState([] as FileNode[])
   const sectionTag = useSelector((s: RootState) => s.layoutTemp.source.section)
+  const goToSectionTag = (s: SourceBottomNavTag) => dispatch(layoutTempActions.goToSourceSection(s))
 
   useEffect(() => {
     // node not fetched
@@ -56,9 +58,11 @@ const Source = () => {
     setNodes(result)
   }, [slugs, rootNode, router])
 
-  // update last path on valid nodes update
+  // update last path on valid nodes update, also point to correct section
   useEffect(() => {
-    updateLastPath(nodes.at(-1)?.path ?? '')
+    const lastNode = nodes.at(-1)
+    updateLastPath(lastNode?.path ?? '')
+    goToSectionTag(lastNode?.name?.endsWith(SOURCE_FILE_SUFFIX) ? 'source' : 'files')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodes])
 

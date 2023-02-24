@@ -1,13 +1,14 @@
 import { FileNode } from '@/common/types';
 import BottomNav from '@/components/result/BottomNav';
 import BreadCrumbs from '@/components/result/BreadCrumb';
-import { RESULT_ROOT } from '@/components/result/constants';
+import { RESULT_DIR_PREFIX, RESULT_ROOT, ResultBottomNavTag } from '@/components/result/constants';
 import Equity from '@/components/result/Equity';
 import Metrics from '@/components/result/Metrics';
 import Summary from '@/components/result/Summary';
 import Trades from '@/components/result/Trades';
 import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
 import { layoutActions } from '@/redux/slices/layout';
+import { layoutTempActions } from '@/redux/slices/layoutTemp';
 import { RootState } from '@/redux/store';
 import { Paper } from '@mui/material'
 import { useRouter } from 'next/router';
@@ -38,6 +39,7 @@ const Result = () => {
   const { slugs } = router.query
   const [nodes, setNodes] = useState([] as FileNode[])
   const sectionTag = useSelector((s: RootState) => s.layoutTemp.result.section)
+  const goToSectionTag = (s: ResultBottomNavTag) => dispatch(layoutTempActions.goToResultSection(s))
 
   useEffect(() => {
     // node not fetched
@@ -61,7 +63,9 @@ const Result = () => {
 
   // update last path on valid nodes update
   useEffect(() => {
-    updateLastPath(nodes.at(-1)?.path ?? '')
+    const lastNode = nodes.at(-1)
+    updateLastPath(lastNode?.path ?? '')
+    goToSectionTag(lastNode?.name?.startsWith(RESULT_DIR_PREFIX) ? 'metrics' : 'files')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nodes])
 
