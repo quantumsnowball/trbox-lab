@@ -11,7 +11,6 @@ const Content: FC<{ path: string }> = ({ path }) => {
   const ctnRef = useRef<HTMLDivElement | null>(null)
   // const series = useRef<ISeriesApi<'Area'> | null>(null)
   const chart = useRef<IChartApi | null>(null)
-  console.log({ equities })
 
   useEffect(() => {
     if (!equities)
@@ -20,27 +19,21 @@ const Content: FC<{ path: string }> = ({ path }) => {
     if (chart.current)
       return
     // create chart
-    chart.current = createChart(ctnRef?.current ? ctnRef.current : '',
-      {
-        layout: {
-          background: {
-            type: ColorType.Solid,
-            color: 'white',
-          },
-          textColor: 'black',
-        },
-        width: ctnRef?.current?.clientWidth,
-        height: 300,
-      },
-    );
+    chart.current = createChart(ctnRef?.current ?? '');
     console.debug('chart created')
     // add data
     Object.entries(equities).forEach(([name, equity]) => {
       const series = chart.current?.addLineSeries();
       const equityParsed = Object.entries(equity).map(([time, value]) =>
         ({ time: time.split('T')[0], value }))
-      console.debug(equityParsed)
       series?.setData(equityParsed);
+      // customization
+      series?.applyOptions({
+        priceFormat: {
+          type: 'volume',
+          precision: 2,
+        }
+      })
     })
     chart.current.timeScale().fitContent();
     console.debug('data injected')
