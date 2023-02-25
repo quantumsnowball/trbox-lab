@@ -15,13 +15,6 @@ import { SOURCE_ROOT } from "../source/constants";
 import { RESULT_ROOT } from "../result/constants";
 
 
-const AppTitle = () =>
-  <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-    <Link href='/'>
-      {APP_TITLE}
-    </Link>
-  </Typography>
-
 const MenuButton = () => {
   const dispatch = useDispatch()
   const toggle = () => dispatch(layoutTempActions.toggleMenu())
@@ -33,29 +26,6 @@ const MenuButton = () => {
     >
       <MenuIcon />
     </IconButton>
-  )
-}
-
-const PageLinks = () => {
-  const lastSourcePath = useSelector((s: RootState) => s.layout.lastPath.source)
-  const lastResultPath = useSelector((s: RootState) => s.layout.lastPath.result)
-
-  const PageLink = ({ title, href }: { title: string, href: string }) =>
-    <Typography
-      variant='h6'
-      sx={{
-        mx: 1
-      }}
-    >
-      <Link href={href}>{title}</Link>
-    </Typography>
-
-  return (
-    <>
-      <PageLink title='Home' href='/' />
-      <PageLink title='Source' href={`/source${lastSourcePath}`} />
-      <PageLink title='Result' href={`/result${lastResultPath}`} />
-    </>
   )
 }
 
