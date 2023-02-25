@@ -1,13 +1,14 @@
 import { FileNode } from "@/common/types";
-import { useGetTradesQuery } from "@/redux/slices/apiSlice";
+import { useGetMetaQuery, useGetTradesQuery } from "@/redux/slices/apiSlice";
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { FC } from "react";
 
 const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   const { data } = useGetTradesQuery({ path, strategy })
+  const { data: meta } = useGetMetaQuery(path)
   const fields = data?.schema.fields.map((field: { name: string }) => field.name)
   const trades = data?.data
-  if (trades) console.log(data)
+  if (meta) console.log({ meta })
   return (
     <TableContainer component={Paper}>
       <Table size='small'>

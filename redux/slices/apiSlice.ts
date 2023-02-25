@@ -5,6 +5,12 @@ import { layoutTempActions } from './layoutTemp'
 
 export var ws: WebSocket
 
+export type Meta = {
+  timestamp: string
+  source: string
+  strategies: string[]
+}
+
 export type Metrics = {
   columns: string[],
   index: string[],
@@ -80,6 +86,9 @@ export const trboxLabApi = createApi({
         responseHandler: 'text'
       }),
     }),
+    getMeta: builder.query<Meta, string>({
+      query: (path: string) => cleanUrl(`result/${path}/meta`)
+    }),
     getMetrics: builder.query<Metrics, string>({
       query: (path: string) => cleanUrl(`result/${path}/metrics`)
     }),
@@ -103,6 +112,7 @@ export const {
   useGetResultTreeQuery,
   useGetResultSourceQuery,
   useLazyGetResultTreeQuery,
+  useGetMetaQuery,
   useGetMetricsQuery,
   useGetEquityQuery,
   useGetTradesQuery,
