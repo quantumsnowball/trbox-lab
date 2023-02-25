@@ -20,9 +20,7 @@ const Icon: FC<{ name: string }> = ({ name }) =>
   </>
 
 const Row: FC<{ name: string, type: string, path: string }> = ({ name, type, path }) => {
-  const dispatch = useDispatch()
   const router = useRouter()
-  const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
   return (
     <Typography
       key={name}
@@ -30,19 +28,10 @@ const Row: FC<{ name: string, type: string, path: string }> = ({ name, type, pat
       className='flex row start'
       sx={{ m: 1, p: 1, cursor: 'pointer' }}
       onClick={() => {
-        if (name.startsWith(RESULT_DIR_PREFIX)) {
-          viewMetrics()
-        }
         router.push(RESULT_ROOT + path)
       }}
     >
-      <Icon name={name} />
-      {
-        name.startsWith(RESULT_DIR_PREFIX) ?
-          resultDirDatetimeFormatted(name)
-          : name
-      }
-      {type === 'folder' ? '/' : null}
+      <Icon name={name} />{name}{type === 'folder' ? '/' : null}
     </Typography>
   )
 }
