@@ -19,6 +19,19 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
+const Row: FC = () => {
+  return (
+    <>
+    </>
+  )
+}
+
+const Card: FC = () => {
+  return (
+    <>
+    </>
+  )
+}
 
 const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const dispatch = useDispatch()
