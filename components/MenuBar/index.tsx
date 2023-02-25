@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material"
+import { AppBar, IconButton, Tab, Tabs, Toolbar, Typography } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu'
 import Link from "next/link"
 import { useTheme } from '@mui/material/styles';
@@ -9,14 +9,11 @@ import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { APP_TITLE } from "@/common/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { SOURCE_ROOT } from "../source/constants";
+import { RESULT_ROOT } from "../result/constants";
 
-
-const AppTitle = () =>
-  <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-    <Link href='/'>
-      {APP_TITLE}
-    </Link>
-  </Typography>
 
 const MenuButton = () => {
   const dispatch = useDispatch()
@@ -32,40 +29,55 @@ const MenuButton = () => {
   )
 }
 
-const PageLinks = () => {
+const PageTabs = () => {
   const lastSourcePath = useSelector((s: RootState) => s.layout.lastPath.source)
   const lastResultPath = useSelector((s: RootState) => s.layout.lastPath.result)
+  const [tabId, setTabId] = useState(0)
+  const theme = useTheme()
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
+  const router = useRouter()
 
-  const PageLink = ({ title, href }: { title: string, href: string }) =>
-    <Typography
-      variant='h6'
-      sx={{
-        mx: 1
-      }}
-    >
-      <Link href={href}>{title}</Link>
-    </Typography>
+  useEffect(() => {
+    const path = window.location.pathname
+    setTabId(
+      path.startsWith(SOURCE_ROOT) ?
+        1 : path.startsWith(RESULT_ROOT) ?
+          2 : 0
+    )
+  }, [])
 
   return (
-    <>
-      <PageLink title='Home' href='/' />
-      <PageLink title='Source' href={`/source${lastSourcePath}`} />
-      <PageLink title='Result' href={`/result${lastResultPath}`} />
-    </>
+    <Tabs
+      variant={isSmall ? 'fullWidth' : undefined}
+      className={isSmall ? 'expanding' : ''}
+      indicatorColor='secondary'
+      textColor='inherit'
+      value={tabId}
+      onChange={(_, newId) => setTabId(newId)}
+    >
+      <Tab label='Home' onClick={() => router.push('/')} />
+      <Tab label='Source' onClick={() => router.push(`/source${lastSourcePath}`)} />
+      <Tab label='Result' onClick={() => router.push(`/result${lastResultPath}`)} />
+    </Tabs>
   )
 }
 
 const MenuBar = () => {
-  const theme = useTheme()
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
-
   return (
     <>
-      <AppBar position="static">
-        <Toolbar sx={{ p: 1 }}>
+      <AppBar
+        id='appbar-div'
+        className='expanding flex row spread'
+        sx={{ width: '100%' }}
+        position="static"
+      >
+        <Toolbar
+          id='toolbar-div'
+          className='expanding flex row spread'
+          sx={{ p: 1 }}
+        >
           <MenuButton />
-          <AppTitle />
-          {isSmall ? null : <PageLinks />}
+          <PageTabs />
         </Toolbar>
       </AppBar>
       <MenuDrawer />
