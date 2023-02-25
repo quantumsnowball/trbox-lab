@@ -10,6 +10,7 @@ import { APP_TITLE } from "@/common/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 
 const AppTitle = () =>
@@ -62,16 +63,7 @@ const PageTabs = () => {
   const [tabId, setTabId] = useState(0)
   const theme = useTheme()
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
-
-  const PageLink = ({ title, href }: { title: string, href: string }) =>
-    <Typography
-      variant='h6'
-      sx={{
-        mx: 1
-      }}
-    >
-      <Link href={href}>{title}</Link>
-    </Typography>
+  const router = useRouter()
 
   return (
     <Tabs
@@ -82,9 +74,9 @@ const PageTabs = () => {
       value={tabId}
       onChange={(_, newId) => setTabId(newId)}
     >
-      <Tab label='Home'><PageLink title='Home' href='/' /></Tab>
-      <Tab label='Source' sx={{ textTransform: 'none' }} />
-      <Tab label='Result' sx={{ textTransform: 'none' }} />
+      <Tab label='Home' onClick={() => router.push('/')} />
+      <Tab label='Source' onClick={() => router.push(`/source${lastSourcePath}`)} />
+      <Tab label='Result' onClick={() => router.push(`/result${lastResultPath}`)} />
     </Tabs>
   )
 }
