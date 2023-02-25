@@ -64,6 +64,12 @@ export const trboxLabApi = createApi({
     getResultTree: builder.query<FileNode, void>({
       query: () => `tree/result`
     }),
+    getResultSource: builder.query<string, string>({
+      query: (path: string) => ({
+        url: cleanUrl(`result/${path}/source`),
+        responseHandler: 'text'
+      }),
+    }),
     getMetrics: builder.query<Metrics, string>({
       query: (path: string) => cleanUrl(`result/${path}/metrics`)
     }),
@@ -82,6 +88,7 @@ export const {
   useGetSourceQuery,
   // result
   useGetResultTreeQuery,
+  useGetResultSourceQuery,
   useLazyGetResultTreeQuery,
   useGetMetricsQuery,
   useGetEquityQuery,

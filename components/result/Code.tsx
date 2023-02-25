@@ -1,8 +1,6 @@
-import { useGetSourceQuery, useLazyRunSourceQuery } from "@/redux/slices/apiSlice"
-import { Box, Button, Typography } from "@mui/material"
-import PlayCircleOutlinedIcon from '@mui/icons-material/PlayCircleOutlined'
+import { useGetResultSourceQuery } from "@/redux/slices/apiSlice"
+import { Box, Typography } from "@mui/material"
 import { FC } from "react"
-import { useDispatch } from "react-redux"
 import { FileNode } from "@/common/types"
 import SyntaxHighlighter from "react-syntax-highlighter"
 // use cjs module instead of esm when using NextJS, important!
@@ -10,14 +8,12 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 //   gruvboxDark, srcery, railscasts
 //   ref: https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/
 import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
-import { SOURCE_FILE_SUFFIX } from "./constants"
-import { layoutTempActions } from "@/redux/slices/layoutTemp"
-import { useSelector } from "react-redux"
-import { RootState } from "@/redux/store"
+import { RESULT_DIR_PREFIX } from "./constants"
 
 
-const Content: FC<{ path: string }> = ({ path }) => {
-  // const { data: source } = useGetSourceQuery(path)
+const Content: FC<{ path: string | undefined }> = ({ path }) => {
+  const { data: source } = useGetResultSourceQuery(path ?? '')
+
   return (
     <SyntaxHighlighter
       language='python'
@@ -26,8 +22,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
       className='expanding'
       customStyle={{ fontSize: '1.0em' }}
     >
-      {/* source ?? '' */}
-      Source code copy here
+      {source ?? ''}
     </SyntaxHighlighter>
   )
 }
@@ -38,7 +33,9 @@ type Props = {
 
 const Code: FC<Props> = ({ nodes }) => {
   const lastNode = nodes?.at(-1)
+  const name = lastNode?.name
   const path = lastNode?.path
+  console.log({ name, path })
 
   return (
     <Box
@@ -47,7 +44,7 @@ const Code: FC<Props> = ({ nodes }) => {
       sx={{ mx: 1 }}
     >
       {
-        (path && path.endsWith(SOURCE_FILE_SUFFIX)) ?
+        (name && name.startsWith(RESULT_DIR_PREFIX)) ?
           <Content {...{ path }} />
           :
           <Typography sx={{ textAlign: 'center' }}>
