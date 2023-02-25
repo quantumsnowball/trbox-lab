@@ -9,8 +9,10 @@ import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { APP_TITLE } from "@/common/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { SOURCE_ROOT } from "../source/constants";
+import { RESULT_ROOT } from "../result/constants";
 
 
 const AppTitle = () =>
@@ -64,6 +66,15 @@ const PageTabs = () => {
   const theme = useTheme()
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   const router = useRouter()
+
+  useEffect(() => {
+    const path = window.location.pathname
+    setTabId(
+      path.startsWith(SOURCE_ROOT) ?
+        1 : path.startsWith(RESULT_ROOT) ?
+          2 : 0
+    )
+  }, [])
 
   return (
     <Tabs
