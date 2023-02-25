@@ -1,5 +1,5 @@
 import { FileNode } from "@/common/types"
-import { Box, Typography } from "@mui/material"
+import { Box, Paper, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { FC } from "react"
@@ -41,19 +41,31 @@ const Card: FC<{ name: string, type: string, path: string }> = ({ name, type, pa
   const router = useRouter()
   const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
   return (
-    <Typography
+    <Paper
+      elevation={1}
       key={name}
-      variant='h6'
-      className='flex row start'
-      sx={{ m: 1, p: 1, cursor: 'pointer' }}
-      onClick={() => {
-        viewMetrics()
-        router.push(RESULT_ROOT + path)
-      }}
     >
-      <Icon name={name} />
-      {resultDirDatetimeFormatted(name)}
-    </Typography>
+      <Typography
+        variant='h6'
+        className='flex row start'
+        sx={{ m: 1, p: 1, cursor: 'pointer' }}
+        onClick={() => {
+          viewMetrics()
+          router.push(RESULT_ROOT + path)
+        }}
+      >
+        <Icon name={name} />
+        {resultDirDatetimeFormatted(name)}
+      </Typography>
+      <Typography
+        variant='body1'
+        sx={{ m: 1, p: 1, cursor: 'pointer' }}
+      >
+        <code>
+          Meta Data display here
+        </code>
+      </Typography>
+    </Paper>
   )
 }
 
