@@ -18,6 +18,10 @@ export type Equities = {
   [name: string]: Equity
 }
 
+export type Trades = {
+  [name: string]: string
+}
+
 export type Line = {
   type: 'stdout' | 'stderr' | 'system'
   text: string
@@ -76,6 +80,9 @@ export const trboxLabApi = createApi({
     getEquity: builder.query<Equities, string>({
       query: (path: string) => cleanUrl(`result/${path}/equity`)
     }),
+    getTrades: builder.query<Trades, { path: string, strategy: string }>({
+      query: ({ path, strategy }: { path: string, strategy: string }) => cleanUrl(`result/${path}/trades?strategy=${strategy}`)
+    }),
   }),
 })
 
@@ -92,6 +99,7 @@ export const {
   useLazyGetResultTreeQuery,
   useGetMetricsQuery,
   useGetEquityQuery,
+  useGetTradesQuery,
 } = trboxLabApi
 
 export const {

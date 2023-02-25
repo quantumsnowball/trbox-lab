@@ -85,7 +85,7 @@ const Result = () => {
             'source': <Code {...{ nodes }} />,
             'metrics': <Metrics {...{ nodes }} />,
             'equity': <Equity {...{ nodes }} />,
-            'trades': <Trades />,
+            'trades': <Trades {...{ nodes }} />,
           }[sectionTag]
         }
         <BottomNav {...{ nodes }} />
