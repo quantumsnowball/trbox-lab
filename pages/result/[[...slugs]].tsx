@@ -1,6 +1,7 @@
 import { FileNode } from '@/common/types';
 import BottomNav from '@/components/result/BottomNav';
 import BreadCrumbs from '@/components/result/BreadCrumb';
+import Code from '@/components/result/Code';
 import { RESULT_DIR_PREFIX, RESULT_ROOT, ResultBottomNavTag } from '@/components/result/constants';
 import Equity from '@/components/result/Equity';
 import Metrics from '@/components/result/Metrics';
@@ -81,6 +82,7 @@ const Result = () => {
         {
           {
             'files': <Summary {...{ nodes }} />,
+            'source': <Code {...{ nodes }} />,
             'metrics': <Metrics {...{ nodes }} />,
             'equity': <Equity {...{ nodes }} />,
             'trades': <Trades />,
