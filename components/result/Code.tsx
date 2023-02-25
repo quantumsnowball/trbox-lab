@@ -35,7 +35,7 @@ const Code: FC<Props> = ({ nodes }) => {
   const lastNode = nodes?.at(-1)
   const name = lastNode?.name
   const path = lastNode?.path
-  console.log({ name, path })
+  console.log({nodes})
 
   return (
     <Box
