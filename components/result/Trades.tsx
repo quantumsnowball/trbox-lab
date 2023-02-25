@@ -23,7 +23,22 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
           </TableRow>
         </TableHead>
         <TableBody>
-
+          {
+            trades?.map((trade, i) =>
+              <TableRow
+                key={i}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                {fields?.map(name =>
+                  <TableCell
+                    key={name}
+                    align='right'>
+                    {trade[name]}
+                  </TableCell>
+                )}
+              </TableRow>
+            )
+          }
         </TableBody>
       </Table>
     </TableContainer>
