@@ -9,6 +9,7 @@ import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RESULT_DIR_PREFIX, RESULT_ROOT } from "./constants";
 import { useDispatch } from "react-redux";
 import { resultDirDatetimeFormatted } from "@/common/utils";
+import { useGetMetaQuery } from "@/redux/slices/apiSlice";
 
 
 const Icon: FC<{ name: string }> = ({ name }) =>
@@ -40,15 +41,26 @@ const Card: FC<{ name: string, type: string, path: string }> = ({ name, type, pa
   const dispatch = useDispatch()
   const router = useRouter()
   const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
+  const { data: meta } = useGetMetaQuery(path)
+
+  const Field: FC<{
+    name: string | undefined,
+    desc: string | number | undefined
+  }> = ({ name, desc }) =>
+      <Typography sx={{ fontFamily: 'monospace' }}>
+        {name}: {desc}
+      </Typography>
+
   return (
     <Paper
       elevation={1}
       key={name}
+      sx={{ m: 1, p: 1 }}
     >
       <Typography
         variant='h6'
         className='flex row start'
-        sx={{ m: 1, p: 1, cursor: 'pointer' }}
+        sx={{ cursor: 'pointer' }}
         onClick={() => {
           viewMetrics()
           router.push(RESULT_ROOT + path)
@@ -57,14 +69,8 @@ const Card: FC<{ name: string, type: string, path: string }> = ({ name, type, pa
         <Icon name={name} />
         {resultDirDatetimeFormatted(name)}
       </Typography>
-      <Typography
-        variant='body1'
-        sx={{ m: 1, p: 1, cursor: 'pointer' }}
-      >
-        <code>
-          Meta Data display here
-        </code>
-      </Typography>
+      <Field name='source' desc={meta?.source} />
+      <Field name='strategies' desc={meta?.strategies.length} />
     </Paper>
   )
 }
