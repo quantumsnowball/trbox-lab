@@ -8,6 +8,7 @@ import { useRouter } from 'next/router'
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RESULT_DIR_PREFIX, RESULT_ROOT } from "./constants";
 import { useDispatch } from "react-redux";
+import { resultDirDatetimeFormatted } from "@/common/utils";
 
 
 const Icon: FC<{ name: string }> = ({ name }) =>
@@ -45,7 +46,8 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
             }}
           >
             <Icon name={name} />
-            {name}{type === 'folder' ? '/' : null}
+            {resultDirDatetimeFormatted(name)}
+            {type === 'folder' ? '/' : null}
           </Typography>)
       }
     </Box>

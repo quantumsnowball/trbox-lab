@@ -10,6 +10,7 @@ import { layoutTempActions } from '@/redux/slices/layoutTemp';
 import { useDispatch } from 'react-redux';
 import { RESULT_DIR_PREFIX, RESULT_ROOT } from './constants';
 import { useLazyGetResultTreeQuery } from '@/redux/slices/apiSlice';
+import { resultDirDatetimeFormatted } from '@/common/utils';
 
 
 const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
@@ -20,6 +21,15 @@ const Icon: FC<{ name: string, path: string }> = ({ name, path }) =>
       : name.startsWith(RESULT_DIR_PREFIX) ?
         <DataObjectIcon sx={{ mr: 1 }} fontSize="inherit" /> :
         <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
+  </>
+
+const Name: FC<{ name: string }> = ({ name }) =>
+  <>
+    {
+      name.startsWith(RESULT_DIR_PREFIX) ?
+        resultDirDatetimeFormatted(name)
+        : name
+    }
   </>
 
 const Refresh: FC = () => {
@@ -88,7 +98,7 @@ const BreadCrumbs = ({ nodes }: Props) => {
                 }}
               >
                 <Icon {...{ name, path }} />
-                {name}
+                <Name {...{ name }} />
               </Typography>
             )
           })
