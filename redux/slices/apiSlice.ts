@@ -5,6 +5,12 @@ import { layoutTempActions } from './layoutTemp'
 
 export var ws: WebSocket
 
+export type Meta = {
+  timestamp: string
+  source: string
+  strategies: string[]
+}
+
 export type Metrics = {
   columns: string[],
   index: string[],
@@ -17,6 +23,16 @@ export type Equity = {
 export type Equities = {
   [name: string]: Equity
 }
+
+export type Trade = {
+  [name: string]: string | number
+}
+export type Trades = Trade[]
+export type TradesSchema = {
+  schema: { fields: { name: string }[] }
+  data: Trades
+}
+
 
 export type Line = {
   type: 'stdout' | 'stderr' | 'system'
@@ -70,11 +86,17 @@ export const trboxLabApi = createApi({
         responseHandler: 'text'
       }),
     }),
+    getMeta: builder.query<Meta, string>({
+      query: (path: string) => cleanUrl(`result/${path}/meta`)
+    }),
     getMetrics: builder.query<Metrics, string>({
       query: (path: string) => cleanUrl(`result/${path}/metrics`)
     }),
     getEquity: builder.query<Equities, string>({
       query: (path: string) => cleanUrl(`result/${path}/equity`)
+    }),
+    getTrades: builder.query<TradesSchema, { path: string, strategy: string }>({
+      query: ({ path, strategy }: { path: string, strategy: string }) => cleanUrl(`result/${path}/trades?strategy=${strategy}`)
     }),
   }),
 })
@@ -90,8 +112,10 @@ export const {
   useGetResultTreeQuery,
   useGetResultSourceQuery,
   useLazyGetResultTreeQuery,
+  useGetMetaQuery,
   useGetMetricsQuery,
   useGetEquityQuery,
+  useGetTradesQuery,
 } = trboxLabApi
 
 export const {
