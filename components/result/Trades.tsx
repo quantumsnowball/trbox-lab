@@ -1,14 +1,14 @@
 import { FileNode } from "@/common/types";
 import { useGetMetaQuery, useGetTradesQuery } from "@/redux/slices/apiSlice";
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { FC } from "react";
+import { Box, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs } from "@mui/material";
+import { FC, useState } from "react";
+
+
 
 const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   const { data } = useGetTradesQuery({ path, strategy })
-  const { data: meta } = useGetMetaQuery(path)
   const fields = data?.schema.fields.map((field: { name: string }) => field.name)
   const trades = data?.data
-  if (meta) console.log({ meta })
   return (
     <TableContainer component={Paper}>
       <Table size='small'>
@@ -47,6 +47,38 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
 
 }
 
+const Tabbed: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
+  const { data: meta } = useGetMetaQuery(path)
+  const strategies = meta?.strategies
+  const [tabId, setTabId] = useState(0)
+
+  return (
+    <>
+      <Box>
+        <Tabs
+          value={tabId}
+          onChange={(_, newId) => setTabId(newId)}
+        >
+          {
+            strategies?.map(name =>
+              <Tab
+                key={name}
+                label={name}
+                sx={{ textTransform: 'none' }}
+              />
+            )
+          }
+        </Tabs>
+        {
+          (path && strategy) ?
+            <Content {...{ path, strategy }} />
+            : null
+        }
+      </Box>
+    </>
+  )
+}
+
 const Trades: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const lastNode = nodes?.at(-1)
   const path = lastNode?.path
@@ -54,13 +86,9 @@ const Trades: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
 
   return (
     <Box
-      className='expanding flex column start'
+      className='expanding flex column start stretch'
     >
-      {
-        (path && strategy) ?
-          <Content {...{ path, strategy }} />
-          : null
-      }
+      <Tabbed {...{ path, strategy }} />
     </Box>
   )
 }
