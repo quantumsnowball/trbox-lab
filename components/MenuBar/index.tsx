@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@mui/material"
+import { AppBar, IconButton, Tab, Tabs, Toolbar, Typography } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu'
 import Link from "next/link"
 import { useTheme } from '@mui/material/styles';
@@ -9,6 +9,7 @@ import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { APP_TITLE } from "@/common/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useState } from "react";
 
 
 const AppTitle = () =>
@@ -55,17 +56,55 @@ const PageLinks = () => {
   )
 }
 
-const MenuBar = () => {
+const PageTabs = () => {
+  const lastSourcePath = useSelector((s: RootState) => s.layout.lastPath.source)
+  const lastResultPath = useSelector((s: RootState) => s.layout.lastPath.result)
+  const [tabId, setTabId] = useState(0)
   const theme = useTheme()
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
 
+  const PageLink = ({ title, href }: { title: string, href: string }) =>
+    <Typography
+      variant='h6'
+      sx={{
+        mx: 1
+      }}
+    >
+      <Link href={href}>{title}</Link>
+    </Typography>
+
+  return (
+    <Tabs
+      variant={isSmall ? 'fullWidth' : undefined}
+      className={isSmall ? 'expanding' : ''}
+      indicatorColor='secondary'
+      textColor='inherit'
+      value={tabId}
+      onChange={(_, newId) => setTabId(newId)}
+    >
+      <Tab label='Home'><PageLink title='Home' href='/' /></Tab>
+      <Tab label='Source' sx={{ textTransform: 'none' }} />
+      <Tab label='Result' sx={{ textTransform: 'none' }} />
+    </Tabs>
+  )
+}
+
+const MenuBar = () => {
   return (
     <>
-      <AppBar position="static">
-        <Toolbar sx={{ p: 1 }}>
+      <AppBar
+        id='appbar-div'
+        className='expanding flex row spread'
+        sx={{ width: '100%' }}
+        position="static"
+      >
+        <Toolbar
+          id='toolbar-div'
+          className='expanding flex row spread'
+          sx={{ p: 1 }}
+        >
           <MenuButton />
-          <AppTitle />
-          {isSmall ? null : <PageLinks />}
+          <PageTabs />
         </Toolbar>
       </AppBar>
       <MenuDrawer />
