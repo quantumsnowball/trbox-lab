@@ -70,9 +70,8 @@ const Tabbed: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
           }
         </Tabs>
         {
-          (path && strategy) ?
-            <Content {...{ path, strategy }} />
-            : null
+          path && strategies &&
+          <Content path={path} strategy={strategies[tabId]} />
         }
       </Box>
     </>
