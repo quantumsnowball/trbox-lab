@@ -23,7 +23,7 @@ export type Trade = {
 }
 export type Trades = Trade[]
 export type TradesSchema = {
-  schema: any
+  schema: { fields: { name: string }[] }
   data: Trades
 }
 

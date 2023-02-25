@@ -1,18 +1,32 @@
 import { FileNode } from "@/common/types";
 import { useGetTradesQuery } from "@/redux/slices/apiSlice";
-import { Box } from "@mui/material";
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { FC } from "react";
 
 const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   const { data } = useGetTradesQuery({ path, strategy })
+  const fields = data?.schema.fields.map((field: { name: string }) => field.name)
   const trades = data?.data
-  if (trades) console.log(trades)
+  if (trades) console.log(data)
   return (
-    <>
-      {trades ?
-        trades.map(t => <div>{t.Date}</div>)
-        : null}
-    </>
+    <TableContainer component={Paper}>
+      <Table size='small'>
+        <TableHead>
+          <TableRow>
+            {fields?.map(colname =>
+              <TableCell
+                key={colname}
+                align='right'
+              >
+                {colname}
+              </TableCell>)}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 
 }
@@ -24,7 +38,7 @@ const Trades: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
 
   return (
     <Box
-      className='expanding flex column'
+      className='expanding flex column start'
     >
       {
         (path && strategy) ?
