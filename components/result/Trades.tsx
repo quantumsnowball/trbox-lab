@@ -47,8 +47,8 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
 
 }
 
-const Tabbed: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
-  const { data: meta } = useGetMetaQuery(path)
+const Tabbed: FC<{ path: string | undefined }> = ({ path }) => {
+  const { data: meta } = useGetMetaQuery(path ?? '')
   const strategies = meta?.strategies
   const [tabId, setTabId] = useState(0)
 
@@ -81,13 +81,12 @@ const Tabbed: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
 const Trades: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const lastNode = nodes?.at(-1)
   const path = lastNode?.path
-  const strategy = 'basic' // TODO
 
   return (
     <Box
       className='expanding flex column start stretch'
     >
-      <Tabbed {...{ path, strategy }} />
+      <Tabbed {...{ path }} />
     </Box>
   )
 }
