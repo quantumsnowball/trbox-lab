@@ -19,11 +19,6 @@ const layoutSlice = createSlice({
       source: '',
       result: '',
     },
-    section: {
-      source: {
-        sectionId: 0
-      }
-    }
   },
   reducers: {
     togglePages: s => {
@@ -40,9 +35,6 @@ const layoutSlice = createSlice({
     },
     setResultLastPath: (s, a: PayloadAction<string | undefined>) => {
       s.lastPath.result = a.payload ?? ''
-    },
-    setSourceSection: (s, a: PayloadAction<number>) => {
-      s.section.source.sectionId = a.payload
     },
   }
 })

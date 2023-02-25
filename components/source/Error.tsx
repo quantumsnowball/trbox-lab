@@ -1,6 +1,7 @@
-import { useGetSourceQuery } from "@/redux/slices/apiSlice"
-import { Box, Button } from "@mui/material"
+import { useRunSourceQueryState } from "@/redux/slices/apiSlice"
+import { Box } from "@mui/material"
 import { FC } from "react"
+import { FileNode } from "@/common/types"
 import SyntaxHighlighter from "react-syntax-highlighter"
 // use cjs module instead of esm when using NextJS, important!
 // good looking themes you may consider: 
@@ -9,45 +10,33 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 
 
-const RunButton: FC<{ run: () => void }> = ({ run }) =>
-  <Box
-    className='flex'
-    sx={{ pt: 1, pb: 2, }}
-  >
-    <Button
-      variant="contained"
-      onClick={run}
-    >
-      RUN
-    </Button>
-  </Box>
+const Error: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
+  const { data: lines } = useRunSourceQueryState(nodes?.at(-1)?.path ?? '')
 
-type Props = {
-  path: string
-  run: () => void
-}
-const Viewer: FC<Props> = ({ path, run }) => {
-  const { data: source } = useGetSourceQuery(path)
   return (
-
     <Box
       id='viewer-div'
       className='expanding scroll flex column stretch'
       sx={{ mx: 1 }}
     >
       <SyntaxHighlighter
-        language='python'
+        language='powershell'
         style={colorScheme}
         showLineNumbers={false}
-        className='expanding'
-        customStyle={{ fontSize: '1.0em' }}
+        customStyle={{ fontSize: '1.0em', flex: 1 }}
       >
-        {source ?? ''}
+        {
+          lines ?
+            lines
+              .filter(l => l.type === 'stderr')
+              .map(l => l.text).join('')
+            :
+            ''
+        }
       </SyntaxHighlighter>
-      <RunButton {...{ run }} />
     </Box >
   )
-
 }
 
-export default Viewer
+export default Error
+
