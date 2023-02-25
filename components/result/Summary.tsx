@@ -47,19 +47,12 @@ const Card: FC<{ name: string, type: string, path: string }> = ({ name, type, pa
       className='flex row start'
       sx={{ m: 1, p: 1, cursor: 'pointer' }}
       onClick={() => {
-        if (name.startsWith(RESULT_DIR_PREFIX)) {
-          viewMetrics()
-        }
+        viewMetrics()
         router.push(RESULT_ROOT + path)
       }}
     >
       <Icon name={name} />
-      {
-        name.startsWith(RESULT_DIR_PREFIX) ?
-          resultDirDatetimeFormatted(name)
-          : name
-      }
-      {type === 'folder' ? '/' : null}
+      {resultDirDatetimeFormatted(name)}
     </Typography>
   )
 }
