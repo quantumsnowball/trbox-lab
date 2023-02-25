@@ -3,6 +3,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined'
 import TimelineIcon from '@mui/icons-material/Timeline'
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined'
+import DataObjectIcon from '@mui/icons-material/DataObject'
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "@/redux/store"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
@@ -33,9 +34,16 @@ const BottomNav: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
       />
       <BottomNavigationAction
         disabled={!isResult}
+        label="Source"
+        value='source'
+        icon={isResult ? <DataObjectIcon /> : null}
+      />
+      <BottomNavigationAction
+        disabled={!isResult}
         label="Metrics"
         value='metrics'
-        icon={isResult ? <LeaderboardOutlinedIcon /> : null} />
+        icon={isResult ? <LeaderboardOutlinedIcon /> : null}
+      />
       <BottomNavigationAction
         disabled={!isResult}
         label="Equity"
