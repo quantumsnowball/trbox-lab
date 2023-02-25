@@ -46,7 +46,11 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
             }}
           >
             <Icon name={name} />
-            {resultDirDatetimeFormatted(name)}
+            {
+              name.startsWith(RESULT_DIR_PREFIX) ?
+                resultDirDatetimeFormatted(name)
+                : name
+            }
             {type === 'folder' ? '/' : null}
           </Typography>)
       }
