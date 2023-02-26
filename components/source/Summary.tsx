@@ -53,7 +53,7 @@ const FileOpsBar: FC = () => {
 }
 
 const DeleteButton: FC<{ path: string }> = ({ path }) => {
-  const [deletePath,] = useDeleteResourceMutation(path)
+  const [deletePath,] = useDeleteResourceMutation()
 
   return (
     <IconButton
