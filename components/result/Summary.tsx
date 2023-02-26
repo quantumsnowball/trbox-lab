@@ -1,5 +1,5 @@
 import { FileNode } from "@/common/types"
-import { Box, Typography } from "@mui/material"
+import { Box, Paper, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { FC } from "react"
@@ -9,6 +9,7 @@ import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RESULT_DIR_PREFIX, RESULT_ROOT } from "./constants";
 import { useDispatch } from "react-redux";
 import { resultDirDatetimeFormatted } from "@/common/utils";
+import { useGetMetaQuery } from "@/redux/slices/apiSlice";
 
 
 const Icon: FC<{ name: string }> = ({ name }) =>
@@ -19,26 +20,72 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-const Row: FC = () => {
+const Row: FC<{ name: string, type: string, path: string }> = ({ name, type, path }) => {
+  const router = useRouter()
   return (
-    <>
-    </>
+    <Typography
+      key={name}
+      variant='h6'
+      className='flex row start'
+      sx={{ m: 1, p: 1, cursor: 'pointer' }}
+      onClick={() => {
+        router.push(RESULT_ROOT + path)
+      }}
+    >
+      <Icon name={name} />{name}{type === 'folder' ? '/' : null}
+    </Typography>
   )
 }
 
-const Card: FC = () => {
-  return (
-    <>
-    </>
-  )
-}
-
-const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
+const Card: FC<{ name: string, type: string, path: string }> = ({ name, type, path }) => {
   const dispatch = useDispatch()
   const router = useRouter()
+  const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
+  const { data: meta } = useGetMetaQuery(path)
+
+  const Field: FC<{
+    name: string | undefined,
+    desc: string | number | undefined
+  }> = ({ name, desc }) =>
+      <Typography sx={{ fontFamily: 'monospace' }}>
+        {name}: {desc}
+      </Typography>
+
+  return (
+    <Paper
+      elevation={1}
+      key={name}
+      sx={{ m: 1, p: 1 }}
+    >
+      <Typography
+        variant='h6'
+        className='flex row start'
+        sx={{ cursor: 'pointer' }}
+        onClick={() => {
+          viewMetrics()
+          router.push(RESULT_ROOT + path)
+        }}
+      >
+        <Icon name={name} />
+        {resultDirDatetimeFormatted(name)}
+      </Typography>
+      <Field name='source' desc={meta?.source} />
+      <Field name='strategies' desc={meta?.strategies.length} />
+      {
+        meta?.params ?
+          Object.entries(meta.params).map(([name, str]) =>
+            <Field name={name} desc={str} />)
+          :
+          null
+      }
+    </Paper>
+  )
+}
+
+
+const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const lastNode = nodes.at(-1)
   const entries = lastNode && lastNode.children
-  const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
 
   return (
     <Box
@@ -46,26 +93,11 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
     >
       {
         entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
-          <Typography
-            key={name}
-            variant='h6'
-            className='flex row start'
-            sx={{ m: 1, p: 1, cursor: 'pointer' }}
-            onClick={() => {
-              if (name.startsWith(RESULT_DIR_PREFIX)) {
-                viewMetrics()
-              }
-              router.push(RESULT_ROOT + path)
-            }}
-          >
-            <Icon name={name} />
-            {
-              name.startsWith(RESULT_DIR_PREFIX) ?
-                resultDirDatetimeFormatted(name)
-                : name
-            }
-            {type === 'folder' ? '/' : null}
-          </Typography>)
+          name.startsWith(RESULT_DIR_PREFIX) ?
+            <Card {...{ name, type, path }} />
+            :
+            <Row {...{ name, type, path }} />
+        )
       }
     </Box>
   )
