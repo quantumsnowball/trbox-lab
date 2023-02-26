@@ -28,7 +28,7 @@ const Icon: FC<{ name: string }> = ({ name }) =>
 
 const FileOpsBar: FC = () => {
   const dispatch = useDispatch()
-  const delMode = useSelector((s: RootState) => s.layoutTemp.source.fileOps.deleteMode)
+  const delMode = useSelector((s: RootState) => s.layoutTemp.result.fileOps.deleteMode)
   const toggleDelMode = () => dispatch(layoutTempActions.toggleResultFileDeleteMode())
   const [trigger,] = useLazyGetResultTreeQuery()
   return (
