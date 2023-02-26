@@ -9,6 +9,9 @@ export type Meta = {
   timestamp: string
   source: string
   strategies: string[]
+  params: {
+    [name: string]: string
+  }
 }
 
 export type Metrics = {

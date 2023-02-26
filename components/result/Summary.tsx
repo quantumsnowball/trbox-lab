@@ -71,6 +71,13 @@ const Card: FC<{ name: string, type: string, path: string }> = ({ name, type, pa
       </Typography>
       <Field name='source' desc={meta?.source} />
       <Field name='strategies' desc={meta?.strategies.length} />
+      {
+        meta?.params ?
+          Object.entries(meta.params).map(([name, str]) =>
+            <Field name={name} desc={str} />)
+          :
+          null
+      }
     </Paper>
   )
 }
