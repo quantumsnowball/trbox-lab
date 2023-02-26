@@ -1,7 +1,7 @@
 import { FileNode } from '@/common/types'
 import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { layoutTempActions } from './layoutTemp'
+import { layoutTempActions } from '@/redux/slices/layoutTemp'
 
 export var ws: WebSocket
 
