@@ -31,7 +31,7 @@ const FileOpsBar: FC = () => {
   const [trigger,] = useLazyGetSourceTreeQuery()
   return (
     <Box
-      className='flex row'
+      className='flex row end'
     >
       <Button
         startIcon={<SyncOutlinedIcon />}

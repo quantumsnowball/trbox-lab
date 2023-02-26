@@ -50,6 +50,9 @@ a {
 .flex.row.start {
   justify-content: flex-start;
 }
+.flex.row.end {
+  justify-content: flex-end;
+}
 .flex.row.spread {
   justify-content: space-between;
 }
