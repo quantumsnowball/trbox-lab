@@ -1,10 +1,11 @@
 import { FileNode } from "@/common/types"
-import { Box, Button, Paper, Typography } from "@mui/material"
+import { Box, Button, IconButton, Paper, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { FC } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from 'next/router'
@@ -12,7 +13,7 @@ import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RESULT_DIR_PREFIX, RESULT_ROOT } from "./constants";
 import { useDispatch, useSelector } from "react-redux";
 import { resultDirDatetimeFormatted } from "@/common/utils";
-import { useGetMetaQuery, useLazyGetResultTreeQuery } from "@/redux/slices/apiSlice";
+import { useDeleteResourceMutation, useGetMetaQuery, useLazyGetResultTreeQuery } from "@/redux/slices/apiSlice";
 import { RootState } from "@/redux/store";
 import { StrategyParams } from "@/redux/slices/apiSlice/types";
 
@@ -53,18 +54,29 @@ const FileOpsBar: FC = () => {
 
 const Dir: FC<{ name: string, type: string, path: string }> = ({ name, type, path }) => {
   const router = useRouter()
+  const delMode = useSelector((s: RootState) => s.layoutTemp.result.fileOps.deleteMode)
   return (
-    <Typography
-      key={name}
-      variant='h6'
-      className='flex row start'
-      sx={{ m: 1, p: 1, cursor: 'pointer' }}
-      onClick={() => {
-        router.push(RESULT_ROOT + path)
-      }}
+    <Box
+      className='flex row spread'
     >
-      <Icon name={name} />{name}{type === 'folder' ? '/' : null}
-    </Typography>
+      <Typography
+        key={name}
+        variant='h6'
+        className='flex row start'
+        sx={{ m: 1, p: 1, cursor: 'pointer' }}
+        onClick={() => {
+          router.push(RESULT_ROOT + path)
+        }}
+      >
+        <Icon name={name} />{name}{type === 'folder' ? '/' : null}
+      </Typography>
+      {
+        delMode ?
+          <DeleteButton {...{ path }} />
+          :
+          null
+      }
+    </Box>
   )
 }
 
@@ -73,6 +85,7 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
   const router = useRouter()
   const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
   const { data: meta } = useGetMetaQuery(path)
+  const delMode = useSelector((s: RootState) => s.layoutTemp.result.fileOps.deleteMode)
 
   const Field: FC<{
     name: string | undefined,
@@ -97,31 +110,56 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
 
   return (
     <Paper
+      className='flex row spread'
       elevation={1}
       key={name}
       sx={{ m: 1, p: 1 }}
     >
-      <Typography
-        variant='h6'
-        className='flex row start'
-        sx={{ cursor: 'pointer' }}
-        onClick={() => {
-          viewMetrics()
-          router.push(RESULT_ROOT + path)
-        }}
-      >
-        <Icon name={name} />
-        {resultDirDatetimeFormatted(name)}
-      </Typography>
-      <Field name='source' desc={meta?.source} />
-      <Field name='strategies' desc={meta?.strategies.length} />
+      <Box>
+        <Typography
+          variant='h6'
+          className='flex row start'
+          sx={{ cursor: 'pointer' }}
+          onClick={() => {
+            viewMetrics()
+            router.push(RESULT_ROOT + path)
+          }}
+        >
+          <Icon name={name} />
+          {resultDirDatetimeFormatted(name)}
+        </Typography>
+        <Field name='source' desc={meta?.source} />
+        <Field name='strategies' desc={meta?.strategies.length} />
+        {
+          meta?.params ?
+            <Params params={meta.params} />
+            :
+            null
+        }
+      </Box>
       {
-        meta?.params ?
-          <Params params={meta.params} />
+        delMode ?
+          <DeleteButton {...{ path }} />
           :
           null
       }
     </Paper>
+  )
+}
+
+const DeleteButton: FC<{ path: string }> = ({ path }) => {
+  const [deletePath,] = useDeleteResourceMutation()
+
+  return (
+    <IconButton
+      color='error'
+      onClick={() => {
+        console.log({ path })
+        deletePath(path)
+      }}
+    >
+      <DeleteForeverOutlinedIcon />
+    </IconButton >
   )
 }
 
