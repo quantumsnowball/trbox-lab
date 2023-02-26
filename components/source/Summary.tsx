@@ -5,6 +5,7 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { FC } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from "next/router";
@@ -49,6 +50,18 @@ const FileOpsBar: FC = () => {
     </Box>
   )
 }
+
+const DeleteButton: FC = () => {
+  return (
+    <IconButton
+      color='error'
+      onClick={() => alert('delete me please!')}
+    >
+      <DeleteForeverOutlinedIcon />
+    </IconButton>
+  )
+}
+
 type Props = {
   nodes: FileNode[]
 }
@@ -58,7 +71,7 @@ const Summary: FC<Props> = ({ nodes }) => {
   const lastNode = nodes.at(-1)
   const entries = lastNode && lastNode.children
   const viewSource = () => dispatch(layoutTempActions.goToSourceSection('source'))
-
+  const delMode = useSelector((s: RootState) => s.layoutTemp.source.fileOps.deleteMode)
 
   return (
     <>
@@ -67,21 +80,32 @@ const Summary: FC<Props> = ({ nodes }) => {
       >
         {
           entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
-            <Typography
-              key={name}
-              variant='h6'
-              className='flex row start'
-              sx={{ m: 1, p: 1, cursor: 'pointer' }}
-              onClick={() => {
-                if (name.endsWith(SOURCE_FILE_SUFFIX)) {
-                  viewSource()
-                }
-                router.push(SOURCE_ROOT + path)
-              }}
+            <Box
+              className='flex row spread'
             >
-              <Icon name={name} />
-              {name}{type === 'folder' ? '/' : null}
-            </Typography>)
+              <Typography
+                key={name}
+                variant='h6'
+                className='flex row start'
+                sx={{ m: 1, p: 1, cursor: 'pointer' }}
+                onClick={() => {
+                  if (name.endsWith(SOURCE_FILE_SUFFIX)) {
+                    viewSource()
+                  }
+                  router.push(SOURCE_ROOT + path)
+                }}
+              >
+                <Icon name={name} />
+                {name}{type === 'folder' ? '/' : null}
+              </Typography>
+              {
+                delMode ?
+                  <DeleteButton />
+                  :
+                  null
+              }
+            </Box>
+          )
         }
       </Box>
       <FileOpsBar />
