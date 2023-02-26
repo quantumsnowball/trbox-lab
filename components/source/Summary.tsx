@@ -51,11 +51,11 @@ const FileOpsBar: FC = () => {
   )
 }
 
-const DeleteButton: FC = () => {
+const DeleteButton: FC<{ name: string, path: string }> = ({ name, path }) => {
   return (
     <IconButton
       color='error'
-      onClick={() => alert('delete me please!')}
+      onClick={() => alert(`rm ${path}`)}
     >
       <DeleteForeverOutlinedIcon />
     </IconButton>
@@ -100,7 +100,7 @@ const Summary: FC<Props> = ({ nodes }) => {
               </Typography>
               {
                 delMode ?
-                  <DeleteButton />
+                  <DeleteButton {...{ name, path }} />
                   :
                   null
               }
