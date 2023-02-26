@@ -4,6 +4,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { FC } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from "next/router";
@@ -11,6 +12,8 @@ import { useDispatch } from "react-redux";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { SOURCE_FILE_SUFFIX, SOURCE_ROOT } from "./constants";
 import { useLazyGetSourceTreeQuery } from "@/redux/slices/apiSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 
 const Icon: FC<{ name: string }> = ({ name }) =>
@@ -22,6 +25,9 @@ const Icon: FC<{ name: string }> = ({ name }) =>
   </>
 
 const FileOpsBar: FC = () => {
+  const dispatch = useDispatch()
+  const delMode = useSelector((s: RootState) => s.layoutTemp.source.fileOps.deleteMode)
+  const toggleDelMode = () => dispatch(layoutTempActions.toggleSourceFileDeleteMode())
   const [trigger,] = useLazyGetSourceTreeQuery()
   return (
     <Box
@@ -34,9 +40,11 @@ const FileOpsBar: FC = () => {
         Refresh
       </Button>
       <Button
-        startIcon={<DeleteOutlinedIcon />}
+        color={delMode ? 'secondary' : 'error'}
+        startIcon={delMode ? <CancelOutlinedIcon /> : <DeleteOutlinedIcon />}
+        onClick={toggleDelMode}
       >
-        Delete
+        {delMode ? 'Cancel' : 'Delete'}
       </Button>
     </Box>
   )

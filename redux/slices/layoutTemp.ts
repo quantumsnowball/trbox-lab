@@ -11,6 +11,7 @@ const layoutTempSlice = createSlice({
     },
     source: {
       section: 'files' as SourceBottomNavTag,
+      fileOps: { deleteMode: false },
     },
     result: {
       section: 'files' as ResultBottomNavTag,
@@ -23,6 +24,7 @@ const layoutTempSlice = createSlice({
     closeMenu: s => { s.menu.visible = false },
     goToSourceSection: (s, a: PayloadAction<SourceBottomNavTag>) => { s.source.section = a.payload },
     goToResultSection: (s, a: PayloadAction<ResultBottomNavTag>) => { s.result.section = a.payload },
+    toggleSourceFileDeleteMode: s => { s.source.fileOps.deleteMode = !s.source.fileOps.deleteMode },
     setWsConnected: (s, a: PayloadAction<boolean>) => { s.wsConnected = a.payload },
   }
 })
