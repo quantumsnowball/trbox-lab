@@ -109,11 +109,10 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
     </>
 
   return (
-    <Paper
+    <Box
       className='flex row spread'
-      elevation={1}
       key={name}
-      sx={{ m: 1, p: 1 }}
+      sx={{ ml: 1, pl: 1, py: 1 }}
     >
       <Box>
         <Typography
@@ -143,7 +142,7 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
           :
           null
       }
-    </Paper>
+    </Box>
   )
 }
 
