@@ -10,6 +10,7 @@ export const trboxLabApi = createApi({
   reducerPath: 'trboxLabApi',
   refetchOnMountOrArgChange: true,
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  tagTypes: ['FileTree',],
   endpoints: builder => ({
     // 
     // run
@@ -41,7 +42,8 @@ export const trboxLabApi = createApi({
     // source
     // 
     getSourceTree: builder.query<FileNode, void>({
-      query: () => `tree/source`
+      query: () => `tree/source`,
+      providesTags: ['FileTree',],
     }),
     getSource: builder.query<string, string>({
       query: (path: string) => ({
@@ -53,7 +55,8 @@ export const trboxLabApi = createApi({
     // result
     // 
     getResultTree: builder.query<FileNode, void>({
-      query: () => `tree/result`
+      query: () => `tree/result`,
+      providesTags: ['FileTree',],
     }),
     getResultSource: builder.query<string, string>({
       query: (path: string) => ({
@@ -78,7 +81,8 @@ export const trboxLabApi = createApi({
       query: (path: string) => ({
         url: cleanUrl(`operation/${path}`),
         method: 'DELETE',
-      })
+      }),
+      invalidatesTags: ['FileTree',],
     })
   }),
 })
