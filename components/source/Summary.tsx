@@ -3,13 +3,13 @@ import { Box, Button, IconButton, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { FC } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { SOURCE_FILE_SUFFIX, SOURCE_ROOT } from "./constants";
-import { RefreshButton } from "../common/buttons";
 import { useLazyGetSourceTreeQuery } from "@/redux/slices/apiSlice";
 
 
@@ -32,6 +32,11 @@ const FileOpsBar: FC = () => {
         onClick={() => trigger()}
       >
         Refresh
+      </Button>
+      <Button
+        startIcon={<DeleteOutlinedIcon />}
+      >
+        Delete
       </Button>
     </Box>
   )
