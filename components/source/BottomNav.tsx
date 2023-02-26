@@ -32,7 +32,8 @@ const BottomNav: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         value='files'
         icon={<FormatListBulletedIcon />}
         onClick={() => {
-          router.push(`${SOURCE_ROOT}${nodes?.at(-2)?.path}`)
+          if (nodes?.at(-2))
+            router.push(`${SOURCE_ROOT}${nodes?.at(-2)?.path}`)
         }}
       />
       <BottomNavigationAction
