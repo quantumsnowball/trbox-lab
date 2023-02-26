@@ -15,6 +15,7 @@ import { SOURCE_FILE_SUFFIX, SOURCE_ROOT } from "./constants";
 import { useLazyGetSourceTreeQuery } from "@/redux/slices/apiSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useDeleteResourceMutation } from "@/redux/slices/apiSlice";
 
 
 const Icon: FC<{ name: string }> = ({ name }) =>
@@ -51,14 +52,19 @@ const FileOpsBar: FC = () => {
   )
 }
 
-const DeleteButton: FC<{ name: string, path: string }> = ({ name, path }) => {
+const DeleteButton: FC<{ path: string }> = ({ path }) => {
+  const [deletePath,] = useDeleteResourceMutation(path)
+
   return (
     <IconButton
       color='error'
-      onClick={() => alert(`rm ${path}`)}
+      onClick={() => {
+        console.log({ path })
+        deletePath(path)
+      }}
     >
       <DeleteForeverOutlinedIcon />
-    </IconButton>
+    </IconButton >
   )
 }
 
@@ -100,7 +106,7 @@ const Summary: FC<Props> = ({ nodes }) => {
               </Typography>
               {
                 delMode ?
-                  <DeleteButton {...{ name, path }} />
+                  <DeleteButton {...{ path }} />
                   :
                   null
               }

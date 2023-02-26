@@ -73,6 +73,13 @@ export const trboxLabApi = createApi({
     getTrades: builder.query<TradesSchema, { path: string, strategy: string }>({
       query: ({ path, strategy }: { path: string, strategy: string }) => cleanUrl(`result/${path}/trades?strategy=${strategy}`)
     }),
+    // file operations
+    deleteResource: builder.mutation<void, string>({
+      query: (path: string) => ({
+        url: cleanUrl(`operation/${path}`),
+        method: 'DELETE',
+      })
+    })
   }),
 })
 
@@ -91,6 +98,8 @@ export const {
   useGetMetricsQuery,
   useGetEquityQuery,
   useGetTradesQuery,
+  // operations
+  useDeleteResourceMutation,
 } = trboxLabApi
 
 export const {
