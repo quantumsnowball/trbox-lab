@@ -9,10 +9,12 @@ import { RootState } from "@/redux/store"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
 import { FileNode } from '@/common/types'
 import { FC } from "react"
-import { ResultBottomNavTag, RESULT_DIR_PREFIX } from "./constants"
+import { ResultBottomNavTag, RESULT_DIR_PREFIX, RESULT_ROOT } from "./constants"
+import { useRouter } from "next/router"
 
 
 const BottomNav: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
+  const router = useRouter()
   const dispatch = useDispatch()
   const [tag, setTag] = [
     useSelector((s: RootState) => s.layoutTemp.result.section),
@@ -27,10 +29,12 @@ const BottomNav: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
       onChange={(_, newTag) => setTag(newTag)}
     >
       <BottomNavigationAction
-        disabled={isResult}
         label="Files"
         value='files'
-        icon={isResult ? null : <FormatListBulletedIcon />}
+        icon={<FormatListBulletedIcon />}
+        onClick={() => {
+          router.push(`${RESULT_ROOT}${nodes?.at(-2)?.path}`)
+        }}
       />
       <BottomNavigationAction
         disabled={!isResult}
