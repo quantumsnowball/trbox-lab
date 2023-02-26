@@ -11,6 +11,9 @@ export const trboxLabApi = createApi({
   refetchOnMountOrArgChange: true,
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
   endpoints: builder => ({
+    // 
+    // run
+    // 
     runSource: builder.query<Lines, string>({
       query: (path: string) => cleanUrl(`run/init/${path}`),
       keepUnusedDataFor: 86400, // one day
@@ -34,6 +37,9 @@ export const trboxLabApi = createApi({
         console.debug('listening to ws message updates')
       }
     }),
+    // 
+    // source
+    // 
     getSourceTree: builder.query<FileNode, void>({
       query: () => `tree/source`
     }),
@@ -43,6 +49,9 @@ export const trboxLabApi = createApi({
         responseHandler: 'text'
       }),
     }),
+    // 
+    // result
+    // 
     getResultTree: builder.query<FileNode, void>({
       query: () => `tree/result`
     }),
@@ -85,6 +94,7 @@ export const {
 } = trboxLabApi
 
 export const {
+  // run
   useQueryState: useRunSourceQueryState
 } = trboxLabApi.endpoints.runSource
 
