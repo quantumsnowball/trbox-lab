@@ -1,15 +1,20 @@
 import { FileNode } from "@/common/types"
-import { Box, Paper, Typography } from "@mui/material"
+import { Box, Button, Paper, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
+import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { FC } from "react"
 import { byDirThenName } from "../common/utils"
 import { useRouter } from 'next/router'
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RESULT_DIR_PREFIX, RESULT_ROOT } from "./constants";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { resultDirDatetimeFormatted } from "@/common/utils";
-import { StrategyParams, useGetMetaQuery } from "@/redux/slices/apiSlice";
+import { useGetMetaQuery, useLazyGetResultTreeQuery } from "@/redux/slices/apiSlice";
+import { RootState } from "@/redux/store";
+import { StrategyParams } from "@/redux/slices/apiSlice/types";
 
 
 const Icon: FC<{ name: string }> = ({ name }) =>
@@ -20,7 +25,33 @@ const Icon: FC<{ name: string }> = ({ name }) =>
       <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
   </>
 
-const Row: FC<{ name: string, type: string, path: string }> = ({ name, type, path }) => {
+const FileOpsBar: FC = () => {
+  const dispatch = useDispatch()
+  const delMode = useSelector((s: RootState) => s.layoutTemp.source.fileOps.deleteMode)
+  const toggleDelMode = () => dispatch(layoutTempActions.toggleResultFileDeleteMode())
+  const [trigger,] = useLazyGetResultTreeQuery()
+  return (
+    <Box
+      className='flex row end'
+    >
+      <Button
+        startIcon={<SyncOutlinedIcon />}
+        onClick={() => trigger()}
+      >
+        Refresh
+      </Button>
+      <Button
+        color={delMode ? 'secondary' : 'error'}
+        startIcon={delMode ? <CancelOutlinedIcon /> : <DeleteOutlinedIcon />}
+        onClick={toggleDelMode}
+      >
+        {delMode ? 'Cancel' : 'Delete'}
+      </Button>
+    </Box>
+  )
+}
+
+const Dir: FC<{ name: string, type: string, path: string }> = ({ name, type, path }) => {
   const router = useRouter()
   return (
     <Typography
@@ -100,18 +131,21 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const entries = lastNode && lastNode.children
 
   return (
-    <Box
-      className='expanding scroll'
-    >
-      {
-        entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
-          name.startsWith(RESULT_DIR_PREFIX) ?
-            <Card {...{ name, path }} />
-            :
-            <Row {...{ name, type, path }} />
-        )
-      }
-    </Box>
+    <>
+      <Box
+        className='expanding scroll'
+      >
+        {
+          entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
+            name.startsWith(RESULT_DIR_PREFIX) ?
+              <Card {...{ name, path }} />
+              :
+              <Dir {...{ name, type, path }} />
+          )
+        }
+      </Box>
+      <FileOpsBar />
+    </>
   )
 }
 export default Summary
