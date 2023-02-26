@@ -5,13 +5,14 @@ import { layoutTempActions } from './layoutTemp'
 
 export var ws: WebSocket
 
+export type StrategyParams = {
+  [name: string]: string
+}
 export type Meta = {
   timestamp: string
   source: string
   strategies: string[]
-  params: {
-    [name: string]: string
-  }
+  params: StrategyParams
 }
 
 export type Metrics = {

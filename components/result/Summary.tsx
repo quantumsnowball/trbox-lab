@@ -9,7 +9,7 @@ import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RESULT_DIR_PREFIX, RESULT_ROOT } from "./constants";
 import { useDispatch } from "react-redux";
 import { resultDirDatetimeFormatted } from "@/common/utils";
-import { useGetMetaQuery } from "@/redux/slices/apiSlice";
+import { StrategyParams, useGetMetaQuery } from "@/redux/slices/apiSlice";
 
 
 const Icon: FC<{ name: string }> = ({ name }) =>
@@ -37,7 +37,7 @@ const Row: FC<{ name: string, type: string, path: string }> = ({ name, type, pat
   )
 }
 
-const Card: FC<{ name: string, type: string, path: string }> = ({ name, type, path }) => {
+const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
   const dispatch = useDispatch()
   const router = useRouter()
   const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
@@ -50,6 +50,19 @@ const Card: FC<{ name: string, type: string, path: string }> = ({ name, type, pa
       <Typography sx={{ fontFamily: 'monospace' }}>
         {name}: {desc}
       </Typography>
+
+  const Params: FC<{ params: StrategyParams }> = ({ params }) =>
+    <>
+      <Field name='Parameters:' desc='' />
+      <Box
+        sx={{ pl: 3 }}
+      >
+        {
+          Object.entries(params).map(([name, str]) =>
+            <Field name={name} desc={str} />)
+        }
+      </Box>
+    </>
 
   return (
     <Paper
@@ -73,8 +86,7 @@ const Card: FC<{ name: string, type: string, path: string }> = ({ name, type, pa
       <Field name='strategies' desc={meta?.strategies.length} />
       {
         meta?.params ?
-          Object.entries(meta.params).map(([name, str]) =>
-            <Field name={name} desc={str} />)
+          <Params params={meta.params} />
           :
           null
       }
@@ -94,7 +106,7 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
       {
         entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
           name.startsWith(RESULT_DIR_PREFIX) ?
-            <Card {...{ name, type, path }} />
+            <Card {...{ name, path }} />
             :
             <Row {...{ name, type, path }} />
         )
