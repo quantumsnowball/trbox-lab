@@ -103,7 +103,7 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
       >
         {
           Object.entries(params).map(([name, str]) =>
-            <Field name={name} desc={str} />)
+            <Field key={name} name={name} desc={str} />)
         }
       </Box>
     </>
@@ -175,9 +175,9 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         {
           entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
             name.startsWith(RESULT_DIR_PREFIX) ?
-              <Card {...{ name, path }} />
+              <Card key={name} {...{ name, path }} />
               :
-              <Dir {...{ name, type, path }} />
+              <Dir key={name} {...{ name, type, path }} />
           )
         }
       </Box>
