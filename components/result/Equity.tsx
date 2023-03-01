@@ -33,7 +33,8 @@ const Content: FC<{ path: string }> = ({ path }) => {
       });
       // add data
       const equityParsed = Object.entries(equity).map(([time, value]) =>
-        ({ time: time.split('T')[0], value }))
+        ({ time: Date.parse(time) / 1000, value }))
+      //@ts-ignore
       series?.setData(equityParsed);
       // customization
       series?.applyOptions({
