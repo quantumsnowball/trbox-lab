@@ -4,12 +4,11 @@ import { Box, Breadcrumbs, Typography, useMediaQuery, useTheme } from '@mui/mate
 import FolderIcon from '@mui/icons-material/Folder';
 import DataObjectIcon from '@mui/icons-material/DataObject';
 import { useRouter } from 'next/router';
-import { RefreshButton, UpOneLevelButton } from '../common/buttons';
+import { UpOneLevelButton } from '../common/buttons';
 import { FileNode } from '@/common/types';
 import { layoutTempActions } from '@/redux/slices/layoutTemp';
 import { useDispatch } from 'react-redux';
 import { RESULT_DIR_PREFIX, RESULT_ROOT } from './constants';
-import { useLazyGetResultTreeQuery } from '@/redux/slices/apiSlice';
 import { resultDirDatetimeFormatted } from '@/common/utils';
 
 
@@ -31,13 +30,6 @@ const Name: FC<{ name: string }> = ({ name }) =>
         : name
     }
   </>
-
-const Refresh: FC = () => {
-  const [trigger,] = useLazyGetResultTreeQuery()
-  return (
-    <RefreshButton onClick={() => trigger()} />
-  )
-}
 
 const Up: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const dispatch = useDispatch()
@@ -76,6 +68,7 @@ const BreadCrumbs = ({ nodes }: Props) => {
   return (
     <Box
       className='flex row spread'
+      sx={{ minHeight: 40 }}
     >
       <Breadcrumbs
         className='expanding'
@@ -105,7 +98,6 @@ const BreadCrumbs = ({ nodes }: Props) => {
         }
       </Breadcrumbs >
       <Up {...{ nodes }} />
-      <Refresh />
     </Box>
   )
 }
