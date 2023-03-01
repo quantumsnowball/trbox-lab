@@ -1,4 +1,5 @@
 import { FileNode } from "@/common/types";
+import { randomRGB } from "@/common/utils";
 import { Equities, useGetEquityQuery } from "@/redux/slices/apiSlice";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { ColorType, createChart, IChartApi, ISeriesApi, PriceScaleMode } from "lightweight-charts";
@@ -23,6 +24,9 @@ const Content: FC<{ path: string }> = ({ path }) => {
     // create chart
     chart.current = createChart(ctnRef?.current ?? '', {
       autoSize: true,
+      localization: {
+        timeFormatter: (ts: number) => new Date(ts * 1e3).toISOString().replace('T', ' ').slice(0, -5)
+      },
     });
     console.debug('chart created')
     // add data
