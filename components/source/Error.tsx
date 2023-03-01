@@ -9,6 +9,7 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 //   ref: https://react-syntax-highlighter.github.io/react-syntax-highlighter/demo/
 import { railscasts as colorScheme } from 'react-syntax-highlighter/dist/cjs/styles/hljs'
 
+const LIMIT = 1000
 
 const Error: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const { data: lines } = useRunSourceQueryState(nodes?.at(-1)?.path ?? '')
@@ -28,6 +29,7 @@ const Error: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         {
           lines ?
             lines
+              .slice(-LIMIT)
               .filter(l => l.type === 'stderr')
               .map(l => l.text).join('')
             :

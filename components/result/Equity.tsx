@@ -39,7 +39,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
       })
       console.debug('series data injected')
     })
-    chart.current.timeScale().fitContent()
+    // chart.current.timeScale().fitContent()
   }, [equities])
 
   return (
