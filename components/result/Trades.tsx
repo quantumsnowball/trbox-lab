@@ -12,7 +12,13 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
   return (
     <TableContainer component={Paper}>
       <Table size='small'>
-        <TableHead>
+        <TableHead
+          sx={{
+            position: 'sticky',
+            top: 0,
+            backgroundColor: 'background.paper',
+          }}
+        >
           <TableRow>
             {fields?.map(colname =>
               <TableCell
@@ -54,26 +60,24 @@ const Tabbed: FC<{ path: string | undefined }> = ({ path }) => {
 
   return (
     <>
-      <Box>
-        <Tabs
-          value={tabId}
-          onChange={(_, newId) => setTabId(newId)}
-        >
-          {
-            strategies?.map(name =>
-              <Tab
-                key={name}
-                label={name}
-                sx={{ textTransform: 'none' }}
-              />
-            )
-          }
-        </Tabs>
+      <Tabs
+        value={tabId}
+        onChange={(_, newId) => setTabId(newId)}
+      >
         {
-          path && strategies &&
-          <Content path={path} strategy={strategies[tabId]} />
+          strategies?.map(name =>
+            <Tab
+              key={name}
+              label={name}
+              sx={{ textTransform: 'none' }}
+            />
+          )
         }
-      </Box>
+      </Tabs>
+      {
+        path && strategies &&
+        <Content path={path} strategy={strategies[tabId]} />
+      }
     </>
   )
 }
@@ -84,7 +88,7 @@ const Trades: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
 
   return (
     <Box
-      className='expanding flex column start stretch'
+      className='expanding scroll flex column start stretch'
     >
       <Tabbed {...{ path }} />
     </Box>
