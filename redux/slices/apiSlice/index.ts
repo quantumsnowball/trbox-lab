@@ -1,54 +1,20 @@
 import { FileNode } from '@/common/types'
 import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { layoutTempActions } from './layoutTemp'
+import { layoutTempActions } from '@/redux/slices/layoutTemp'
+import { Equities, Line, Lines, Meta, Metrics, TradesSchema } from './types'
 
 export var ws: WebSocket
-
-export type StrategyParams = {
-  [name: string]: string
-}
-export type Meta = {
-  timestamp: string
-  source: string
-  strategies: string[]
-  params: StrategyParams
-}
-
-export type Metrics = {
-  columns: string[],
-  index: string[],
-  data: number[][],
-}
-
-export type Equity = {
-  [timestamp: string]: number
-}
-export type Equities = {
-  [name: string]: Equity
-}
-
-export type Trade = {
-  [name: string]: string | number
-}
-export type Trades = Trade[]
-export type TradesSchema = {
-  schema: { fields: { name: string }[] }
-  data: Trades
-}
-
-
-export type Line = {
-  type: 'stdout' | 'stderr' | 'system'
-  text: string
-}
-export type Lines = Line[]
 
 export const trboxLabApi = createApi({
   reducerPath: 'trboxLabApi',
   refetchOnMountOrArgChange: true,
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  tagTypes: ['FileTree',],
   endpoints: builder => ({
+    // 
+    // run
+    // 
     runSource: builder.query<Lines, string>({
       query: (path: string) => cleanUrl(`run/init/${path}`),
       keepUnusedDataFor: 86400, // one day
@@ -72,8 +38,12 @@ export const trboxLabApi = createApi({
         console.debug('listening to ws message updates')
       }
     }),
+    // 
+    // source
+    // 
     getSourceTree: builder.query<FileNode, void>({
-      query: () => `tree/source`
+      query: () => `tree/source`,
+      providesTags: ['FileTree',],
     }),
     getSource: builder.query<string, string>({
       query: (path: string) => ({
@@ -81,8 +51,12 @@ export const trboxLabApi = createApi({
         responseHandler: 'text'
       }),
     }),
+    // 
+    // result
+    // 
     getResultTree: builder.query<FileNode, void>({
-      query: () => `tree/result`
+      query: () => `tree/result`,
+      providesTags: ['FileTree',],
     }),
     getResultSource: builder.query<string, string>({
       query: (path: string) => ({
@@ -102,6 +76,14 @@ export const trboxLabApi = createApi({
     getTrades: builder.query<TradesSchema, { path: string, strategy: string }>({
       query: ({ path, strategy }: { path: string, strategy: string }) => cleanUrl(`result/${path}/trades?strategy=${strategy}`)
     }),
+    // file operations
+    deleteResource: builder.mutation<void, string>({
+      query: (path: string) => ({
+        url: cleanUrl(`operation/${path}`),
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['FileTree',],
+    })
   }),
 })
 
@@ -120,9 +102,12 @@ export const {
   useGetMetricsQuery,
   useGetEquityQuery,
   useGetTradesQuery,
+  // operations
+  useDeleteResourceMutation,
 } = trboxLabApi
 
 export const {
+  // run
   useQueryState: useRunSourceQueryState
 } = trboxLabApi.endpoints.runSource
 
