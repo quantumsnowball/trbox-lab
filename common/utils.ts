@@ -9,3 +9,4 @@ export const resultDirDatetimeFormatted = (name: string) =>
     .replaceAll('.', ':')
     .slice(0, -7)
 
+export const randomRGB = () => '#' + Math.random().toString(16).slice(-6) 

@@ -28,7 +28,9 @@ const Content: FC<{ path: string }> = ({ path }) => {
     // add data
     Object.entries(equities).forEach(([name, equity]) => {
       // create series
-      const series = chart.current?.addLineSeries();
+      const series = chart.current?.addLineSeries({
+        color: randomRGB()
+      });
       // add data
       const equityParsed = Object.entries(equity).map(([time, value]) =>
         ({ time: time.split('T')[0], value }))
