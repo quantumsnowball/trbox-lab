@@ -2,10 +2,8 @@ import { FileNode } from "@/common/types"
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import { FC } from "react"
 import { useGetMetricsQuery } from "@/redux/slices/apiSlice";
+import { roundFloat, roundPct } from "@/common/utils";
 
-
-const roundFloat = (n: number) => (val: number) => val.toFixed(n)
-const roundPct = (n: number) => (val: number) => `${(val * 100).toFixed(n)}%`
 
 const ColumnHeader = (column: string) => {
   switch (column) {

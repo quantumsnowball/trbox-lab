@@ -9,4 +9,9 @@ export const resultDirDatetimeFormatted = (name: string) =>
     .replaceAll('.', ':')
     .slice(0, -7)
 
-export const randomRGB = () => '#' + Math.random().toString(16).slice(-6) 
+export const randomRGB = () => '#' + Math.random().toString(16).slice(-6)
+
+export const roundFloat = (n: number) => (val: number) => val.toFixed(n)
+
+export const roundPct = (n: number) => (val: number) => `${(val * 100).toFixed(n)}%`
+
