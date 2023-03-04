@@ -55,6 +55,7 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
                 {fields?.map(name =>
                   <TableCell
                     key={name}
+                    className='nowrap'
                     align='right'
                   >
                     {formatColumn(name, trade[name])}

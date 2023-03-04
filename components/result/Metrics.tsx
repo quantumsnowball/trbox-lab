@@ -64,13 +64,20 @@ const Content: FC<{ path: string }> = ({ path }) => {
                 key={strategy}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row"> {strategy} </TableCell>
+                <TableCell
+                  className='nowrap'
+                  component="th"
+                  scope="row"
+                >
+                  {strategy}
+                </TableCell>
                 {
                   r.map((val, i) => {
                     const column = metrics.columns[i]
                     return (
                       <TableCell
                         key={i}
+                        className='nowrap'
                         align='right'
                       >
                         {ColumnFormat(column)(val)}
