@@ -7,17 +7,20 @@ import { useGetMetricsQuery } from "@/redux/slices/apiSlice";
 const roundFloat = (n: number) => (val: number) => val.toFixed(n)
 const roundPct = (n: number) => (val: number) => `${(val * 100).toFixed(n)}%`
 
-// const ColumnSpec = [
-//   ['Total-%', roundPct(2)],
-//   ['CAGR', roundPct(2)],
-//   ['Mu', roundFloat(3)],
-//   ['Sigma', roundFloat(3)],
-//   ['Sharpe', roundFloat(3)],
-//   ['Mdd-%', roundPct(2)],
-//   ['Mdd-bar', roundFloat(0)],
-//   ['Mdd-d', roundFloat(0)],
-//   ['Calmar', roundFloat(3)],
-// ]
+const ColumnHeader = (column: string) => {
+  switch (column) {
+    case 'total_return': return 'Total%'
+    case 'cagr': return 'CAGR'
+    case 'mu': return 'Mu'
+    case 'sigma': return 'Sigma'
+    case 'sharpe': return 'Sharpe'
+    case 'mdd_pct': return 'Mdd%'
+    case 'mdd_bars': return 'Bars'
+    case 'mdd_days': return 'Days'
+    case 'calmar': return 'Calmar'
+    default: return column
+  }
+}
 
 const ColumnFormat = (column: string) => {
   switch (column) {
@@ -51,7 +54,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
                 key={colname}
                 align='right'
               >
-                {colname}
+                {ColumnHeader(colname)}
               </TableCell>)}
           </TableRow>
         </TableHead>
