@@ -1,9 +1,25 @@
 import { FileNode } from "@/common/types";
+import { roundCurrency, roundFloat } from "@/common/utils";
 import { useGetMetaQuery, useGetTradesQuery } from "@/redux/slices/apiSlice";
 import { Box, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs } from "@mui/material";
 import { FC, useState } from "react";
 
 
+const formatColumn = (column: string, val: string | number) => {
+  switch (column) {
+    case 'Date':
+      return (val as string).replace('T', ' ').slice(0, -4)
+    case 'Quantity':
+      return roundFloat(4)(val as number)
+    case 'Price':
+    case 'GrossProceeds':
+    case 'Fees':
+    case 'NetProceeds':
+      return roundCurrency(2)(val as number)
+    default:
+      return val
+  }
+}
 
 const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   const { data } = useGetTradesQuery({ path, strategy })
@@ -39,9 +55,11 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
                 {fields?.map(name =>
                   <TableCell
                     key={name}
-                    align='right'>
-                    {trade[name]}
+                    align='right'
+                  >
+                    {formatColumn(name, trade[name])}
                   </TableCell>
+
                 )}
               </TableRow>
             )

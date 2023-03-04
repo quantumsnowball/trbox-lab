@@ -71,7 +71,8 @@ const Content: FC<{ path: string }> = ({ path }) => {
                     return (
                       <TableCell
                         key={i}
-                        align='right'>
+                        align='right'
+                      >
                         {ColumnFormat(column)(val)}
                       </TableCell>
                     )

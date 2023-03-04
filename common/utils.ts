@@ -15,3 +15,4 @@ export const roundFloat = (n: number) => (val: number) => val.toFixed(n)
 
 export const roundPct = (n: number) => (val: number) => `${(val * 100).toFixed(n)}%`
 
+export const roundCurrency = (n: number) => (val: number) => val.toLocaleString('en-US', { maximumFractionDigits: n })
