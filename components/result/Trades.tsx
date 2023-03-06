@@ -27,14 +27,11 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
   const trades = data?.data
   return (
     <TableContainer component={Paper}>
-      <Table size='small'>
-        <TableHead
-          sx={{
-            position: 'sticky',
-            top: 0,
-            backgroundColor: 'background.paper',
-          }}
-        >
+      <Table
+        stickyHeader
+        size='small'
+      >
+        <TableHead>
           <TableRow>
             {fields?.map(colname =>
               <TableCell

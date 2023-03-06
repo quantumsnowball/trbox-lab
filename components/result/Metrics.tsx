@@ -43,7 +43,10 @@ const Content: FC<{ path: string }> = ({ path }) => {
   const { data: metrics } = useGetMetricsQuery(path)
   return (
     <TableContainer component={Paper}>
-      <Table size='small'>
+      <Table
+        stickyHeader
+        size='small'
+      >
         <TableHead>
           <TableRow>
             <TableCell>name</TableCell>
