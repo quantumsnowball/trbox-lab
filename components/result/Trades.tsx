@@ -80,6 +80,8 @@ const Tabbed: FC<{ path: string | undefined }> = ({ path }) => {
   return (
     <>
       <Tabs
+        variant="scrollable"
+        scrollButtons="auto"
         value={tabId}
         onChange={(_, newId) => setTabId(newId)}
       >
