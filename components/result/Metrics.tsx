@@ -39,11 +39,6 @@ const ColumnFormat = (column: string) => {
   }
 }
 
-const bySharpeDesc = (a: (string | number)[], b: (string | number)[]) => {
-  if (a[5] < b[5]) return +1
-  if (a[5] > b[5]) return -1
-  return 0
-}
 
 const Content: FC<{ path: string }> = ({ path }) => {
   const { data: metrics } = useGetMetricsQuery(path)
@@ -51,6 +46,13 @@ const Content: FC<{ path: string }> = ({ path }) => {
   const rows = metrics?.data.map((row, i) => [metrics.index[i], ...row])
   const [order, setOrder] = useState<'asc' | 'desc'>('desc')
   const [orderBy, setOrderBy] = useState(5) // sharpe
+
+  const compareBy = (j: number) =>
+    (a: (string | number)[], b: (string | number)[]) => {
+      if (a[j] < b[j]) return +1
+      if (a[j] > b[j]) return -1
+      return 0
+    }
 
   return (
     <TableContainer component={Paper}>
@@ -77,7 +79,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
         </TableHead>
         <TableBody>
           {metrics && headers && rows && [...rows]
-            .sort(bySharpeDesc)
+            .sort(compareBy(orderBy))
             .map(row => {
               const strategy = row[0] as string
               return (
