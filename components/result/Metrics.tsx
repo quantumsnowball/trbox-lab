@@ -1,6 +1,6 @@
 import { FileNode } from "@/common/types"
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
-import { FC } from "react"
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from "@mui/material"
+import { FC, useState } from "react"
 import { useGetMetricsQuery } from "@/redux/slices/apiSlice";
 import { roundFloat, roundPct } from "@/common/utils";
 
@@ -49,6 +49,8 @@ const Content: FC<{ path: string }> = ({ path }) => {
   const { data: metrics } = useGetMetricsQuery(path)
   const headers = metrics && ['Name', ...metrics.columns]
   const rows = metrics?.data.map((row, i) => [metrics.index[i], ...row])
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc')
+  const [orderBy, setOrderBy] = useState(5) // sharpe
 
   return (
     <TableContainer component={Paper}>
@@ -58,12 +60,18 @@ const Content: FC<{ path: string }> = ({ path }) => {
       >
         <TableHead>
           <TableRow>
-            {headers?.map(colname =>
+            {headers?.map((colname, j) =>
               <TableCell
                 key={colname}
                 align='right'
               >
-                {ColumnHeader(colname)}
+                <TableSortLabel
+                  active={j === orderBy}
+                  direction={orderBy === j ? order : 'desc'}
+                  onClick={() => setOrderBy(j)}
+                >
+                  {ColumnHeader(colname)}
+                </TableSortLabel>
               </TableCell>)}
           </TableRow>
         </TableHead>
