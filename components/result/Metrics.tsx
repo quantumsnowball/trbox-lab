@@ -47,10 +47,10 @@ const Content: FC<{ path: string }> = ({ path }) => {
   const [order, setOrder] = useState<'asc' | 'desc'>('desc')
   const [orderBy, setOrderBy] = useState(5) // sharpe
 
-  const compareBy = (j: number) =>
+  const compareBy = (j: number, asc: boolean) =>
     (a: (string | number)[], b: (string | number)[]) => {
-      if (a[j] < b[j]) return +1
-      if (a[j] > b[j]) return -1
+      if (a[j] < b[j]) return asc ? -1 : +1
+      if (a[j] > b[j]) return asc ? +1 : -1
       return 0
     }
 
@@ -69,8 +69,15 @@ const Content: FC<{ path: string }> = ({ path }) => {
               >
                 <TableSortLabel
                   active={j === orderBy}
-                  direction={orderBy === j ? order : 'desc'}
-                  onClick={() => setOrderBy(j)}
+                  direction={j === orderBy ? order : 'desc'}
+                  onClick={() => {
+                    if (j === orderBy) {
+                      setOrder(order === 'desc' ? 'asc' : 'desc')
+                    } else {
+                      setOrderBy(j)
+                      setOrder('desc')
+                    }
+                  }}
                 >
                   {ColumnHeader(colname)}
                 </TableSortLabel>
@@ -79,7 +86,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
         </TableHead>
         <TableBody>
           {metrics && headers && rows && [...rows]
-            .sort(compareBy(orderBy))
+            .sort(compareBy(orderBy, order === 'asc'))
             .map(row => {
               const strategy = row[0] as string
               return (
