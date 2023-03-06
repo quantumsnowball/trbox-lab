@@ -35,12 +35,21 @@ const ColumnFormat = (column: string) => {
     case 'mdd_days':
       return roundFloat(0)
     default:
-      return roundFloat(3)
+      return (val: string | number) => val
   }
+}
+
+const bySharpeDesc = (a: (string | number)[], b: (string | number)[]) => {
+  if (a[5] < b[5]) return +1
+  if (a[5] > b[5]) return -1
+  return 0
 }
 
 const Content: FC<{ path: string }> = ({ path }) => {
   const { data: metrics } = useGetMetricsQuery(path)
+  const headers = metrics && ['Name', ...metrics.columns]
+  const rows = metrics?.data.map((row, i) => [metrics.index[i], ...row])
+
   return (
     <TableContainer component={Paper}>
       <Table
@@ -49,8 +58,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
       >
         <TableHead>
           <TableRow>
-            <TableCell>name</TableCell>
-            {metrics?.columns.map(colname =>
+            {headers?.map(colname =>
               <TableCell
                 key={colname}
                 align='right'
@@ -60,37 +68,32 @@ const Content: FC<{ path: string }> = ({ path }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {metrics?.data.map((r, i) => {
-            const strategy = metrics.index[i]
-            return (
-              <TableRow
-                key={strategy}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell
-                  className='nowrap'
-                  component="th"
-                  scope="row"
+          {metrics && headers && rows && [...rows]
+            .sort(bySharpeDesc)
+            .map(row => {
+              const strategy = row[0] as string
+              return (
+                <TableRow
+                  key={strategy}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  {strategy}
-                </TableCell>
-                {
-                  r.map((val, i) => {
-                    const column = metrics.columns[i]
-                    return (
-                      <TableCell
-                        key={i}
-                        className='nowrap'
-                        align='right'
-                      >
-                        {ColumnFormat(column)(val)}
-                      </TableCell>
-                    )
-                  })
-                }
-              </TableRow>
-            )
-          })}
+                  {
+                    row.map((val, i) => {
+                      const column = headers[i]
+                      return (
+                        <TableCell
+                          key={i}
+                          className='nowrap'
+                          align='right'
+                        >
+                          {ColumnFormat(column)(val)}
+                        </TableCell>
+                      )
+                    })
+                  }
+                </TableRow>
+              )
+            })}
         </TableBody>
       </Table>
     </TableContainer>
