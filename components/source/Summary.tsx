@@ -87,10 +87,10 @@ const Summary: FC<Props> = ({ nodes }) => {
         {
           entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
             <Box
+              key={path}
               className='flex row spread'
             >
               <Typography
-                key={name}
                 variant='h6'
                 className='flex row start'
                 sx={{ m: 1, p: 1, cursor: 'pointer' }}

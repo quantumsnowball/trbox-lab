@@ -60,7 +60,7 @@ const Dir: FC<{ name: string, type: string, path: string }> = ({ name, type, pat
       className='flex row spread'
     >
       <Typography
-        key={name}
+        key={path}
         variant='h6'
         className='flex row start'
         sx={{ m: 1, p: 1, cursor: 'pointer' }}
@@ -175,9 +175,9 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         {
           entries && [...entries].sort(byDirThenReverseName).map(({ name, type, path }) =>
             name.startsWith(RESULT_DIR_PREFIX) ?
-              <Card key={name} {...{ name, path }} />
+              <Card key={path} {...{ name, path }} />
               :
-              <Dir key={name} {...{ name, type, path }} />
+              <Dir key={path} {...{ name, type, path }} />
           )
         }
       </Box>
