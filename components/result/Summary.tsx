@@ -1,5 +1,5 @@
 import { FileNode } from "@/common/types"
-import { Box, Button, IconButton, Paper, Typography } from "@mui/material"
+import { Box, Button, IconButton, Typography } from "@mui/material"
 import FolderIcon from '@mui/icons-material/Folder';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
@@ -7,7 +7,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { FC } from "react"
-import { byDirThenName } from "../common/utils"
+import { byDirThenReverseName } from "../common/utils"
 import { useRouter } from 'next/router'
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RESULT_DIR_PREFIX, RESULT_ROOT } from "./constants";
@@ -173,7 +173,7 @@ const Summary: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         className='expanding scroll'
       >
         {
-          entries && [...entries].sort(byDirThenName).map(({ name, type, path }) =>
+          entries && [...entries].sort(byDirThenReverseName).map(({ name, type, path }) =>
             name.startsWith(RESULT_DIR_PREFIX) ?
               <Card key={name} {...{ name, path }} />
               :
