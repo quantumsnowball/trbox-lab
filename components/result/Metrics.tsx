@@ -1,6 +1,6 @@
 import { FileNode } from "@/common/types"
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
-import { FC } from "react"
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from "@mui/material"
+import { FC, useState } from "react"
 import { useGetMetricsQuery } from "@/redux/slices/apiSlice";
 import { roundFloat, roundPct } from "@/common/utils";
 
@@ -39,8 +39,21 @@ const ColumnFormat = (column: string) => {
   }
 }
 
+
 const Content: FC<{ path: string }> = ({ path }) => {
   const { data: metrics } = useGetMetricsQuery(path)
+  const headers = metrics && ['Name', ...metrics.columns]
+  const rows = metrics?.data.map((row, i) => [metrics.index[i], ...row])
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc')
+  const [orderBy, setOrderBy] = useState(5) // sharpe
+
+  const compareBy = (j: number, asc: boolean) =>
+    (a: (string | number)[], b: (string | number)[]) => {
+      if (a[j] < b[j]) return asc ? -1 : +1
+      if (a[j] > b[j]) return asc ? +1 : -1
+      return 0
+    }
+
   return (
     <TableContainer component={Paper}>
       <Table
@@ -49,48 +62,66 @@ const Content: FC<{ path: string }> = ({ path }) => {
       >
         <TableHead>
           <TableRow>
-            <TableCell>name</TableCell>
-            {metrics?.columns.map(colname =>
+            {headers?.map((colname, j) =>
               <TableCell
                 key={colname}
                 align='right'
+                sx={j === 0 ? {
+                  position: 'sticky',
+                  left: 0,
+                  zIndex: 99,
+                  backgroundColor: 'background.paper',
+                } : {}}
               >
-                {ColumnHeader(colname)}
+                <TableSortLabel
+                  active={j === orderBy}
+                  direction={j === orderBy ? order : 'desc'}
+                  onClick={() => {
+                    if (j === orderBy) {
+                      setOrder(order === 'desc' ? 'asc' : 'desc')
+                    } else {
+                      setOrderBy(j)
+                      setOrder('desc')
+                    }
+                  }}
+                >
+                  {ColumnHeader(colname)}
+                </TableSortLabel>
               </TableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
-          {metrics?.data.map((r, i) => {
-            const strategy = metrics.index[i]
-            return (
-              <TableRow
-                key={strategy}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell
-                  className='nowrap'
-                  component="th"
-                  scope="row"
+          {metrics && headers && rows && [...rows]
+            .sort(compareBy(orderBy, order === 'asc'))
+            .map(row => {
+              const strategy = row[0] as string
+              return (
+                <TableRow
+                  key={strategy}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  {strategy}
-                </TableCell>
-                {
-                  r.map((val, i) => {
-                    const column = metrics.columns[i]
-                    return (
-                      <TableCell
-                        key={i}
-                        className='nowrap'
-                        align='right'
-                      >
-                        {ColumnFormat(column)(val)}
-                      </TableCell>
-                    )
-                  })
-                }
-              </TableRow>
-            )
-          })}
+                  {
+                    row.map((val, j) => {
+                      const column = headers[j]
+                      return (
+                        <TableCell
+                          key={j}
+                          className='nowrap'
+                          align='right'
+                          sx={j === 0 ? {
+                            position: 'sticky',
+                            left: 0,
+                            backgroundColor: 'background.paper',
+                          } : {}}
+                        >
+                          {j === 0 ? val : ColumnFormat(column)(val as number)}
+                        </TableCell>
+                      )
+                    })
+                  }
+                </TableRow>
+              )
+            })}
         </TableBody>
       </Table>
     </TableContainer>
