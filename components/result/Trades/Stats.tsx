@@ -54,7 +54,7 @@ const Field: FC<{ name: string, value: string }> = ({ name, value }) => {
 
 // <Field name='Average trade fees' value='1.3454 USDT' />
 const TradeStatsCard: FC<{ title: string, items: TradeStats }> =
-  ({ title, items: { count, avg_interval, avg_quantity, avg_value } }) => {
+  ({ title, items: { count, avg_interval, avg_quantity, avg_value, avg_fees } }) => {
     return (
       <Section title={title}>
         <Field
@@ -71,7 +71,11 @@ const TradeStatsCard: FC<{ title: string, items: TradeStats }> =
         />
         <Field
           name='Average value'
-          value={avg_value ? `${avg_value.toFixed(4)}` : '-'}
+          value={avg_value ? `${avg_value.toFixed(2)}` : '-'}
+        />
+        <Field
+          name='Average fees'
+          value={avg_fees ? `${avg_fees.toFixed(2)}` : '-'}
         />
       </Section>
     )
