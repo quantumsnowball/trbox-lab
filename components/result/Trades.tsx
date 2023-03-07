@@ -1,8 +1,10 @@
 import { FileNode } from "@/common/types";
 import { roundCurrency, roundFloat } from "@/common/utils";
 import { useGetMetaQuery, useGetTradesQuery } from "@/redux/slices/apiSlice";
-import { Box, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from "@mui/material";
 import { FC, useState } from "react";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 
 
 const formatColumn = (column: string, val: string | number) => {
@@ -26,7 +28,10 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
   const fields = data?.schema.fields.map((field: { name: string }) => field.name)
   const trades = data?.data
   return (
-    <TableContainer component={Paper}>
+    <TableContainer
+      className='expanding'
+      component={Paper}
+    >
       <Table
         stickyHeader
         size='small'
@@ -66,7 +71,31 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
       </Table>
     </TableContainer>
   )
+}
 
+const Stats = () => {
+  const [expanded, setExpanded] = useState(true)
+
+  return (
+    <Accordion
+      disableGutters
+      expanded={expanded}
+      onChange={() => setExpanded(prev => !prev)}
+    >
+      <AccordionSummary
+        expandIcon={<ExpandLessIcon />}
+      >
+        <Typography>
+          Statistics
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Typography>
+          Trade stats details
+        </Typography>
+      </AccordionDetails>
+    </Accordion>
+  )
 }
 
 const Tabbed: FC<{ path: string | undefined }> = ({ path }) => {
@@ -94,7 +123,10 @@ const Tabbed: FC<{ path: string | undefined }> = ({ path }) => {
       </Tabs>
       {
         path && strategies &&
-        <Content path={path} strategy={strategies[tabId]} />
+        <>
+          <Content path={path} strategy={strategies[tabId]} />
+          <Stats />
+        </>
       }
     </>
   )
