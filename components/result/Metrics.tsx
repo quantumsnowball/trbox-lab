@@ -35,7 +35,7 @@ const ColumnFormat = (column: string) => {
     case 'mdd_days':
       return roundFloat(0)
     default:
-      return (val: string | number) => val
+      return roundFloat(3)
   }
 }
 
@@ -114,7 +114,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
                             backgroundColor: 'background.paper',
                           } : {}}
                         >
-                          {ColumnFormat(column)(val)}
+                          {j === 0 ? val : ColumnFormat(column)(val as number)}
                         </TableCell>
                       )
                     })
