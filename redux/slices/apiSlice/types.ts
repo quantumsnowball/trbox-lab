@@ -18,6 +18,7 @@ export type TradeStats = {
   count: number
   avg_interval: number | null
   avg_quantity: number | null
+  avg_value: number | null
 }
 export type Stats = {
   all: TradeStats,
