@@ -12,6 +12,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { Box } from "@mui/system";
 import { useGetStatsQuery } from "@/redux/slices/apiSlice";
 import { TradeStats } from "@/redux/slices/apiSlice/types";
+import { roundCurrency, roundFloat } from "@/common/utils";
 
 const Section: FC<{ title: string } & PropsWithChildren> = ({ title, children }) => {
   return (
@@ -59,23 +60,23 @@ const TradeStatsCard: FC<{ title: string, items: TradeStats }> =
       <Section title={title}>
         <Field
           name='Total count'
-          value={count.toString()}
+          value={roundFloat(0)(count)}
         />
         <Field
           name='Average interval'
-          value={avg_interval ? `${avg_interval.toFixed(2)} days` : '-'}
+          value={avg_interval ? `${roundFloat(2)(avg_interval)} days` : '-'}
         />
         <Field
           name='Average quantity'
-          value={avg_quantity ? `${avg_quantity.toFixed(4)}` : '-'}
+          value={avg_quantity ? `${roundFloat(4)(avg_quantity)}` : '-'}
         />
         <Field
           name='Average value'
-          value={avg_value ? `${avg_value.toFixed(2)}` : '-'}
+          value={avg_value ? `${roundCurrency(2)(avg_value)}` : '-'}
         />
         <Field
           name='Average fees'
-          value={avg_fees ? `${avg_fees.toFixed(2)}` : '-'}
+          value={avg_fees ? `${roundCurrency(2)(avg_fees)}` : '-'}
         />
       </Section>
     )
