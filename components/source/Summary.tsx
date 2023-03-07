@@ -59,7 +59,6 @@ const DeleteButton: FC<{ path: string }> = ({ path }) => {
     <IconButton
       color='error'
       onClick={() => {
-        console.log({ path })
         deletePath(path)
       }}
     >

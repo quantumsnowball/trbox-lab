@@ -11,6 +11,7 @@ import { FC, PropsWithChildren, useState } from "react";
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { Box } from "@mui/system";
 import { useGetStatsQuery } from "@/redux/slices/apiSlice";
+import { TradeStats } from "@/redux/slices/apiSlice/types";
 
 const Section: FC<{ title: string } & PropsWithChildren> = ({ title, children }) => {
   return (
@@ -51,6 +52,24 @@ const Field: FC<{ name: string, value: string }> = ({ name, value }) => {
   )
 }
 
+// <Field name='Average trade quantity' value='$200.3454' />
+// <Field name='Average trade value' value='200.3454 USDT' />
+// <Field name='Average trade fees' value='1.3454 USDT' />
+const TradeStatsCard: FC<{ title: string, items: TradeStats }> = ({ title, items }) => {
+  return (
+    <Section title={title}>
+      <Field
+        name='Total count'
+        value={items.count.toString()}
+      />
+      <Field
+        name='Average trade interval'
+        value={`${items.avg_interval?.toFixed(2)} days`}
+      />
+    </Section>
+  )
+}
+
 const Stats: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   const { data: stats } = useGetStatsQuery({ path, strategy })
   const [expanded, setExpanded] = useState(true)
@@ -79,27 +98,9 @@ const Stats: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
             maxHeight: isSmall ? '40vh' : '35vh'
           }}
         >
-          <Section title='All'>
-            <Field name='Total count' value={stats.all.count.toString()} />
-            <Field name='Average trade interval' value='3.02 days' />
-            <Field name='Average trade quantity' value='$200.3454' />
-            <Field name='Average trade value' value='200.3454 USDT' />
-            <Field name='Average trade fees' value='1.3454 USDT' />
-          </Section>
-          <Section title='Buys'>
-            <Field name='Total count' value={stats.buys.count.toString()} />
-            <Field name='Average trade interval' value='3.02 days' />
-            <Field name='Average trade quantity' value='$200.3454' />
-            <Field name='Average trade value' value='200.3454 USDT' />
-            <Field name='Average trade fees' value='1.3454 USDT' />
-          </Section>
-          <Section title='Sells'>
-            <Field name='Total count' value={stats.sells.count.toString()} />
-            <Field name='Average trade interval' value='3.02 days' />
-            <Field name='Average trade quantity' value='$200.3454' />
-            <Field name='Average trade value' value='200.3454 USDT' />
-            <Field name='Average trade fees' value='1.3454 USDT' />
-          </Section>
+          <TradeStatsCard title='All' items={stats.all} />
+          <TradeStatsCard title='Buys' items={stats.buys} />
+          <TradeStatsCard title='Sells' items={stats.sells} />
           <Section title='Win'>
             <Field name='Win rate' value='65%' />
             <Field name='Average duration' value='1.5 days' />
