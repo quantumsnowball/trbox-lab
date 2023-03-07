@@ -55,20 +55,36 @@ const Field: FC<{ name: string, value: string }> = ({ name, value }) => {
 // <Field name='Average trade quantity' value='$200.3454' />
 // <Field name='Average trade value' value='200.3454 USDT' />
 // <Field name='Average trade fees' value='1.3454 USDT' />
-const TradeStatsCard: FC<{ title: string, items: TradeStats }> = ({ title, items }) => {
-  return (
-    <Section title={title}>
-      <Field
-        name='Total count'
-        value={items.count.toString()}
-      />
-      <Field
-        name='Average trade interval'
-        value={`${items.avg_interval?.toFixed(2)} days`}
-      />
-    </Section>
-  )
-}
+const TradeStatsCard: FC<{ title: string, items: TradeStats }> =
+  ({ title, items: { count, avg_interval, avg_quantity } }) => {
+    return (
+      <Section title={title}>
+        <Field
+          name='Total count'
+          value={count.toString()}
+        />
+        <Field
+          name='Average interval'
+          value={avg_interval ? `${avg_interval.toFixed(2)} days` : '-'}
+        />
+        <Field
+          name='Average quantity'
+          value={avg_quantity ? `${avg_quantity.toFixed(4)}` : '-'}
+        />
+      </Section>
+    )
+  }
+
+// <Section title='Win'>
+//   <Field name='Win rate' value='65%' />
+//   <Field name='Average duration' value='1.5 days' />
+//   <Field name='Average win %' value='+12.05%' />
+// </Section>
+// <Section title='Loss'>
+//   <Field name='Loss rate' value='45%' />
+//   <Field name='Average duration' value='2.5 days' />
+//   <Field name='Average loss %' value='-5.05%' />
+// </Section>
 
 const Stats: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   const { data: stats } = useGetStatsQuery({ path, strategy })
@@ -101,16 +117,6 @@ const Stats: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
           <TradeStatsCard title='All' items={stats.all} />
           <TradeStatsCard title='Buys' items={stats.buys} />
           <TradeStatsCard title='Sells' items={stats.sells} />
-          <Section title='Win'>
-            <Field name='Win rate' value='65%' />
-            <Field name='Average duration' value='1.5 days' />
-            <Field name='Average win %' value='+12.05%' />
-          </Section>
-          <Section title='Loss'>
-            <Field name='Loss rate' value='45%' />
-            <Field name='Average duration' value='2.5 days' />
-            <Field name='Average loss %' value='-5.05%' />
-          </Section>
         </AccordionDetails>
         :
         null
