@@ -15,9 +15,9 @@ export type Metrics = {
 }
 
 export type Stats = {
-  columns: string[],
-  index: string[],
-  data: number[][],
+  trade_count: number,
+  buy_count: number,
+  sell_count: number,
 }
 
 export type Equity = {

@@ -2,7 +2,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Paper,
   TextField,
   Typography,
   useMediaQuery,
@@ -53,7 +52,7 @@ const Field: FC<{ name: string, value: string }> = ({ name, value }) => {
 }
 
 const Stats: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
-  const { data } = useGetStatsQuery({ path, strategy })
+  const { data: stats } = useGetStatsQuery({ path, strategy })
   const [expanded, setExpanded] = useState(true)
   const theme = useTheme()
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
@@ -73,44 +72,48 @@ const Stats: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
           Statistics
         </Typography>
       </AccordionSummary>
-      <AccordionDetails
-        className='scroll'
-        sx={{
-          maxHeight: isSmall ? '40vh' : '35vh'
-        }}
-      >
-        <Section title='All'>
-          <Field name='Total count' value='20' />
-          <Field name='Average trade interval' value='3.02 days' />
-          <Field name='Average trade quantity' value='$200.3454' />
-          <Field name='Average trade value' value='200.3454 USDT' />
-          <Field name='Average trade fees' value='1.3454 USDT' />
-        </Section>
-        <Section title='Buys'>
-          <Field name='Total count' value='20' />
-          <Field name='Average trade interval' value='3.02 days' />
-          <Field name='Average trade quantity' value='$200.3454' />
-          <Field name='Average trade value' value='200.3454 USDT' />
-          <Field name='Average trade fees' value='1.3454 USDT' />
-        </Section>
-        <Section title='Sells'>
-          <Field name='Total count' value='20' />
-          <Field name='Average trade interval' value='3.02 days' />
-          <Field name='Average trade quantity' value='$200.3454' />
-          <Field name='Average trade value' value='200.3454 USDT' />
-          <Field name='Average trade fees' value='1.3454 USDT' />
-        </Section>
-        <Section title='Win'>
-          <Field name='Win rate' value='65%' />
-          <Field name='Average duration' value='1.5 days' />
-          <Field name='Average win %' value='+12.05%' />
-        </Section>
-        <Section title='Loss'>
-          <Field name='Loss rate' value='45%' />
-          <Field name='Average duration' value='2.5 days' />
-          <Field name='Average loss %' value='-5.05%' />
-        </Section>
-      </AccordionDetails>
+      {stats ?
+        <AccordionDetails
+          className='scroll'
+          sx={{
+            maxHeight: isSmall ? '40vh' : '35vh'
+          }}
+        >
+          <Section title='All'>
+            <Field name='Total count' value={stats.trade_count.toString()} />
+            <Field name='Average trade interval' value='3.02 days' />
+            <Field name='Average trade quantity' value='$200.3454' />
+            <Field name='Average trade value' value='200.3454 USDT' />
+            <Field name='Average trade fees' value='1.3454 USDT' />
+          </Section>
+          <Section title='Buys'>
+            <Field name='Total count' value={stats.buy_count.toString()} />
+            <Field name='Average trade interval' value='3.02 days' />
+            <Field name='Average trade quantity' value='$200.3454' />
+            <Field name='Average trade value' value='200.3454 USDT' />
+            <Field name='Average trade fees' value='1.3454 USDT' />
+          </Section>
+          <Section title='Sells'>
+            <Field name='Total count' value={stats.sell_count.toString()} />
+            <Field name='Average trade interval' value='3.02 days' />
+            <Field name='Average trade quantity' value='$200.3454' />
+            <Field name='Average trade value' value='200.3454 USDT' />
+            <Field name='Average trade fees' value='1.3454 USDT' />
+          </Section>
+          <Section title='Win'>
+            <Field name='Win rate' value='65%' />
+            <Field name='Average duration' value='1.5 days' />
+            <Field name='Average win %' value='+12.05%' />
+          </Section>
+          <Section title='Loss'>
+            <Field name='Loss rate' value='45%' />
+            <Field name='Average duration' value='2.5 days' />
+            <Field name='Average loss %' value='-5.05%' />
+          </Section>
+        </AccordionDetails>
+        :
+        null
+      }
     </Accordion>
   )
 }
