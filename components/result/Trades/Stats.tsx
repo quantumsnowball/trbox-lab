@@ -11,6 +11,7 @@ import {
 import { FC, PropsWithChildren, useState } from "react";
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { Box } from "@mui/system";
+import { useGetStatsQuery } from "@/redux/slices/apiSlice";
 
 const Section: FC<{ title: string } & PropsWithChildren> = ({ title, children }) => {
   return (
@@ -51,7 +52,8 @@ const Field: FC<{ name: string, value: string }> = ({ name, value }) => {
   )
 }
 
-const Stats = () => {
+const Stats: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
+  const { data } = useGetStatsQuery({ path, strategy })
   const [expanded, setExpanded] = useState(true)
   const theme = useTheme()
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
@@ -77,6 +79,13 @@ const Stats = () => {
           maxHeight: isSmall ? '40vh' : '35vh'
         }}
       >
+        <Section title='All'>
+          <Field name='Total count' value='20' />
+          <Field name='Average trade interval' value='3.02 days' />
+          <Field name='Average trade quantity' value='$200.3454' />
+          <Field name='Average trade value' value='200.3454 USDT' />
+          <Field name='Average trade fees' value='1.3454 USDT' />
+        </Section>
         <Section title='Buys'>
           <Field name='Total count' value='20' />
           <Field name='Average trade interval' value='3.02 days' />

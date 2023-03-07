@@ -37,7 +37,7 @@ const Tabbed: FC<{ path: string | undefined }> = ({ path }) => {
         path && strategies &&
         <>
           <TradeList path={path} strategy={strategies[tabId]} />
-          <Stats />
+          <Stats path={path} strategy={strategies[tabId]} />
         </>
       }
     </>

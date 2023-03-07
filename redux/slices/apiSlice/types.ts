@@ -14,6 +14,12 @@ export type Metrics = {
   data: number[][],
 }
 
+export type Stats = {
+  columns: string[],
+  index: string[],
+  data: number[][],
+}
+
 export type Equity = {
   [timestamp: string]: number
 }
