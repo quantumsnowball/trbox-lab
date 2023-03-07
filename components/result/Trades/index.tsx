@@ -1,10 +1,20 @@
 import { FileNode } from "@/common/types";
 import { roundCurrency, roundFloat } from "@/common/utils";
 import { useGetMetaQuery, useGetTradesQuery } from "@/redux/slices/apiSlice";
-import { Accordion, AccordionDetails, AccordionSummary, Box, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Tab,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tabs,
+} from "@mui/material";
 import { FC, useState } from "react";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import ExpandLessIcon from '@mui/icons-material/ExpandLess'
+import Stats from "./Stats";
 
 
 const formatColumn = (column: string, val: string | number) => {
@@ -70,31 +80,6 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
         </TableBody>
       </Table>
     </TableContainer>
-  )
-}
-
-const Stats = () => {
-  const [expanded, setExpanded] = useState(true)
-
-  return (
-    <Accordion
-      disableGutters
-      expanded={expanded}
-      onChange={() => setExpanded(prev => !prev)}
-    >
-      <AccordionSummary
-        expandIcon={<ExpandLessIcon />}
-      >
-        <Typography>
-          Statistics
-        </Typography>
-      </AccordionSummary>
-      <AccordionDetails>
-        <Typography>
-          Trade stats details
-        </Typography>
-      </AccordionDetails>
-    </Accordion>
   )
 }
 
