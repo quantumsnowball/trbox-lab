@@ -66,6 +66,12 @@ const Content: FC<{ path: string }> = ({ path }) => {
               <TableCell
                 key={colname}
                 align='right'
+                sx={j === 0 ? {
+                  position: 'sticky',
+                  left: 0,
+                  zIndex: 99,
+                  backgroundColor: 'background.paper',
+                } : {}}
               >
                 <TableSortLabel
                   active={j === orderBy}
@@ -95,13 +101,18 @@ const Content: FC<{ path: string }> = ({ path }) => {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   {
-                    row.map((val, i) => {
-                      const column = headers[i]
+                    row.map((val, j) => {
+                      const column = headers[j]
                       return (
                         <TableCell
-                          key={i}
+                          key={j}
                           className='nowrap'
                           align='right'
+                          sx={j === 0 ? {
+                            position: 'sticky',
+                            left: 0,
+                            backgroundColor: 'background.paper',
+                          } : {}}
                         >
                           {ColumnFormat(column)(val)}
                         </TableCell>
