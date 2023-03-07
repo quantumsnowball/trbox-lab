@@ -80,21 +80,21 @@ const Stats: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
           }}
         >
           <Section title='All'>
-            <Field name='Total count' value={stats.trade_count.toString()} />
+            <Field name='Total count' value={stats.all.count.toString()} />
             <Field name='Average trade interval' value='3.02 days' />
             <Field name='Average trade quantity' value='$200.3454' />
             <Field name='Average trade value' value='200.3454 USDT' />
             <Field name='Average trade fees' value='1.3454 USDT' />
           </Section>
           <Section title='Buys'>
-            <Field name='Total count' value={stats.buy_count.toString()} />
+            <Field name='Total count' value={stats.buys.count.toString()} />
             <Field name='Average trade interval' value='3.02 days' />
             <Field name='Average trade quantity' value='$200.3454' />
             <Field name='Average trade value' value='200.3454 USDT' />
             <Field name='Average trade fees' value='1.3454 USDT' />
           </Section>
           <Section title='Sells'>
-            <Field name='Total count' value={stats.sell_count.toString()} />
+            <Field name='Total count' value={stats.sells.count.toString()} />
             <Field name='Average trade interval' value='3.02 days' />
             <Field name='Average trade quantity' value='$200.3454' />
             <Field name='Average trade value' value='200.3454 USDT' />

@@ -14,10 +14,13 @@ export type Metrics = {
   data: number[][],
 }
 
+export type TradeStats = {
+  count: number
+}
 export type Stats = {
-  trade_count: number,
-  buy_count: number,
-  sell_count: number,
+  all: TradeStats,
+  buys: TradeStats,
+  sells: TradeStats,
 }
 
 export type Equity = {
