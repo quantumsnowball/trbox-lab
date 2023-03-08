@@ -101,7 +101,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
   )
 }
 
-const PlotlyChart = () => {
+const PlotlyChart: FC<{ path: string }> = ({ path }) => {
   return (
     <Plot
       data={[
@@ -133,7 +133,7 @@ const Equity: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         path ?
           <>
             <SelectBar {...{ path }} />
-            <PlotlyChart />
+            <PlotlyChart {...{ path }}/>
           </>
           :
           null
