@@ -116,8 +116,9 @@ const PlotlyChart: FC<{ path: string }> = ({ path }) => {
       }))}
       layout={{
         title: 'Equity Curves',
-        width: 320,
-        height: 240,
+      }}
+      config={{
+        responsive: true,
       }}
     />
   )
