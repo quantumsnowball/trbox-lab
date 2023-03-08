@@ -1,6 +1,6 @@
 import { FileNode } from "@/common/types";
 import { randomRGB } from "@/common/utils";
-import { useGetEquityQuery } from "@/redux/slices/apiSlice";
+import { useGetEquityQuery, useGetMetaQuery } from "@/redux/slices/apiSlice";
 import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
 import { createChart, IChartApi } from "lightweight-charts";
 import { FC, useEffect, useRef } from "react";
@@ -8,19 +8,17 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 
-const SelectBar = () => {
-  const options = [
-    { title: 'Foo', content: 'foo' },
-    { title: 'Hoo', content: 'hoo' },
-    { title: 'Boo', content: 'boo' },
-  ]
+const SelectBar: FC<{ path: string }> = ({ path }) => {
+  const { data: meta } = useGetMetaQuery(path)
+  const options = meta?.strategies ?? []
+
   return (
     <Autocomplete
       multiple
       sx={{ my: 1 }}
       options={options}
       disableCloseOnSelect
-      getOptionLabel={option => option.title}
+      getOptionLabel={option => option}
       renderOption={(props, option, { selected }) => (
         <li {...props}>
           <Checkbox
@@ -29,7 +27,7 @@ const SelectBar = () => {
             style={{ marginRight: 8 }}
             checked={selected}
           />
-          {option.title.toUpperCase()} {option.content}
+          {option}
         </li>
       )}
       renderInput={params =>
@@ -103,7 +101,7 @@ const Equity: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
       {
         path ?
           <>
-            <SelectBar />
+            <SelectBar {...{ path }} />
             <Content {...{ path }} />
           </>
           :
