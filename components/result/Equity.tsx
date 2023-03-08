@@ -1,6 +1,6 @@
 import { FileNode } from "@/common/types";
 import { randomRGB } from "@/common/utils";
-import { useGetEquityQuery, useGetMetaQuery } from "@/redux/slices/apiSlice";
+import { useGetEquityQuery, useGetMetaQuery, useGetMetricsQuery } from "@/redux/slices/apiSlice";
 import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
 import { createChart, IChartApi } from "lightweight-charts";
 import { FC, useEffect, useRef } from "react";
@@ -19,13 +19,13 @@ const SelectBar: FC<{ path: string }> = ({ path }) => {
       options={options}
       disableCloseOnSelect
       getOptionLabel={option => option}
-      renderOption={(props, option, { selected }) => (
+      renderOption={(props, option, { selected: checked }) => (
         <li {...props}>
           <Checkbox
             icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
             checkedIcon={<CheckBoxIcon fontSize="small" />}
             style={{ marginRight: 8 }}
-            checked={selected}
+            checked={checked}
           />
           {option}
         </li>
@@ -37,6 +37,9 @@ const SelectBar: FC<{ path: string }> = ({ path }) => {
           {...params}
         />
       }
+      onChange={(_e, selections, _reason) => {
+        console.log(selections)
+      }}
     />
   )
 }
