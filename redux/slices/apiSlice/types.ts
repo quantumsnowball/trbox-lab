@@ -14,6 +14,19 @@ export type Metrics = {
   data: number[][],
 }
 
+export type TradeStats = {
+  count: number
+  avg_interval: number | null
+  avg_quantity: number | null
+  avg_value: number | null
+  avg_fees: number | null
+}
+export type Stats = {
+  all: TradeStats,
+  buys: TradeStats,
+  sells: TradeStats,
+}
+
 export type Equity = {
   [timestamp: string]: number
 }

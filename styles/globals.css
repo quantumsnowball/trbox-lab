@@ -43,13 +43,13 @@ a {
 
 .flex {
   display: flex;
-  flex-flow: row;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   align-content: center;
 }
 .flex.row {
-  flex-flow: row;
+  flex-direction: row;
 }
 .flex.row.start {
   justify-content: flex-start;
@@ -61,7 +61,7 @@ a {
   justify-content: space-between;
 }
 .flex.column {
-  flex-flow: column;
+  flex-direction: column;
 }
 .flex.column.start {
   justify-content: flex-start;

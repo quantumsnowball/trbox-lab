@@ -1,8 +1,15 @@
-import { FileNode } from "@/common/types";
 import { roundCurrency, roundFloat } from "@/common/utils";
-import { useGetMetaQuery, useGetTradesQuery } from "@/redux/slices/apiSlice";
-import { Box, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs } from "@mui/material";
-import { FC, useState } from "react";
+import { useGetTradesQuery } from "@/redux/slices/apiSlice";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { FC } from "react";
 
 
 const formatColumn = (column: string, val: string | number) => {
@@ -21,12 +28,15 @@ const formatColumn = (column: string, val: string | number) => {
   }
 }
 
-const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
+const TradeList: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   const { data } = useGetTradesQuery({ path, strategy })
   const fields = data?.schema.fields.map((field: { name: string }) => field.name)
   const trades = data?.data
   return (
-    <TableContainer component={Paper}>
+    <TableContainer
+      className='expanding'
+      component={Paper}
+    >
       <Table
         stickyHeader
         size='small'
@@ -54,6 +64,7 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
                     key={name}
                     className='nowrap'
                     align='right'
+                    sx={{ userSelect: 'text' }}
                   >
                     {formatColumn(name, trade[name])}
                   </TableCell>
@@ -66,52 +77,6 @@ const Content: FC<{ path: string, strategy: string }> = ({ path, strategy }) => 
       </Table>
     </TableContainer>
   )
-
 }
 
-const Tabbed: FC<{ path: string | undefined }> = ({ path }) => {
-  const { data: meta } = useGetMetaQuery(path ?? '')
-  const strategies = meta?.strategies
-  const [tabId, setTabId] = useState(0)
-
-  return (
-    <>
-      <Tabs
-        variant="scrollable"
-        scrollButtons="auto"
-        value={tabId}
-        onChange={(_, newId) => setTabId(newId)}
-      >
-        {
-          strategies?.map(name =>
-            <Tab
-              key={name}
-              label={name}
-              sx={{ textTransform: 'none' }}
-            />
-          )
-        }
-      </Tabs>
-      {
-        path && strategies &&
-        <Content path={path} strategy={strategies[tabId]} />
-      }
-    </>
-  )
-}
-
-const Trades: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
-  const lastNode = nodes?.at(-1)
-  const path = lastNode?.path
-
-  return (
-    <Box
-      className='expanding scroll flex column start stretch'
-    >
-      <Tabbed {...{ path }} />
-    </Box>
-  )
-}
-
-export default Trades
-
+export default TradeList
