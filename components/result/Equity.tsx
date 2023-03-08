@@ -1,8 +1,8 @@
 import { FileNode } from "@/common/types";
 import { randomRGB } from "@/common/utils";
-import { Equities, useGetEquityQuery } from "@/redux/slices/apiSlice";
-import { Autocomplete, Box, Checkbox, TextField, useMediaQuery, useTheme } from "@mui/material";
-import { ColorType, createChart, IChartApi, ISeriesApi, PriceScaleMode } from "lightweight-charts";
+import { useGetEquityQuery } from "@/redux/slices/apiSlice";
+import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
+import { createChart, IChartApi } from "lightweight-charts";
 import { FC, useEffect, useRef } from "react";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -46,10 +46,7 @@ const SelectBar = () => {
 const Content: FC<{ path: string }> = ({ path }) => {
   const { data: equities } = useGetEquityQuery(path)
   const ctnRef = useRef<HTMLDivElement | null>(null)
-  // const series = useRef<ISeriesApi<'Area'> | null>(null)
   const chart = useRef<IChartApi | null>(null)
-  const theme = useTheme()
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
 
   useEffect(() => {
     if (!equities)
@@ -66,7 +63,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
     });
     console.debug('chart created')
     // add data
-    Object.entries(equities).forEach(([name, equity]) => {
+    Object.entries(equities).forEach(([_name, equity]) => {
       // create series
       const series = chart.current?.addLineSeries({
         color: randomRGB()
