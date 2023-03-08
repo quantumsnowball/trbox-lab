@@ -102,19 +102,23 @@ const Content: FC<{ path: string }> = ({ path }) => {
 }
 
 const PlotlyChart: FC<{ path: string }> = ({ path }) => {
+  const checked = useSelector((s: RootState) => s.layoutTemp.result.equity.checked)
+  const { data: equities } = useGetEquityQuery(path)
+  const curves = Object.entries(equities ?? []).filter(([name, _]) => checked.includes(name))
+
   return (
     <Plot
-      data={[
-        {
-          x: [1, 2, 3],
-          y: [2, 6, 3],
-          type: 'scatter',
-          mode: 'lines+markers',
-          marker: { color: 'red' },
-        },
-        { type: 'bar', x: [1, 2, 3], y: [2, 5, 3] },
-      ]}
-      layout={{ width: 320, height: 240, title: 'A Fancy Plot' }}
+      data={curves.map(([name, equity]) => ({
+        x: Object.keys(equity),
+        y: Object.values(equity),
+        type: 'scatter',
+        mode: 'lines',
+      }))}
+      layout={{
+        title: 'Equity Curves',
+        width: 320,
+        height: 240,
+      }}
     />
   )
 }
@@ -133,7 +137,7 @@ const Equity: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         path ?
           <>
             <SelectBar {...{ path }} />
-            <PlotlyChart {...{ path }}/>
+            <PlotlyChart {...{ path }} />
           </>
           :
           null
