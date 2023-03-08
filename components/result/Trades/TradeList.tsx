@@ -64,6 +64,7 @@ const TradeList: FC<{ path: string, strategy: string }> = ({ path, strategy }) =
                     key={name}
                     className='nowrap'
                     align='right'
+                    sx={{ userSelect: 'text' }}
                   >
                     {formatColumn(name, trade[name])}
                   </TableCell>
