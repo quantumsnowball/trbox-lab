@@ -16,6 +16,7 @@ const layoutTempSlice = createSlice({
     result: {
       section: 'files' as ResultBottomNavTag,
       fileOps: { deleteMode: false },
+      equity: { checked: [] as string[], },
     },
     wsConnected: false
   },
@@ -28,6 +29,7 @@ const layoutTempSlice = createSlice({
     toggleSourceFileDeleteMode: s => { s.source.fileOps.deleteMode = !s.source.fileOps.deleteMode },
     toggleResultFileDeleteMode: s => { s.result.fileOps.deleteMode = !s.result.fileOps.deleteMode },
     setWsConnected: (s, a: PayloadAction<boolean>) => { s.wsConnected = a.payload },
+    setEquityChecked: (s, a: PayloadAction<string[]>) => { s.result.equity.checked = a.payload },
   }
 })
 

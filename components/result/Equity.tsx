@@ -1,16 +1,22 @@
 import { FileNode } from "@/common/types";
 import { randomRGB } from "@/common/utils";
-import { useGetEquityQuery, useGetMetaQuery, useGetMetricsQuery } from "@/redux/slices/apiSlice";
+import { useGetEquityQuery, useGetMetaQuery } from "@/redux/slices/apiSlice";
 import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
 import { createChart, IChartApi } from "lightweight-charts";
 import { FC, useEffect, useRef } from "react";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { layoutTempActions } from "@/redux/slices/layoutTemp";
 
 
 const SelectBar: FC<{ path: string }> = ({ path }) => {
+  const dispatch = useDispatch()
   const { data: meta } = useGetMetaQuery(path)
   const options = meta?.strategies ?? []
+  const setChecked = (ls: string[]) => dispatch(layoutTempActions.setEquityChecked(ls))
 
   return (
     <Autocomplete
@@ -38,7 +44,7 @@ const SelectBar: FC<{ path: string }> = ({ path }) => {
         />
       }
       onChange={(_e, selections, _reason) => {
-        console.log(selections)
+        setChecked(selections)
       }}
     />
   )
@@ -48,6 +54,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
   const { data: equities } = useGetEquityQuery(path)
   const ctnRef = useRef<HTMLDivElement | null>(null)
   const chart = useRef<IChartApi | null>(null)
+  const checked = useSelector((s: RootState) => s.layoutTemp.result.equity.checked)
 
   useEffect(() => {
     if (!equities)
@@ -64,22 +71,24 @@ const Content: FC<{ path: string }> = ({ path }) => {
     });
     console.debug('chart created')
     // add data
-    Object.entries(equities).forEach(([_name, equity]) => {
-      // create series
-      const series = chart.current?.addLineSeries({
-        color: randomRGB()
-      });
-      // add data
-      const equityParsed = Object.entries(equity).map(([time, value]) =>
-        ({ time: Date.parse(time) / 1000, value }))
-      //@ts-ignore
-      series?.setData(equityParsed);
-      // customization
-      series?.applyOptions({
-        priceFormat: { type: 'volume', precision: 2, }
+    Object.entries(equities)
+      .filter(([name, _]) => checked.includes(name))
+      .forEach(([_name, equity]) => {
+        // create series
+        const series = chart.current?.addLineSeries({
+          color: randomRGB()
+        });
+        // add data
+        const equityParsed = Object.entries(equity).map(([time, value]) =>
+          ({ time: Date.parse(time) / 1000, value }))
+        //@ts-ignore
+        series?.setData(equityParsed);
+        // customization
+        series?.applyOptions({
+          priceFormat: { type: 'volume', precision: 2, }
+        })
+        console.debug('series data injected')
       })
-      console.debug('series data injected')
-    })
     // chart.current.timeScale().fitContent()
   }, [equities])
 
