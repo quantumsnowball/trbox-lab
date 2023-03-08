@@ -15,7 +15,7 @@ import { FC } from "react";
 const formatColumn = (column: string, val: string | number) => {
   switch (column) {
     case 'Date':
-      return (val as string).replace('T', ' ').slice(0, -4)
+      return val
     case 'Quantity':
       return roundFloat(4)(val as number)
     case 'Price':
