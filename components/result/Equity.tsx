@@ -124,6 +124,7 @@ const PlotlyChart: FC<{ path: string }> = ({ path }) => {
           yanchor: 'bottom',
           orientation: 'h',
         },
+        yaxis: { side: 'right' },
       }}
       config={{
         responsive: true,
