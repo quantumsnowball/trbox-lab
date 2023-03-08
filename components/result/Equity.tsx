@@ -1,11 +1,47 @@
 import { FileNode } from "@/common/types";
 import { randomRGB } from "@/common/utils";
 import { Equities, useGetEquityQuery } from "@/redux/slices/apiSlice";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Autocomplete, Box, Checkbox, TextField, useMediaQuery, useTheme } from "@mui/material";
 import { ColorType, createChart, IChartApi, ISeriesApi, PriceScaleMode } from "lightweight-charts";
 import { FC, useEffect, useRef } from "react";
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 
+const SelectBar = () => {
+  const options = [
+    { title: 'Foo', content: 'foo' },
+    { title: 'Hoo', content: 'hoo' },
+    { title: 'Boo', content: 'boo' },
+  ]
+  return (
+    <Autocomplete
+      multiple
+      sx={{ my: 1 }}
+      options={options}
+      disableCloseOnSelect
+      getOptionLabel={option => option.title}
+      renderOption={(props, option, { selected }) => (
+        <li {...props}>
+          <Checkbox
+            icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+            checkedIcon={<CheckBoxIcon fontSize="small" />}
+            style={{ marginRight: 8 }}
+            checked={selected}
+          />
+          {option.title.toUpperCase()} {option.content}
+        </li>
+      )}
+      renderInput={params =>
+        <TextField
+          label='Equity Curves'
+          placeholder='Search and select equity curves'
+          {...params}
+        />
+      }
+    />
+  )
+}
 
 const Content: FC<{ path: string }> = ({ path }) => {
   const { data: equities } = useGetEquityQuery(path)
@@ -67,7 +103,15 @@ const Equity: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
       className='expanding scroll flex column start stretch'
       sx={{ mx: 1 }}
     >
-      {path ? <Content {...{ path }} /> : null}
+      {
+        path ?
+          <>
+            <SelectBar />
+            <Content {...{ path }} />
+          </>
+          :
+          null
+      }
     </Box>
   )
 }
