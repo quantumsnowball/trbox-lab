@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
+import Plot from "react-plotly.js";
 
 
 const SelectBar: FC<{ path: string }> = ({ path }) => {
@@ -100,6 +101,24 @@ const Content: FC<{ path: string }> = ({ path }) => {
   )
 }
 
+const PlotlyChart = () => {
+  return (
+    <Plot
+      data={[
+        {
+          x: [1, 2, 3],
+          y: [2, 6, 3],
+          type: 'scatter',
+          mode: 'lines+markers',
+          marker: { color: 'red' },
+        },
+        { type: 'bar', x: [1, 2, 3], y: [2, 5, 3] },
+      ]}
+      layout={{ width: 320, height: 240, title: 'A Fancy Plot' }}
+    />
+  )
+}
+
 const Equity: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   const lastNode = nodes?.at(-1)
   const path = lastNode?.path
@@ -114,7 +133,7 @@ const Equity: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
         path ?
           <>
             <SelectBar {...{ path }} />
-            <Content {...{ path }} />
+            <PlotlyChart />
           </>
           :
           null
