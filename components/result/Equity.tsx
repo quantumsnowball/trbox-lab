@@ -109,6 +109,7 @@ const PlotlyChart: FC<{ path: string }> = ({ path }) => {
   return (
     <Plot
       data={curves.map(([name, equity]) => ({
+        name: name,
         x: Object.keys(equity),
         y: Object.values(equity),
         type: 'scatter',
@@ -116,6 +117,13 @@ const PlotlyChart: FC<{ path: string }> = ({ path }) => {
       }))}
       layout={{
         title: 'Equity Curves',
+        showlegend: true,
+        legend: {
+          x: 0,
+          y: 1,
+          yanchor: 'bottom',
+          orientation: 'h',
+        },
       }}
       config={{
         responsive: true,
