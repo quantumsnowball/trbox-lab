@@ -7,10 +7,10 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { FC } from "react"
-import { byDirThenReverseName } from "../common/utils"
+import { byDirThenReverseName } from "@/components/common/utils"
 import { useRouter } from 'next/router'
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
-import { RESULT_DIR_PREFIX, RESULT_ROOT } from "./constants";
+import { RESULT_DIR_PREFIX, RESULT_ROOT } from "@/components/result/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { resultDirDatetimeFormatted } from "@/common/utils";
 import { useDeleteResourceMutation, useGetMetaQuery, useLazyGetResultTreeQuery } from "@/redux/slices/apiSlice";
