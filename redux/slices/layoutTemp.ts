@@ -20,7 +20,9 @@ const layoutTempSlice = createSlice({
         sort: 'sharpe',
         order: 'desc' as 'asc' | 'desc'
       },
-      equity: { checked: [] as string[], },
+      equity: {
+        checked: {} as { [key: string]: string[] },
+      },
     },
     wsConnected: false
   },
@@ -36,7 +38,7 @@ const layoutTempSlice = createSlice({
     setMetricsSort: (s, a: PayloadAction<string>) => { s.result.metrics.sort = a.payload },
     resetMetricsOrder: s => { s.result.metrics.order = 'desc' },
     toggleMetricsOrder: s => { s.result.metrics.order = s.result.metrics.order === 'asc' ? 'desc' : 'asc' },
-    setEquityChecked: (s, a: PayloadAction<string[]>) => { s.result.equity.checked = a.payload },
+    setEquityChecked: (s, a: PayloadAction<{ path: string, checked: string[] }>) => { s.result.equity.checked[a.payload.path] = a.payload.checked },
   }
 })
 

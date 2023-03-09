@@ -54,7 +54,6 @@ const Content: FC<{ path: string }> = ({ path }) => {
   const { data: metrics } = useGetMetricsQuery({ path, sort, order })
   const headers = metrics?.columns
   const rows = metrics?.data
-  console.log({ sort, order })
 
   return (
     <TableContainer component={Paper}>

@@ -17,8 +17,8 @@ const SelectBar: FC<{ path: string }> = ({ path }) => {
   const sort = useSelector((s: RootState) => s.layoutTemp.result.metrics.sort)
   const { data: metrics } = useGetMetricsQuery({ path, sort, order })
   const options = metrics?.data?.map(row => row[0] as string) ?? []
-  const checked = useSelector((s: RootState) => s.layoutTemp.result.equity.checked)
-  const setChecked = (ls: string[]) => dispatch(layoutTempActions.setEquityChecked(ls))
+  const checked = useSelector((s: RootState) => s.layoutTemp.result.equity.checked[path])
+  const setChecked = (checked: string[]) => dispatch(layoutTempActions.setEquityChecked({ path, checked }))
 
   return (
     <Autocomplete
@@ -56,7 +56,7 @@ const SelectBar: FC<{ path: string }> = ({ path }) => {
 const PlotlyChart: FC<{ path: string }> = ({ path }) => {
   const checked = useSelector((s: RootState) => s.layoutTemp.result.equity.checked)
   const { data: equities } = useGetEquityQuery(path)
-  const curves = Object.entries(equities ?? []).filter(([name, _]) => checked.includes(name))
+  const curves = Object.entries(equities ?? []).filter(([name, _]) => checked[path]?.includes(name))
 
   return (
     <Plot
