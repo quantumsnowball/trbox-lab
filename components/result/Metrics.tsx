@@ -45,23 +45,15 @@ const ColumnFormat = (column: string) => {
 
 
 const Content: FC<{ path: string }> = ({ path }) => {
-  // const [order, setOrder] = useState<'asc' | 'desc'>('desc')
   const dispatch = useDispatch()
   const order = useSelector((s: RootState) => s.layoutTemp.result.metrics.order)
   const toggleOrder = () => dispatch(layoutTempActions.toggleMetricsOrder())
   const sort = useSelector((s: RootState) => s.layoutTemp.result.metrics.sort)
-  const setSort = (c: string) => dispatch(layoutTempActions.setMetricsSort(c))
-  const { data: metrics } = useGetMetricsQuery(path)
+  const setSort = (n: string) => dispatch(layoutTempActions.setMetricsSort(n))
+  const { data: metrics } = useGetMetricsQuery({ path, sort, order })
   const headers = metrics?.columns
   const rows = metrics?.data
   console.log({ sort, order })
-
-  const compareBy = (j: number, asc: boolean) =>
-    (a: (string | number)[], b: (string | number)[]) => {
-      if (a[j] < b[j]) return asc ? -1 : +1
-      if (a[j] > b[j]) return asc ? +1 : -1
-      return 0
-    }
 
   return (
     <TableContainer component={Paper}>
