@@ -3,9 +3,13 @@ import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 import { FC, useState } from "react"
 import { useGetMetricsQuery } from "@/redux/slices/apiSlice";
 import { roundFloat, roundPct } from "@/common/utils";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { layoutTempActions } from "@/redux/slices/layoutTemp";
 
 
-const ColumnHeader = (column: string) => {
+const ColumnHeaderFormat = (column: string) => {
   switch (column) {
     case 'total_return': return 'Total%'
     case 'cagr': return 'CAGR'
@@ -41,18 +45,16 @@ const ColumnFormat = (column: string) => {
 
 
 const Content: FC<{ path: string }> = ({ path }) => {
-  const { data: metrics } = useGetMetricsQuery(path)
-  const headers = metrics && ['Name', ...metrics.columns]
-  const rows = metrics?.data.map((row, i) => [metrics.index[i], ...row])
-  const [order, setOrder] = useState<'asc' | 'desc'>('desc')
-  const [orderBy, setOrderBy] = useState(5) // sharpe
-
-  const compareBy = (j: number, asc: boolean) =>
-    (a: (string | number)[], b: (string | number)[]) => {
-      if (a[j] < b[j]) return asc ? -1 : +1
-      if (a[j] > b[j]) return asc ? +1 : -1
-      return 0
-    }
+  const dispatch = useDispatch()
+  const order = useSelector((s: RootState) => s.layoutTemp.result.metrics.order)
+  const toggleOrder = () => dispatch(layoutTempActions.toggleMetricsOrder())
+  const resetOrder = () => dispatch(layoutTempActions.resetMetricsOrder())
+  const sort = useSelector((s: RootState) => s.layoutTemp.result.metrics.sort)
+  const setSort = (n: string) => dispatch(layoutTempActions.setMetricsSort(n))
+  const { data: metrics } = useGetMetricsQuery({ path, sort, order })
+  const headers = metrics?.columns
+  const rows = metrics?.data
+  console.log({ sort, order })
 
   return (
     <TableContainer component={Paper}>
@@ -74,25 +76,25 @@ const Content: FC<{ path: string }> = ({ path }) => {
                 } : {}}
               >
                 <TableSortLabel
-                  active={j === orderBy}
-                  direction={j === orderBy ? order : 'desc'}
+                  active={colname === sort}
+                  direction={colname === sort ? order : 'desc'}
                   onClick={() => {
-                    if (j === orderBy) {
-                      setOrder(order === 'desc' ? 'asc' : 'desc')
+                    if (colname === sort) {
+                      toggleOrder()
                     } else {
-                      setOrderBy(j)
-                      setOrder('desc')
+                      setSort(colname)
+                      resetOrder()
                     }
                   }}
                 >
-                  {ColumnHeader(colname)}
+                  {ColumnHeaderFormat(colname)}
                 </TableSortLabel>
               </TableCell>)}
           </TableRow>
         </TableHead>
         <TableBody>
           {metrics && headers && rows && [...rows]
-            .sort(compareBy(orderBy, order === 'asc'))
+            // .sort(compareBy(sortId, order === 'asc'))
             .map(row => {
               const strategy = row[0] as string
               return (

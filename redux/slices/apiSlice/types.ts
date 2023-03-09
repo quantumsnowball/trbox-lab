@@ -11,7 +11,7 @@ export type Meta = {
 export type Metrics = {
   columns: string[],
   index: string[],
-  data: number[][],
+  data: (string | number)[][],
 }
 
 export type TradeStats = {
