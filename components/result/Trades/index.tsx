@@ -7,7 +7,7 @@ import {
   Box,
   TextField,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Stats from "./Stats";
