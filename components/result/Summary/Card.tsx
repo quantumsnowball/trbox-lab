@@ -1,5 +1,5 @@
 import { resultDirDatetimeFormatted } from "@/common/utils"
-import { Box, Typography } from "@mui/material"
+import { Box, Chip, Typography } from "@mui/material"
 import { RESULT_ROOT } from "@/components/result/constants";
 import { StrategyParams } from "@/redux/slices/apiSlice/types";
 import { FC } from "react";
@@ -9,6 +9,18 @@ import { useRouter } from "next/router";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RootState } from "@/redux/store";
 import { DeleteButton, Icon } from "@/components/result/Summary/common";
+import DataObjectIcon from '@mui/icons-material/DataObject';
+
+
+const SourceFileName: FC<{ name: string | undefined }> = ({ name }) =>
+  <Chip
+    icon={<DataObjectIcon />}
+    label={name}
+    variant='outlined'
+    color='primary'
+    sx={{ fontFamily: 'monospace' }}
+  />
+
 
 
 const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
@@ -58,7 +70,7 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
           <Icon name={name} />
           {resultDirDatetimeFormatted(name)}
         </Typography>
-        <Field name='source' desc={meta?.source} />
+        <SourceFileName name={meta?.source} />
         <Field name='strategies' desc={meta?.strategies.length} />
         {
           meta?.params ?
