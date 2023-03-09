@@ -67,7 +67,7 @@ const FilterBox: FC<{ path: string }> = ({ path }) => {
       defaultValue={selected}
       renderInput={params =>
         <TextField
-          label='Trades'
+          label='Trade Log'
           placeholder='Search and select strategies'
           {...params}
         />
@@ -76,6 +76,18 @@ const FilterBox: FC<{ path: string }> = ({ path }) => {
         selection && setSelected(selection)
       }}
     />
+  )
+}
+
+const Content: FC<{ path: string }> = ({ path }) => {
+  const selected = useSelector((s: RootState) => s.layoutTemp.result.trades.selected[path])
+
+  return (
+    <>
+      <TradeList path={path} strategy={selected} />
+      <Stats path={path} strategy={selected} />
+    </>
+
   )
 }
 
@@ -90,7 +102,7 @@ const Trades: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
       {path ?
         <>
           <FilterBox {...{ path }} />
-          <Tabbed {...{ path }} />
+          <Content {...{ path }} />
         </>
         :
         null
