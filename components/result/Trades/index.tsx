@@ -7,7 +7,7 @@ import {
   Box,
   TextField,
 } from "@mui/material";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Stats from "./Stats";
@@ -20,15 +20,15 @@ const FilterBox: FC<{ path: string }> = ({ path }) => {
   const sort = useSelector((s: RootState) => s.layoutTemp.result.metrics.sort)
   const { data: metrics } = useGetMetricsQuery({ path, sort, order })
   const options = metrics?.data?.map(row => row[0] as string) ?? []
-  const selected = useSelector((s: RootState) => s.layoutTemp.result.trades.selected[path])
-  const setSelected = (selected: string) => dispatch(layoutTempActions.setTradesSelected({ path, selected }))
+  const selected = useSelector((s: RootState) => s.layoutTemp.result.trades.selected[path] ?? null)
+  const setSelected = (selected: string | null) => dispatch(layoutTempActions.setTradesSelected({ path, selected }))
 
   return (
     <Autocomplete
       sx={{ my: 1 }}
       disablePortal
       options={options}
-      defaultValue={selected}
+      value={selected}
       renderInput={params =>
         <TextField
           label='Trade Log'
@@ -37,7 +37,7 @@ const FilterBox: FC<{ path: string }> = ({ path }) => {
         />
       }
       onChange={(_e, selection, _reason) => {
-        selection && setSelected(selection)
+        setSelected(selection)
       }}
     />
   )
@@ -48,8 +48,14 @@ const Content: FC<{ path: string }> = ({ path }) => {
 
   return (
     <>
-      <TradeList path={path} strategy={selected} />
-      <Stats path={path} strategy={selected} />
+      {selected ?
+        <>
+          <TradeList path={path} strategy={selected} />
+          <Stats path={path} strategy={selected} />
+        </>
+        :
+        null
+      }
     </>
 
   )

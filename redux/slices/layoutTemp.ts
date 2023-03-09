@@ -24,7 +24,7 @@ const layoutTempSlice = createSlice({
         checked: {} as { [key: string]: string[] },
       },
       trades: {
-        selected: {} as { [key: string]: string },
+        selected: {} as { [key: string]: string | null },
       }
     },
     wsConnected: false
@@ -42,7 +42,7 @@ const layoutTempSlice = createSlice({
     resetMetricsOrder: s => { s.result.metrics.order = 'desc' },
     toggleMetricsOrder: s => { s.result.metrics.order = s.result.metrics.order === 'asc' ? 'desc' : 'asc' },
     setEquityChecked: (s, a: PayloadAction<{ path: string, checked: string[] }>) => { s.result.equity.checked[a.payload.path] = a.payload.checked },
-    setTradesSelected: (s, a: PayloadAction<{ path: string, selected: string }>) => { s.result.trades.selected[a.payload.path] = a.payload.selected },
+    setTradesSelected: (s, a: PayloadAction<{ path: string, selected: string | null }>) => { s.result.trades.selected[a.payload.path] = a.payload.selected },
   }
 })
 
