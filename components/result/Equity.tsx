@@ -17,6 +17,7 @@ const SelectBar: FC<{ path: string }> = ({ path }) => {
   const sort = useSelector((s: RootState) => s.layoutTemp.result.metrics.sort)
   const { data: metrics } = useGetMetricsQuery({ path, sort, order })
   const options = metrics?.data?.map(row => row[0] as string) ?? []
+  const checked = useSelector((s: RootState) => s.layoutTemp.result.equity.checked)
   const setChecked = (ls: string[]) => dispatch(layoutTempActions.setEquityChecked(ls))
 
   return (
@@ -25,6 +26,7 @@ const SelectBar: FC<{ path: string }> = ({ path }) => {
       sx={{ my: 1 }}
       options={options}
       disableCloseOnSelect
+      defaultValue={checked}
       getOptionLabel={option => option}
       renderOption={(props, option, { selected: checked }) => (
         <li {...props}>
