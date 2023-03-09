@@ -1,30 +1,19 @@
 import { FileNode } from "@/common/types"
-import { Box, Button, IconButton, Typography } from "@mui/material"
-import FolderIcon from '@mui/icons-material/Folder';
-import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
+import { Box, Button, Typography } from "@mui/material"
 import SyncOutlinedIcon from '@mui/icons-material/SyncOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { FC } from "react"
 import { byDirThenReverseName } from "@/components/common/utils"
 import { useRouter } from 'next/router'
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RESULT_DIR_PREFIX, RESULT_ROOT } from "@/components/result/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { resultDirDatetimeFormatted } from "@/common/utils";
-import { useDeleteResourceMutation, useGetMetaQuery, useLazyGetResultTreeQuery } from "@/redux/slices/apiSlice";
+import { useLazyGetResultTreeQuery } from "@/redux/slices/apiSlice";
 import { RootState } from "@/redux/store";
-import { StrategyParams } from "@/redux/slices/apiSlice/types";
+import { DeleteButton, Icon } from "./common";
+import Card from "@/components/result/Summary/Card";
 
-
-const Icon: FC<{ name: string }> = ({ name }) =>
-  // if no .py ext, consider a dir
-  <>
-    {name.startsWith(RESULT_DIR_PREFIX) ?
-      <LeaderboardOutlinedIcon sx={{ mr: 1 }} fontSize="inherit" /> :
-      <FolderIcon sx={{ mr: 1 }} fontSize="inherit" />}
-  </>
 
 const FileOpsBar: FC = () => {
   const dispatch = useDispatch()
@@ -77,88 +66,6 @@ const Dir: FC<{ name: string, type: string, path: string }> = ({ name, type, pat
           null
       }
     </Box>
-  )
-}
-
-const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
-  const dispatch = useDispatch()
-  const router = useRouter()
-  const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
-  const { data: meta } = useGetMetaQuery(path)
-  const delMode = useSelector((s: RootState) => s.layoutTemp.result.fileOps.deleteMode)
-
-  const Field: FC<{
-    name: string | undefined,
-    desc: string | number | undefined
-  }> = ({ name, desc }) =>
-      <Typography sx={{ fontFamily: 'monospace' }}>
-        {name}: {desc}
-      </Typography>
-
-  const Params: FC<{ params: StrategyParams }> = ({ params }) =>
-    <>
-      <Field name='Parameters:' desc='' />
-      <Box
-        sx={{ pl: 3 }}
-      >
-        {
-          Object.entries(params).map(([name, str]) =>
-            <Field key={name} name={name} desc={str} />)
-        }
-      </Box>
-    </>
-
-  return (
-    <Box
-      className='flex row spread'
-      key={name}
-      sx={{ ml: 1, pl: 1, py: 1 }}
-    >
-      <Box>
-        <Typography
-          variant='h6'
-          className='flex row start'
-          sx={{ cursor: 'pointer' }}
-          onClick={() => {
-            viewMetrics()
-            router.push(RESULT_ROOT + path)
-          }}
-        >
-          <Icon name={name} />
-          {resultDirDatetimeFormatted(name)}
-        </Typography>
-        <Field name='source' desc={meta?.source} />
-        <Field name='strategies' desc={meta?.strategies.length} />
-        {
-          meta?.params ?
-            <Params params={meta.params} />
-            :
-            null
-        }
-      </Box>
-      {
-        delMode ?
-          <DeleteButton {...{ path }} />
-          :
-          null
-      }
-    </Box>
-  )
-}
-
-const DeleteButton: FC<{ path: string }> = ({ path }) => {
-  const [deletePath,] = useDeleteResourceMutation()
-
-  return (
-    <IconButton
-      color='error'
-      onClick={() => {
-        console.log({ path })
-        deletePath(path)
-      }}
-    >
-      <DeleteForeverOutlinedIcon />
-    </IconButton >
   )
 }
 
