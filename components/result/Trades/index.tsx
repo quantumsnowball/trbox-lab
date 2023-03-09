@@ -25,7 +25,7 @@ const FilterBox: FC<{ path: string }> = ({ path }) => {
 
   return (
     <Autocomplete
-      sx={{ my: 1 }}
+      sx={{ m: 1 }}
       disablePortal
       options={options}
       value={selected}

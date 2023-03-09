@@ -28,7 +28,7 @@ const SelectBar: FC<{ path: string }> = ({ path }) => {
   return (
     <Autocomplete
       multiple
-      sx={{ my: 1 }}
+      sx={{ m: 1 }}
       options={options}
       disableCloseOnSelect
       value={checked}
@@ -98,7 +98,6 @@ const Equity: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
     <Box
       id='viewer-div'
       className='expanding scroll flex column start stretch'
-      sx={{ mx: 1 }}
     >
       {
         path ?
