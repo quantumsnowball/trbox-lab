@@ -13,6 +13,27 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
 
+const Heading: FC<{ name: string, path: string }> = ({ name, path }) => {
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
+
+  return (
+    <Typography
+      variant='h6'
+      className='flex row start'
+      sx={{ cursor: 'pointer' }}
+      onClick={() => {
+        viewMetrics()
+        router.push(RESULT_ROOT + path)
+      }}
+    >
+      <Icon name={name} />
+      {resultDirDatetimeFormatted(name)}
+    </Typography>
+  )
+}
+
 const SourceFileName: FC<{ name: string | undefined }> = ({ name }) =>
   <Chip
     icon={<DataObjectIcon />}
@@ -33,9 +54,6 @@ const StrategyCount: FC<{ length: number | undefined }> = ({ length }) =>
 
 
 const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
-  const dispatch = useDispatch()
-  const router = useRouter()
-  const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
   const { data: meta } = useGetMetaQuery(path)
   const delMode = useSelector((s: RootState) => s.layoutTemp.result.fileOps.deleteMode)
 
@@ -67,18 +85,7 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
       sx={{ ml: 1, pl: 1, py: 1 }}
     >
       <Box>
-        <Typography
-          variant='h6'
-          className='flex row start'
-          sx={{ cursor: 'pointer' }}
-          onClick={() => {
-            viewMetrics()
-            router.push(RESULT_ROOT + path)
-          }}
-        >
-          <Icon name={name} />
-          {resultDirDatetimeFormatted(name)}
-        </Typography>
+        <Heading {...{ name, path }} />
         <SourceFileName name={meta?.source} />
         <StrategyCount length={meta?.strategies.length} />
         {
