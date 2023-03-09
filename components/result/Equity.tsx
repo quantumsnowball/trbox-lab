@@ -1,5 +1,5 @@
 import { FileNode } from "@/common/types";
-import { useGetEquityQuery, useGetMetaQuery } from "@/redux/slices/apiSlice";
+import { useGetEquityQuery, useGetMetricsQuery } from "@/redux/slices/apiSlice";
 import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
 import { FC } from "react";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -13,8 +13,10 @@ import Plot from "react-plotly.js";
 
 const SelectBar: FC<{ path: string }> = ({ path }) => {
   const dispatch = useDispatch()
-  const { data: meta } = useGetMetaQuery(path)
-  const options = meta?.strategies ?? []
+  const order = useSelector((s: RootState) => s.layoutTemp.result.metrics.order)
+  const sort = useSelector((s: RootState) => s.layoutTemp.result.metrics.sort)
+  const { data: metrics } = useGetMetricsQuery({ path, sort, order })
+  const options = metrics?.data?.map(row => row[0] as string) ?? []
   const setChecked = (ls: string[]) => dispatch(layoutTempActions.setEquityChecked(ls))
 
   return (
