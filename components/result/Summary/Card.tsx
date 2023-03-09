@@ -10,6 +10,7 @@ import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RootState } from "@/redux/store";
 import { DeleteButton, Icon } from "@/components/result/Summary/common";
 import DataObjectIcon from '@mui/icons-material/DataObject';
+import ViewModuleIcon from '@mui/icons-material/ViewModule';
 
 
 const SourceFileName: FC<{ name: string | undefined }> = ({ name }) =>
@@ -21,6 +22,14 @@ const SourceFileName: FC<{ name: string | undefined }> = ({ name }) =>
     sx={{ fontFamily: 'monospace' }}
   />
 
+const StrategyCount: FC<{ length: number | undefined }> = ({ length }) =>
+  <Chip
+    icon={<ViewModuleIcon />}
+    label={`strategies: ${length}`}
+    variant='outlined'
+    color='success'
+    sx={{ fontFamily: 'monospace' }}
+  />
 
 
 const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
@@ -71,7 +80,7 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
           {resultDirDatetimeFormatted(name)}
         </Typography>
         <SourceFileName name={meta?.source} />
-        <Field name='strategies' desc={meta?.strategies.length} />
+        <StrategyCount length={meta?.strategies.length} />
         {
           meta?.params ?
             <Params params={meta.params} />
