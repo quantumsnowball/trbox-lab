@@ -1,12 +1,10 @@
-import { AppBar, IconButton, Tab, Tabs, Toolbar, Typography } from "@mui/material"
+import { AppBar, IconButton, Tab, Tabs, Toolbar } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu'
-import Link from "next/link"
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import MenuDrawer from "./MenuDrawer";
 import { useDispatch } from "react-redux";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
-import { APP_TITLE } from "@/common/constants";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useEffect, useState } from "react";

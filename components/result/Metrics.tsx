@@ -1,6 +1,6 @@
 import { FileNode } from "@/common/types"
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from "@mui/material"
-import { FC, useState } from "react"
+import { FC } from "react"
 import { useGetMetricsQuery } from "@/redux/slices/apiSlice";
 import { roundFloat, roundPct } from "@/common/utils";
 import { useSelector } from "react-redux";
