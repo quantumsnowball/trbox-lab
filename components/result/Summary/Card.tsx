@@ -53,10 +53,7 @@ const StrategyCount: FC<{ length: number | undefined }> = ({ length }) =>
   />
 
 
-const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
-  const { data: meta } = useGetMetaQuery(path)
-  const delMode = useSelector((s: RootState) => s.layoutTemp.result.fileOps.deleteMode)
-
+const Parameters: FC<{ params?: StrategyParams }> = ({ params }) => {
   const Field: FC<{
     name: string | undefined,
     desc: string | number | undefined
@@ -65,18 +62,26 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
         {name}: {desc}
       </Typography>
 
-  const Params: FC<{ params: StrategyParams }> = ({ params }) =>
+  return (
     <>
-      <Field name='Parameters:' desc='' />
-      <Box
-        sx={{ pl: 3 }}
-      >
-        {
-          Object.entries(params).map(([name, str]) =>
-            <Field key={name} name={name} desc={str} />)
-        }
-      </Box>
+      {
+        params ?
+          <Box>
+            {
+              Object.entries(params).map(([name, str]) =>
+                <Field key={name} name={name} desc={str} />)
+            }
+          </Box>
+          :
+          null
+      }
     </>
+  )
+}
+
+const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
+  const { data: meta } = useGetMetaQuery(path)
+  const delMode = useSelector((s: RootState) => s.layoutTemp.result.fileOps.deleteMode)
 
   return (
     <Box
@@ -94,12 +99,7 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
           <SourceFileName name={meta?.source} />
           <StrategyCount length={meta?.strategies.length} />
         </Box>
-        {
-          meta?.params ?
-            <Params params={meta.params} />
-            :
-            null
-        }
+        <Parameters params={meta?.params} />
       </Box>
       {
         delMode ?
