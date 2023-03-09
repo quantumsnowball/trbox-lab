@@ -42,8 +42,8 @@ const ColumnFormat = (column: string) => {
 
 const Content: FC<{ path: string }> = ({ path }) => {
   const { data: metrics } = useGetMetricsQuery(path)
-  const headers = metrics && ['Name', ...metrics.columns]
-  const rows = metrics?.data.map((row, i) => [metrics.index[i], ...row])
+  const headers = metrics?.columns
+  const rows = metrics?.data
   const [order, setOrder] = useState<'asc' | 'desc'>('desc')
   const [orderBy, setOrderBy] = useState(5) // sharpe
 
