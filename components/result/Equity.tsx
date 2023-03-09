@@ -8,7 +8,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
-import Plot from "react-plotly.js";
+
+// import Plot from "react-plotly.js";
+// note: using the above import statement with next.js causing "'self' is not defined" issue
+// import like below fixed it
+import dynamic from "next/dynamic";
+const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
 
 const SelectBar: FC<{ path: string }> = ({ path }) => {
