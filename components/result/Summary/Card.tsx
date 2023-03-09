@@ -58,7 +58,13 @@ const Parameters: FC<{ params?: StrategyParams }> = ({ params }) => {
     name: string | undefined,
     desc: string | number | undefined
   }> = ({ name, desc }) =>
-      <Typography sx={{ fontFamily: 'monospace' }}>
+      <Typography
+        className='nowrap'
+        sx={{
+          fontFamily: 'monospace',
+          mx: 2,
+        }}
+      >
         {name}: {desc}
       </Typography>
 
@@ -66,10 +72,19 @@ const Parameters: FC<{ params?: StrategyParams }> = ({ params }) => {
     <>
       {
         params ?
-          <Box>
+          <Box
+            className='flex row start'
+            sx={{
+              flexWrap: 'wrap',
+            }}
+          >
             {
               Object.entries(params).map(([name, str]) =>
-                <Field key={name} name={name} desc={str} />)
+                <Field
+                  key={name}
+                  name={name}
+                  desc={str}
+                />)
             }
           </Box>
           :
@@ -95,6 +110,7 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
         <Heading {...{ name, path }} />
         <Box
           className='flex row spread'
+          sx={{my: 1}}
         >
           <SourceFileName name={meta?.source} />
           <StrategyCount length={meta?.strategies.length} />
