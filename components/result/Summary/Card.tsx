@@ -54,19 +54,36 @@ const StrategyCount: FC<{ length: number | undefined }> = ({ length }) =>
 
 
 const Parameters: FC<{ params?: StrategyParams }> = ({ params }) => {
+  const mode = useSelector((s: RootState) => s.theme.mode)
+
   const Field: FC<{
     name: string | undefined,
     desc: string | number | undefined
   }> = ({ name, desc }) =>
-      <Typography
-        className='nowrap'
+      <Box
         sx={{
-          fontFamily: 'monospace',
           mx: 2,
         }}
       >
-        {name}: {desc}
-      </Typography>
+        <Typography
+          className='nowrap'
+          sx={{
+            display: 'inline',
+            fontFamily: 'monospace',
+          }}
+        >
+          {`${name} = `}
+        </Typography>
+        <Typography
+          sx={{
+            display: 'inline',
+            fontFamily: 'monospace',
+            color: mode === 'light' ? 'warning.main' : 'warning.light',
+          }}
+        >
+          {desc}
+        </Typography>
+      </Box>
 
   return (
     <>
@@ -110,7 +127,7 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
         <Heading {...{ name, path }} />
         <Box
           className='flex row spread'
-          sx={{my: 1}}
+          sx={{ my: 1 }}
         >
           <SourceFileName name={meta?.source} />
           <StrategyCount length={meta?.strategies.length} />
