@@ -34,23 +34,43 @@ const Heading: FC<{ name: string, path: string }> = ({ name, path }) => {
   )
 }
 
-const SourceFileName: FC<{ name: string | undefined }> = ({ name }) =>
-  <Chip
-    icon={<DataObjectIcon />}
-    label={name}
-    variant='outlined'
-    color='primary'
-    sx={{ fontFamily: 'monospace' }}
-  />
+const SourceFileName: FC<{ name: string | undefined, path: string }> = ({ name, path }) => {
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
+  return (
+    <Chip
+      icon={<DataObjectIcon />}
+      label={name}
+      variant='outlined'
+      color='primary'
+      sx={{ fontFamily: 'monospace' }}
+      onClick={() => {
+        viewMetrics()
+        router.push(RESULT_ROOT + path)
+      }}
+    />
+  )
+}
 
-const StrategyCount: FC<{ length: number | undefined }> = ({ length }) =>
-  <Chip
-    icon={<ViewModuleIcon />}
-    label={`strategies: ${length}`}
-    variant='outlined'
-    color='success'
-    sx={{ fontFamily: 'monospace' }}
-  />
+const StrategyCount: FC<{ length: number | undefined, path: string }> = ({ length, path }) => {
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const viewMetrics = () => dispatch(layoutTempActions.goToResultSection('metrics'))
+  return (
+    <Chip
+      icon={<ViewModuleIcon />}
+      label={`strategies: ${length}`}
+      variant='outlined'
+      color='success'
+      sx={{ fontFamily: 'monospace' }}
+      onClick={() => {
+        viewMetrics()
+        router.push(RESULT_ROOT + path)
+      }}
+    />
+  )
+}
 
 
 const Parameters: FC<{ params?: StrategyParams }> = ({ params }) => {
@@ -129,8 +149,8 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
           className='flex row spread'
           sx={{ my: 1 }}
         >
-          <SourceFileName name={meta?.source} />
-          <StrategyCount length={meta?.strategies.length} />
+          <SourceFileName name={meta?.source} path={path} />
+          <StrategyCount length={meta?.strategies.length} path={path} />
         </Box>
         <Parameters params={meta?.params} />
       </Box>
