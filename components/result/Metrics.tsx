@@ -48,6 +48,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
   const dispatch = useDispatch()
   const order = useSelector((s: RootState) => s.layoutTemp.result.metrics.order)
   const toggleOrder = () => dispatch(layoutTempActions.toggleMetricsOrder())
+  const resetOrder = () => dispatch(layoutTempActions.resetMetricsOrder())
   const sort = useSelector((s: RootState) => s.layoutTemp.result.metrics.sort)
   const setSort = (n: string) => dispatch(layoutTempActions.setMetricsSort(n))
   const { data: metrics } = useGetMetricsQuery({ path, sort, order })
@@ -82,6 +83,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
                       toggleOrder()
                     } else {
                       setSort(colname)
+                      resetOrder()
                     }
                   }}
                 >

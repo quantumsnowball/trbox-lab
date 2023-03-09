@@ -34,6 +34,7 @@ const layoutTempSlice = createSlice({
     toggleResultFileDeleteMode: s => { s.result.fileOps.deleteMode = !s.result.fileOps.deleteMode },
     setWsConnected: (s, a: PayloadAction<boolean>) => { s.wsConnected = a.payload },
     setMetricsSort: (s, a: PayloadAction<string>) => { s.result.metrics.sort = a.payload },
+    resetMetricsOrder: s => { s.result.metrics.order = 'desc' },
     toggleMetricsOrder: s => { s.result.metrics.order = s.result.metrics.order === 'asc' ? 'desc' : 'asc' },
     setEquityChecked: (s, a: PayloadAction<string[]>) => { s.result.equity.checked = a.payload },
   }
