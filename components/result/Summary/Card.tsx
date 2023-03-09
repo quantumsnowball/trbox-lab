@@ -82,12 +82,18 @@ const Card: FC<{ name: string, path: string }> = ({ name, path }) => {
     <Box
       className='flex row spread'
       key={name}
-      sx={{ ml: 1, pl: 1, py: 1 }}
+      sx={{ ml: 1, p: 1 }}
     >
-      <Box>
+      <Box
+        className='expanding'
+      >
         <Heading {...{ name, path }} />
-        <SourceFileName name={meta?.source} />
-        <StrategyCount length={meta?.strategies.length} />
+        <Box
+          className='flex row spread'
+        >
+          <SourceFileName name={meta?.source} />
+          <StrategyCount length={meta?.strategies.length} />
+        </Box>
         {
           meta?.params ?
             <Params params={meta.params} />
