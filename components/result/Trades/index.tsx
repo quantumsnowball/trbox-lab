@@ -1,54 +1,18 @@
 import { FileNode } from "@/common/types";
-import { useGetMetaQuery, useGetMetricsQuery } from "@/redux/slices/apiSlice";
+import { useGetMetricsQuery } from "@/redux/slices/apiSlice";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { RootState } from "@/redux/store";
 import {
   Autocomplete,
   Box,
-  Tab,
-  Tabs,
   TextField,
 } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Stats from "./Stats";
 import TradeList from "./TradeList";
 
-
-const Tabbed: FC<{ path: string | undefined }> = ({ path }) => {
-  const { data: meta } = useGetMetaQuery(path ?? '')
-  const strategies = meta?.strategies
-  const [tabId, setTabId] = useState(0)
-
-  return (
-    <>
-      <Tabs
-        variant="scrollable"
-        scrollButtons="auto"
-        value={tabId}
-        onChange={(_, newId) => setTabId(newId)}
-      >
-        {
-          strategies?.map(name =>
-            <Tab
-              key={name}
-              label={name}
-              sx={{ textTransform: 'none' }}
-            />
-          )
-        }
-      </Tabs>
-      {
-        path && strategies &&
-        <>
-          <TradeList path={path} strategy={strategies[tabId]} />
-          <Stats path={path} strategy={strategies[tabId]} />
-        </>
-      }
-    </>
-  )
-}
 
 const FilterBox: FC<{ path: string }> = ({ path }) => {
   const dispatch = useDispatch()
