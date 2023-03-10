@@ -6,6 +6,7 @@ import { Autocomplete, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { FC } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import Marks from "./Marks"
 
 
 const FilterBox: FC<{ path: string }> = ({ path }) => {
@@ -41,11 +42,20 @@ const Content: FC<{ path: string }> = ({ path }) => {
   const selected = useSelector((s: RootState) => s.layoutTemp.result.study.selected[path])
 
   return (
-    <Typography
-      variant='h6'
-    >
-      Strategy = {selected}
-    </Typography>
+    <>
+      {selected ?
+        <>
+          <Box className='expanding flex column center'>
+            <Typography variant='h6'>
+              Chart
+            </Typography>
+          </Box>
+          <Marks path={path} strategy={selected} />
+        </>
+        :
+        null
+      }
+    </>
   )
 }
 
