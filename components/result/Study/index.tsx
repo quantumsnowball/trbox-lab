@@ -14,8 +14,8 @@ const FilterBox: FC<{ path: string }> = ({ path }) => {
   const sort = useSelector((s: RootState) => s.layoutTemp.result.metrics.sort)
   const { data: metrics } = useGetMetricsQuery({ path, sort, order })
   const options = metrics?.data?.map(row => row[0] as string) ?? []
-  const selected = useSelector((s: RootState) => s.layoutTemp.result.trades.selected[path] ?? null)
-  const setSelected = (selected: string | null) => dispatch(layoutTempActions.setTradesSelected({ path, selected }))
+  const selected = useSelector((s: RootState) => s.layoutTemp.result.study.selected[path] ?? null)
+  const setSelected = (selected: string | null) => dispatch(layoutTempActions.setStudySelected({ path, selected }))
 
   return (
     <Autocomplete
@@ -38,7 +38,7 @@ const FilterBox: FC<{ path: string }> = ({ path }) => {
 }
 
 const Content: FC<{ path: string }> = ({ path }) => {
-  const selected = useSelector((s: RootState) => s.layoutTemp.result.trades.selected[path])
+  const selected = useSelector((s: RootState) => s.layoutTemp.result.study.selected[path])
 
   return (
     <Typography
