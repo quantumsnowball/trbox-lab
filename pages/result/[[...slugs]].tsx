@@ -5,6 +5,7 @@ import Code from '@/components/result/Code';
 import { RESULT_DIR_PREFIX, RESULT_ROOT, ResultBottomNavTag } from '@/components/result/constants';
 import Equity from '@/components/result/Equity';
 import Metrics from '@/components/result/Metrics';
+import Study from '@/components/result/Study';
 import Summary from '@/components/result/Summary';
 import Trades from '@/components/result/Trades';
 import { useGetResultTreeQuery } from '@/redux/slices/apiSlice';
@@ -85,6 +86,7 @@ const Result = () => {
             'source': <Code {...{ nodes }} />,
             'metrics': <Metrics {...{ nodes }} />,
             'equity': <Equity {...{ nodes }} />,
+            'study': <Study {...{ nodes }} />,
             'trades': <Trades {...{ nodes }} />,
           }[sectionTag]
         }
