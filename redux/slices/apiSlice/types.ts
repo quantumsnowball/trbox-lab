@@ -6,6 +6,7 @@ export type Meta = {
   source: string
   strategies: string[]
   params: StrategyParams
+  marks: number
 }
 
 export type Metrics = {
