@@ -39,18 +39,18 @@ const FilterBox: FC<{ path: string }> = ({ path }) => {
 }
 
 const Content: FC<{ path: string }> = ({ path }) => {
-  const selected = useSelector((s: RootState) => s.layoutTemp.result.study.selected[path])
+  const strategy = useSelector((s: RootState) => s.layoutTemp.result.study.selected[path])
 
   return (
     <>
-      {selected ?
+      {strategy ?
         <>
           <Box className='expanding flex column center'>
             <Typography variant='h6'>
               Chart
             </Typography>
           </Box>
-          <Marks path={path} strategy={selected} />
+          <Marks path={path} strategy={strategy} />
         </>
         :
         null

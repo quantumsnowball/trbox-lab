@@ -27,6 +27,10 @@ export type Stats = {
   sells: TradeStats,
 }
 
+export type MarksIndex = {
+  [strategy: string]: string[]
+}
+
 export type Equity = {
   [timestamp: string]: number
 }
