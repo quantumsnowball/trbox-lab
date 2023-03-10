@@ -5,7 +5,6 @@ import { useGetMarksIndexQuery } from "@/redux/slices/apiSlice"
 
 const Marks: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   const { data: index } = useGetMarksIndexQuery(path)
-  const names = index ? index[strategy] : []
   const [expanded, setExpanded] = useState(true)
 
   return (
@@ -23,17 +22,19 @@ const Marks: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
           Marks
         </Typography>
       </AccordionSummary>
-      <AccordionDetails>
-        {
-          names.map(name =>
-            <Typography
-              key={name}
-            >
-              {name}
-            </Typography>
-          )
-        }
-      </AccordionDetails>
+      {index && index[strategy] &&
+        <AccordionDetails>
+          {
+            index[strategy].map(name =>
+              <Typography
+                key={name}
+              >
+                {name}
+              </Typography>
+            )
+          }
+        </AccordionDetails>
+      }
     </Accordion >
   )
 }
