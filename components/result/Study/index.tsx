@@ -63,6 +63,7 @@ const Study: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   return (
     <Box
       className='expanding scroll flex column start stretch'
+      sx={{position: 'relative'}}
     >
       {path ?
         <>
