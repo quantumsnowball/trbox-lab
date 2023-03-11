@@ -7,6 +7,7 @@ import { Box } from "@mui/system"
 import { FC } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Marks from "./Marks"
+import PlotlyChart from "./PlotlyChart"
 
 
 const FilterBox: FC<{ path: string }> = ({ path }) => {
@@ -45,11 +46,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
     <>
       {strategy ?
         <>
-          <Box className='expanding flex column center'>
-            <Typography variant='h6'>
-              Chart
-            </Typography>
-          </Box>
+          <PlotlyChart />
           <Marks path={path} strategy={strategy} />
         </>
         :
