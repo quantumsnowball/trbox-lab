@@ -1,7 +1,23 @@
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography, Checkbox } from "@mui/material"
 import { FC, useState } from "react"
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { useGetMarksIndexQuery } from "@/redux/slices/apiSlice"
+
+
+const Row: FC<{ name: string }> = ({ name }) => {
+  return (
+    <Box
+      className='flex row spread'
+    >
+      <Typography>
+        {name}
+      </Typography>
+      <Checkbox
+        color='success'
+      />
+    </Box>
+  )
+}
 
 const Marks: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   const { data: index } = useGetMarksIndexQuery(path)
@@ -26,11 +42,7 @@ const Marks: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
         <AccordionDetails>
           {
             index[strategy].map(name =>
-              <Typography
-                key={name}
-              >
-                {name}
-              </Typography>
+              <Row key={name} {...{ name }} />
             )
           }
         </AccordionDetails>
