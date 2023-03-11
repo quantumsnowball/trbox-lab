@@ -6,12 +6,30 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
 
+const ControlButtons: FC = () => {
+  const [selection, setSelection] = useState<'main' | 'overlay'>('main')
+  return (
+    <ToggleButtonGroup
+      size='small'
+      exclusive
+      value={selection}
+      onChange={(_e, value) => setSelection(value)}
+    >
+      <ToggleButton value='main'>
+        Main
+      </ToggleButton>
+      <ToggleButton value='overlay'>
+        Overlay
+      </ToggleButton>
+    </ToggleButtonGroup>
+  )
+}
+
 const Row: FC<{ name: string }> = ({ name }) => {
   const [visible, setVisible] = useState(false)
   return (
     <Box
       className='flex row spread'
-      sx={{ minHeight: 48 }}
     >
       <Box
         className='flex row'
@@ -28,16 +46,7 @@ const Row: FC<{ name: string }> = ({ name }) => {
           {name}
         </Typography>
       </Box>
-      {visible &&
-        <ToggleButtonGroup size='small'>
-          <ToggleButton value='main'>
-            Main
-          </ToggleButton>
-          <ToggleButton value='overlay'>
-            Overlay
-          </ToggleButton>
-        </ToggleButtonGroup>
-      }
+      {visible && <ControlButtons />}
     </Box>
   )
 }
