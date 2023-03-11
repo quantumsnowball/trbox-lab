@@ -1,7 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography, Checkbox, ToggleButtonGroup, ToggleButton } from "@mui/material"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
-import { useGetMarksIndexQuery } from "@/redux/slices/apiSlice"
+import { useGetMarksIndexQuery, useLazyGetMarkSeriesQuery } from "@/redux/slices/apiSlice"
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import { useSelector } from "react-redux";
@@ -32,7 +32,18 @@ const ControlButtons: FC = () => {
 const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strategy, name }) => {
   const dispatch = useDispatch()
   const visible = useSelector((s: RootState) => s.layoutTemp.result.study.visible[path]?.[strategy]?.includes(name) ?? false)
+  const [trigger,] = useLazyGetMarkSeriesQuery()
   const toggleVisible = () => dispatch(layoutTempActions.toggleMarkVisible({ path, strategy, name }))
+
+  useEffect(() => {
+    (async () => {
+      if (visible) {
+        let { data } = await trigger({ path, strategy, name })
+        console.log({ data })
+      }
+    })()
+  }, [visible])
+
   return (
     <Box
       className='flex row spread'

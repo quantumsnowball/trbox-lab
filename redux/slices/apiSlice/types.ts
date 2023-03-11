@@ -32,6 +32,10 @@ export type MarksIndex = {
   [strategy: string]: string[]
 }
 
+export type MarkSeries = {
+  [timestamp: string]: number
+}
+
 export type Equity = {
   [timestamp: string]: number
 }
