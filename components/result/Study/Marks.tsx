@@ -4,6 +4,10 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { useGetMarksIndexQuery } from "@/redux/slices/apiSlice"
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { layoutTempActions } from "@/redux/slices/layoutTemp";
 
 
 const ControlButtons: FC = () => {
@@ -25,8 +29,10 @@ const ControlButtons: FC = () => {
   )
 }
 
-const Row: FC<{ name: string }> = ({ name }) => {
-  const [visible, setVisible] = useState(false)
+const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strategy, name }) => {
+  const dispatch = useDispatch()
+  const visible = useSelector((s: RootState) => s.layoutTemp.result.study.visible[path]?.[strategy]?.includes(name) ?? false)
+  const toggleVisible = () => dispatch(layoutTempActions.toggleMarkVisible({ path, strategy, name }))
   return (
     <Box
       className='flex row spread'
@@ -40,7 +46,7 @@ const Row: FC<{ name: string }> = ({ name }) => {
           checkedIcon={<VisibilityOutlinedIcon />}
           sx={{ mr: 1 }}
           checked={visible}
-          onClick={() => setVisible(p => !p)}
+          onClick={toggleVisible}
         />
         <Typography>
           {name}
@@ -80,7 +86,7 @@ const Marks: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
         <AccordionDetails>
           {
             index[strategy].map(name =>
-              <Row key={name} {...{ name }} />
+              <Row key={name} {...{ path, strategy, name }} />
             )
           }
         </AccordionDetails>
