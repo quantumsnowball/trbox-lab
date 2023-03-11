@@ -2,7 +2,7 @@ import { FileNode } from '@/common/types'
 import { cleanUrl } from '@/common/utils'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { layoutTempActions } from '@/redux/slices/layoutTemp'
-import { Equities, Line, Lines, Meta, Metrics, Stats, TradesSchema } from './types'
+import { Equities, Line, Lines, MarksIndex, Meta, Metrics, Stats, TradesSchema } from './types'
 
 export var ws: WebSocket
 
@@ -79,6 +79,9 @@ export const trboxLabApi = createApi({
     getStats: builder.query<Stats, { path: string, strategy: string }>({
       query: ({ path, strategy }: { path: string, strategy: string }) => cleanUrl(`result/${path}/stats?strategy=${strategy}`)
     }),
+    getMarksIndex: builder.query<MarksIndex, string>({
+      query: (path: string) => cleanUrl(`result/${path}/marks`)
+    }),
     // file operations
     deleteResource: builder.mutation<void, string>({
       query: (path: string) => ({
@@ -104,6 +107,7 @@ export const {
   useGetMetaQuery,
   useGetMetricsQuery,
   useGetEquityQuery,
+  useGetMarksIndexQuery,
   useGetTradesQuery,
   useGetStatsQuery,
   // operations

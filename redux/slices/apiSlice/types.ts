@@ -6,6 +6,7 @@ export type Meta = {
   source: string
   strategies: string[]
   params: StrategyParams
+  marks: number
 }
 
 export type Metrics = {
@@ -25,6 +26,10 @@ export type Stats = {
   all: TradeStats,
   buys: TradeStats,
   sells: TradeStats,
+}
+
+export type MarksIndex = {
+  [strategy: string]: string[]
 }
 
 export type Equity = {
