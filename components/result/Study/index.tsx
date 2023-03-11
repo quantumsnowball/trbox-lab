@@ -46,7 +46,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
     <>
       {strategy ?
         <>
-          <PlotlyChart />
+          <PlotlyChart path={path} strategy={strategy} />
           <Marks path={path} strategy={strategy} />
         </>
         :
@@ -63,7 +63,7 @@ const Study: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   return (
     <Box
       className='expanding scroll flex column start stretch'
-      sx={{position: 'relative'}}
+      sx={{ position: 'relative' }}
     >
       {path ?
         <>

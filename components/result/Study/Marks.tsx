@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
+import { contentActions } from "@/redux/slices/content";
+import { Data } from "plotly.js";
 
 
 const ControlButtons: FC = () => {
@@ -34,12 +36,23 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
   const visible = useSelector((s: RootState) => s.layoutTemp.result.study.visible[path]?.[strategy]?.includes(name) ?? false)
   const [trigger,] = useLazyGetMarkSeriesQuery()
   const toggleVisible = () => dispatch(layoutTempActions.toggleMarkVisible({ path, strategy, name }))
+  const addSeries = (data: Data) => dispatch(contentActions.addPlotlyChartData({ path, strategy, data }))
+  const removeSeries = () => dispatch(contentActions.removePlotlyChartData({ path, strategy, name }))
 
   useEffect(() => {
     (async () => {
       if (visible) {
         let { data } = await trigger({ path, strategy, name })
-        console.log({ data })
+        if (data)
+          addSeries({
+            name: name,
+            x: data.map(r => r[0]),
+            y: data.map(r => r[1]),
+            type: 'scatter',
+            mode: 'lines',
+          })
+      } else {
+        removeSeries()
       }
     })()
   }, [visible])
