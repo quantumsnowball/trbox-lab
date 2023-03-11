@@ -33,19 +33,33 @@ const layoutTempSlice = createSlice({
     wsConnected: false
   },
   reducers: {
+    //
+    // GENERAL
+    //
     toggleMenu: s => { s.menu.visible = !s.menu.visible },
     openMenu: s => { s.menu.visible = true },
     closeMenu: s => { s.menu.visible = false },
+    //
+    // SOURCE
+    //
     goToSourceSection: (s, a: PayloadAction<SourceBottomNavTag>) => { s.source.section = a.payload },
-    goToResultSection: (s, a: PayloadAction<ResultBottomNavTag>) => { s.result.section = a.payload },
     toggleSourceFileDeleteMode: s => { s.source.fileOps.deleteMode = !s.source.fileOps.deleteMode },
-    toggleResultFileDeleteMode: s => { s.result.fileOps.deleteMode = !s.result.fileOps.deleteMode },
+    // run
     setWsConnected: (s, a: PayloadAction<boolean>) => { s.wsConnected = a.payload },
+    //
+    // RESULT
+    //
+    goToResultSection: (s, a: PayloadAction<ResultBottomNavTag>) => { s.result.section = a.payload },
+    toggleResultFileDeleteMode: s => { s.result.fileOps.deleteMode = !s.result.fileOps.deleteMode },
+    // metrics
     setMetricsSort: (s, a: PayloadAction<string>) => { s.result.metrics.sort = a.payload },
     resetMetricsOrder: s => { s.result.metrics.order = 'desc' },
     toggleMetricsOrder: s => { s.result.metrics.order = s.result.metrics.order === 'asc' ? 'desc' : 'asc' },
+    // equity
     setEquityChecked: (s, a: PayloadAction<{ path: string, checked: string[] }>) => { s.result.equity.checked[a.payload.path] = a.payload.checked },
+    // study
     setStudySelected: (s, a: PayloadAction<{ path: string, selected: string | null }>) => { s.result.study.selected[a.payload.path] = a.payload.selected },
+    // trades
     setTradesSelected: (s, a: PayloadAction<{ path: string, selected: string | null }>) => { s.result.trades.selected[a.payload.path] = a.payload.selected },
   }
 })
