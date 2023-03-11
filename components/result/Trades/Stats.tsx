@@ -104,6 +104,12 @@ const Stats: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
       disableGutters
       expanded={expanded}
       onChange={() => setExpanded(prev => !prev)}
+      sx={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+      }}
     >
       <AccordionSummary
         expandIcon={<ExpandLessIcon />}
