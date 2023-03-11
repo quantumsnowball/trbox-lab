@@ -21,13 +21,13 @@ const layoutTempSlice = createSlice({
         order: 'desc' as 'asc' | 'desc'
       },
       equity: {
-        checked: {} as { [key: string]: string[] },
+        checked: {} as { [path: string]: string[] },
       },
       study: {
-        selected: {} as { [key: string]: string | null },
+        selected: {} as { [path: string]: string | null },
       },
       trades: {
-        selected: {} as { [key: string]: string | null },
+        selected: {} as { [path: string]: string | null },
       },
     },
     wsConnected: false
