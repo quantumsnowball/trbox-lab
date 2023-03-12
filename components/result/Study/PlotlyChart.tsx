@@ -69,7 +69,7 @@ const PlotlyChart: FC<{ path: string, strategy: string }> = ({ path, strategy })
 
   return (
     <Plot
-      data={data}
+      data={JSON.parse(JSON.stringify(data))}
       layout={{
         showlegend: true,
         legend: {

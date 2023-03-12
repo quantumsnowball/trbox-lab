@@ -36,24 +36,13 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
         const mode = 'lines'
         const xaxis = 'x'
         if (studyMode === 'main') {
-          // addMainSeries({ name, x, y, type, xaxis, yaxis: 'y1' })
-          addMainSeries({ name, x, y, type, mode })
+          addMainSeries({ name, x, y, type, xaxis, yaxis: 'y1' })
           removeSubSeries()
         }
         else if (studyMode === 'sub') {
-          // addSubSeries({ name, x, y, type, xaxis, yaxis: 'y2' })
-          addSubSeries({ name, x, y, type, mode })
+          addSubSeries({ name, x, y, type, xaxis, yaxis: 'y2' })
           removeMainSeries()
         }
-        // addSeries({
-        //   name: name,
-        //   x: data.map(r => r[0]),
-        //   y: data.map(r => r[1]),
-        //   // xaxis: 'x',
-        //   // yaxis: studyMode === 'main' ? 'y1' : 'y2',
-        //   type: 'scatter',
-        //   mode: 'lines',
-        // })
       }
     })()
   }, [studyMode])
