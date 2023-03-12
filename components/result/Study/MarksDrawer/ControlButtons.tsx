@@ -2,17 +2,16 @@ import { ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { FC, useState } from "react"
 
 
-type PlotChoices = 'main' | 'sub' | null
+type PlotChoices = 'main' | 'sub'
 
 const ControlButtons: FC = () => {
   const [selection, setSelection] = useState<PlotChoices>('main')
-  console.log({ selection })
   return (
     <ToggleButtonGroup
       size='small'
       exclusive
       value={selection}
-      onChange={(_e, value) => setSelection(value)}
+      onChange={(_e, value) => value && setSelection(value)}
     >
       <ToggleButton value='main'>
         Main
