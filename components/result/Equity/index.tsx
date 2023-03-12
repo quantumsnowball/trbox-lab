@@ -1,5 +1,5 @@
 import { FileNode } from "@/common/types";
-import { useGetEquityQuery, useGetMetricsQuery } from "@/redux/slices/apiSlice";
+import { useGetMetricsQuery } from "@/redux/slices/apiSlice";
 import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
 import { FC } from "react";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
@@ -8,12 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
-
-// import Plot from "react-plotly.js";
-// note: using the above import statement with next.js causing "'self' is not defined" issue
-// import like below fixed it
-import dynamic from "next/dynamic";
-const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+import PlotlyChart from "./PlotlyChart";
 
 
 const SelectBar: FC<{ path: string }> = ({ path }) => {
@@ -53,38 +48,6 @@ const SelectBar: FC<{ path: string }> = ({ path }) => {
       }
       onChange={(_e, selections, _reason) => {
         setChecked(selections)
-      }}
-    />
-  )
-}
-
-const PlotlyChart: FC<{ path: string }> = ({ path }) => {
-  const checked = useSelector((s: RootState) => s.layoutTemp.result.equity.checked)
-  const { data: equities } = useGetEquityQuery(path)
-  const curves = Object.entries(equities ?? []).filter(([name, _]) => checked[path]?.includes(name))
-
-  return (
-    <Plot
-      data={curves.map(([name, equity]) => ({
-        name: name,
-        x: Object.keys(equity),
-        y: Object.values(equity),
-        type: 'scatter',
-        mode: 'lines',
-      }))}
-      layout={{
-        title: 'Equity Curves',
-        showlegend: true,
-        legend: {
-          x: 0,
-          y: 1,
-          yanchor: 'bottom',
-          orientation: 'h',
-        },
-        yaxis: { side: 'right' },
-      }}
-      config={{
-        responsive: true,
       }}
     />
   )
