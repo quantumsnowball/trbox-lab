@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Typography, Checkbox, ToggleButtonGroup, ToggleButton } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography, Checkbox } from "@mui/material"
 import { FC, useEffect, useState } from "react"
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { useGetMarksIndexQuery, useLazyGetMarkSeriesQuery } from "@/redux/slices/apiSlice"
@@ -10,26 +10,8 @@ import { useDispatch } from "react-redux";
 import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { contentActions } from "@/redux/slices/content";
 import { Data } from "plotly.js";
+import ControlButtons from "./ControlButtons";
 
-
-const ControlButtons: FC = () => {
-  const [selection, setSelection] = useState<'main' | 'overlay'>('main')
-  return (
-    <ToggleButtonGroup
-      size='small'
-      exclusive
-      value={selection}
-      onChange={(_e, value) => setSelection(value)}
-    >
-      <ToggleButton value='main'>
-        Main
-      </ToggleButton>
-      <ToggleButton value='overlay'>
-        Overlay
-      </ToggleButton>
-    </ToggleButtonGroup>
-  )
-}
 
 const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strategy, name }) => {
   const dispatch = useDispatch()
