@@ -59,7 +59,7 @@ export const PlotlyChartMultiDemo: FC<{ path: string, strategy: string }> = ({ p
 }
 
 const PlotlyChart: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
-  const series = useSelector((s: RootState) => s.content.result.study.series[path]?.[strategy] ?? {})
+  const series = useSelector((s: RootState) => s.content.result.study.series[path]?.[strategy]?.main ?? {})
   const data = Object.entries(series).map(([_name, d]) => d)
   return (
     <Plot

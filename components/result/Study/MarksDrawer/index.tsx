@@ -16,24 +16,39 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
   const dispatch = useDispatch()
   const [trigger,] = useLazyGetMarkSeriesQuery()
   const studyMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
-  const addSeries = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, data }))
-  const removeSeries = () => dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name }))
+  const addMainSeries = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'main', data }))
+  const addSubSeries = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'sub', data }))
+  const removeMainSeries = () => dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name, target: 'main' }))
+  const removeSubSeries = () => dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name, target: 'sub' }))
 
   useEffect(() => {
     (async () => {
       if (studyMode === null) {
-        removeSeries()
+        removeMainSeries()
+        removeSubSeries()
         return
       }
       let { data } = await trigger({ path, strategy, name })
-      if (data)
-        addSeries({
-          name: name,
-          x: data.map(r => r[0]),
-          y: data.map(r => r[1]),
-          type: 'scatter',
-          mode: 'lines',
-        })
+      if (data) {
+        const series = { name, x: data.map(r => r[0]), y: data.map(r => r[1]) }
+        if (studyMode === 'main') {
+          addMainSeries(series)
+          removeSubSeries()
+        }
+        else if (studyMode === 'sub') {
+          addSubSeries(series)
+          removeMainSeries()
+        }
+        // addSeries({
+        //   name: name,
+        //   x: data.map(r => r[0]),
+        //   y: data.map(r => r[1]),
+        //   // xaxis: 'x',
+        //   // yaxis: studyMode === 'main' ? 'y1' : 'y2',
+        //   type: 'scatter',
+        //   mode: 'lines',
+        // })
+      }
     })()
   }, [studyMode])
 
