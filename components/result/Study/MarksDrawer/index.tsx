@@ -16,8 +16,8 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
   const dispatch = useDispatch()
   const [trigger,] = useLazyGetMarkSeriesQuery()
   const studyMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
-  const addSeries = (data: Data) => dispatch(contentActions.addPlotlyChartData({ path, strategy, data }))
-  const removeSeries = () => dispatch(contentActions.removePlotlyChartData({ path, strategy, name }))
+  const addSeries = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, data }))
+  const removeSeries = () => dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name }))
 
   useEffect(() => {
     (async () => {

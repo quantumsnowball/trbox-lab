@@ -7,28 +7,26 @@ const contentSlice = createSlice({
   initialState: {
     result: {
       study: {
-        data: {} as {
+        series: {} as {
           [path: string]: {
-            [strategy: string]: Data[]
+            [strategy: string]: {
+              [name: string]: Data
+            }
           }
         }
       }
     }
   },
   reducers: {
-    addPlotlyChartData: (s, a: PayloadAction<{ path: string, strategy: string, data: Data }>) => {
-      const { path, strategy, data } = a.payload
-      s.result.study.data[path] ??= {}
-      s.result.study.data[path][strategy] ??= []
-      s.result.study.data[path][strategy] =
-        [...s.result.study.data[path][strategy], data]
+    addPlotlyChartSeries: (s, a: PayloadAction<{ path: string, strategy: string, name: string, data: Data }>) => {
+      const { path, strategy, data, name } = a.payload
+      s.result.study.series[path] ??= {}
+      s.result.study.series[path][strategy] ??= {}
+      s.result.study.series[path][strategy][name] = data
     },
-    removePlotlyChartData: (s, a: PayloadAction<{ path: string, strategy: string, name: string }>) => {
+    removePlotlyChartSeries: (s, a: PayloadAction<{ path: string, strategy: string, name: string }>) => {
       const { path, strategy, name } = a.payload
-      s.result.study.data[path] ??= {}
-      s.result.study.data[path][strategy] ??= []
-      s.result.study.data[path][strategy] =
-        s.result.study.data[path][strategy].filter(data => data.name !== name)
+      delete s.result.study.series[path]?.[strategy]?.[name]
     }
   }
 })
