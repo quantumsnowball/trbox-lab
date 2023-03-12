@@ -81,7 +81,7 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
   )
 }
 
-const Marks: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
+const MarksDrawer: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   const { data: index } = useGetMarksIndexQuery(path)
   const [expanded, setExpanded] = useState(true)
 
@@ -119,5 +119,5 @@ const Marks: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
   )
 }
 
-export default Marks
+export default MarksDrawer
 
