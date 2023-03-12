@@ -11,7 +11,6 @@ const PlotlyChart: FC<{ path: string, strategy: string }> = ({ path, strategy })
     <Plot
       data={data}
       layout={{
-        title: 'Marks',
         showlegend: true,
         legend: {
           x: 0,
@@ -20,7 +19,7 @@ const PlotlyChart: FC<{ path: string, strategy: string }> = ({ path, strategy })
           orientation: 'h',
         },
         yaxis: { side: 'right' },
-        margin: { l: 20, r: 40, t: 20, b: 20 },
+        margin: { l: 20, r: 50, t: 20, b: 20 },
       }}
       config={{
         responsive: true,

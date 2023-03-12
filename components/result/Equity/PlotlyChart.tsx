@@ -25,7 +25,6 @@ const PlotlyChart: FC<{ path: string }> = ({ path }) => {
         mode: 'lines',
       }))}
       layout={{
-        title: 'Equity Curves',
         showlegend: true,
         legend: {
           x: 0,
@@ -34,6 +33,7 @@ const PlotlyChart: FC<{ path: string }> = ({ path }) => {
           orientation: 'h',
         },
         yaxis: { side: 'right' },
+        margin: { l: 20, r: 50, t: 20, b: 20 },
       }}
       config={{
         responsive: true,
