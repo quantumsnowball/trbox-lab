@@ -1,8 +1,12 @@
 import { ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { FC, useState } from "react"
 
+
+type PlotChoices = 'main' | 'sub' | null
+
 const ControlButtons: FC = () => {
-  const [selection, setSelection] = useState<'main' | 'overlay'>('main')
+  const [selection, setSelection] = useState<PlotChoices>('main')
+  console.log({ selection })
   return (
     <ToggleButtonGroup
       size='small'
@@ -13,8 +17,8 @@ const ControlButtons: FC = () => {
       <ToggleButton value='main'>
         Main
       </ToggleButton>
-      <ToggleButton value='overlay'>
-        Overlay
+      <ToggleButton value='sub'>
+        Sub
       </ToggleButton>
     </ToggleButtonGroup>
   )
