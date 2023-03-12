@@ -7,7 +7,6 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
-import { layoutTempActions } from "@/redux/slices/layoutTemp";
 import { contentActions } from "@/redux/slices/content";
 import { Data } from "plotly.js";
 import ControlButtons from "./ControlButtons";
@@ -15,9 +14,9 @@ import ControlButtons from "./ControlButtons";
 
 const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strategy, name }) => {
   const dispatch = useDispatch()
-  const visible = useSelector((s: RootState) => s.layoutTemp.result.study.visible[path]?.[strategy]?.includes(name) ?? false)
   const [trigger,] = useLazyGetMarkSeriesQuery()
-  const toggleVisible = () => dispatch(layoutTempActions.toggleMarkVisible({ path, strategy, name }))
+  const studyMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
+  const visible = studyMode !== null
   const addSeries = (data: Data) => dispatch(contentActions.addPlotlyChartData({ path, strategy, data }))
   const removeSeries = () => dispatch(contentActions.removePlotlyChartData({ path, strategy, name }))
 
@@ -46,19 +45,16 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
       <Box
         className='flex row'
       >
-        <Checkbox
-          color='success'
-          icon={<VisibilityOffOutlinedIcon />}
-          checkedIcon={<VisibilityOutlinedIcon />}
-          sx={{ mr: 1 }}
-          checked={visible}
-          onClick={toggleVisible}
-        />
+        {visible ?
+          <VisibilityOutlinedIcon sx={{ mr: 1 }} color='success' />
+          :
+          <VisibilityOffOutlinedIcon sx={{ mr: 1 }} color='error' />
+        }
         <Typography>
           {name}
         </Typography>
       </Box>
-      {visible && <ControlButtons />}
+      {<ControlButtons {...{ path, strategy, name }} />}
     </Box>
   )
 }
