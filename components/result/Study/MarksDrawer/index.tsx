@@ -30,13 +30,19 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
       }
       let { data } = await trigger({ path, strategy, name })
       if (data) {
-        const series = { name, x: data.map(r => r[0]), y: data.map(r => r[1]) }
+        const x = data.map(r => r[0])
+        const y = data.map(r => r[1])
+        const type = 'scatter'
+        const mode = 'lines'
+        const xaxis = 'x'
         if (studyMode === 'main') {
-          addMainSeries(series)
+          // addMainSeries({ name, x, y, type, xaxis, yaxis: 'y1' })
+          addMainSeries({ name, x, y, type, mode })
           removeSubSeries()
         }
         else if (studyMode === 'sub') {
-          addSubSeries(series)
+          // addSubSeries({ name, x, y, type, xaxis, yaxis: 'y2' })
+          addSubSeries({ name, x, y, type, mode })
           removeMainSeries()
         }
         // addSeries({
