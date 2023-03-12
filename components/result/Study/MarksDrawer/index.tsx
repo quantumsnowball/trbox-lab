@@ -16,27 +16,26 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
   const dispatch = useDispatch()
   const [trigger,] = useLazyGetMarkSeriesQuery()
   const studyMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
-  const visible = studyMode !== null
   const addSeries = (data: Data) => dispatch(contentActions.addPlotlyChartData({ path, strategy, data }))
   const removeSeries = () => dispatch(contentActions.removePlotlyChartData({ path, strategy, name }))
 
   useEffect(() => {
     (async () => {
-      if (visible) {
-        let { data } = await trigger({ path, strategy, name })
-        if (data)
-          addSeries({
-            name: name,
-            x: data.map(r => r[0]),
-            y: data.map(r => r[1]),
-            type: 'scatter',
-            mode: 'lines',
-          })
-      } else {
+      if (studyMode === null) {
         removeSeries()
+        return
       }
+      let { data } = await trigger({ path, strategy, name })
+      if (data)
+        addSeries({
+          name: name,
+          x: data.map(r => r[0]),
+          y: data.map(r => r[1]),
+          type: 'scatter',
+          mode: 'lines',
+        })
     })()
-  }, [visible])
+  }, [studyMode])
 
   return (
     <Box
@@ -45,10 +44,10 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
       <Box
         className='flex row'
       >
-        {visible ?
-          <VisibilityOutlinedIcon sx={{ mr: 1 }} color='success' />
-          :
+        {studyMode === null ?
           <VisibilityOffOutlinedIcon sx={{ mr: 1 }} color='error' />
+          :
+          <VisibilityOutlinedIcon sx={{ mr: 1 }} color='success' />
         }
         <Typography>
           {name}
