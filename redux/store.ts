@@ -9,11 +9,13 @@ import { layoutReducer } from './slices/layout'
 import { layoutTempReducer } from './slices/layoutTemp'
 import { themeReducer } from './slices/theme'
 import { trboxLabApi } from './slices/apiSlice'
+import { contentReducer } from './slices/content'
 
 
 
 // reducers
 const rootReducer = combineReducers({
+  content: contentReducer,
   layout: layoutReducer,
   layoutTemp: layoutTempReducer,
   theme: themeReducer,

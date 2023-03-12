@@ -1,23 +1,17 @@
+import { RootState } from "@/redux/store";
 import dynamic from "next/dynamic";
+import { FC } from "react";
+import { useSelector } from "react-redux";
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
 
 
-const PlotlyChart = () => {
+const PlotlyChart: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
+  const data = useSelector((s: RootState) => s.content.result.study.data[path]?.[strategy] ?? [])
   return (
     <Plot
-      data={
-        [
-          {
-            name: 'test',
-            x: [1, 2, 3],
-            y: [1, 2, 3],
-            type: 'scatter',
-            mode: 'lines',
-          },
-        ]
-      }
+      data={data}
       layout={{
-        title: 'Study01',
+        title: 'Marks',
         showlegend: true,
         legend: {
           x: 0,
@@ -26,6 +20,7 @@ const PlotlyChart = () => {
           orientation: 'h',
         },
         yaxis: { side: 'right' },
+        margin: { l: 20, r: 40, t: 20, b: 20 },
       }}
       config={{
         responsive: true,

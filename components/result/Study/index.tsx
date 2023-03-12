@@ -2,7 +2,7 @@ import { FileNode } from "@/common/types"
 import { useGetMetricsQuery } from "@/redux/slices/apiSlice"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
 import { RootState } from "@/redux/store"
-import { Autocomplete, TextField, Typography } from "@mui/material"
+import { Autocomplete, TextField } from "@mui/material"
 import { Box } from "@mui/system"
 import { FC } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -46,7 +46,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
     <>
       {strategy ?
         <>
-          <PlotlyChart />
+          <PlotlyChart path={path} strategy={strategy} />
           <Marks path={path} strategy={strategy} />
         </>
         :
@@ -63,7 +63,7 @@ const Study: FC<{ nodes: FileNode[] }> = ({ nodes }) => {
   return (
     <Box
       className='expanding scroll flex column start stretch'
-      sx={{position: 'relative'}}
+      sx={{ position: 'relative' }}
     >
       {path ?
         <>

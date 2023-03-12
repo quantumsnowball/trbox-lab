@@ -25,6 +25,11 @@ const layoutTempSlice = createSlice({
       },
       study: {
         selected: {} as { [path: string]: string | null },
+        visible: {} as {
+          [path: string]: {
+            [strategy: string]: string[]
+          }
+        },
       },
       trades: {
         selected: {} as { [path: string]: string | null },
@@ -59,6 +64,14 @@ const layoutTempSlice = createSlice({
     setEquityChecked: (s, a: PayloadAction<{ path: string, checked: string[] }>) => { s.result.equity.checked[a.payload.path] = a.payload.checked },
     // study
     setStudySelected: (s, a: PayloadAction<{ path: string, selected: string | null }>) => { s.result.study.selected[a.payload.path] = a.payload.selected },
+    toggleMarkVisible: (s, a: PayloadAction<{ path: string, strategy: string, name: string }>) => {
+      const { path, strategy, name } = a.payload
+      s.result.study.visible[path] ??= {}
+      s.result.study.visible[path][strategy] ??= []
+      s.result.study.visible[path][strategy] = s.result.study.visible[path][strategy].includes(name) ?
+        s.result.study.visible[path][strategy].filter(n => n !== name) :
+        [...s.result.study.visible[path][strategy], name]
+    },
     // trades
     setTradesSelected: (s, a: PayloadAction<{ path: string, selected: string | null }>) => { s.result.trades.selected[a.payload.path] = a.payload.selected },
   }

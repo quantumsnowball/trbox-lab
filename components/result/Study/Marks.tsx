@@ -1,9 +1,15 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Typography, Checkbox, ToggleButtonGroup, ToggleButton } from "@mui/material"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
-import { useGetMarksIndexQuery } from "@/redux/slices/apiSlice"
+import { useGetMarksIndexQuery, useLazyGetMarkSeriesQuery } from "@/redux/slices/apiSlice"
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { layoutTempActions } from "@/redux/slices/layoutTemp";
+import { contentActions } from "@/redux/slices/content";
+import { Data } from "plotly.js";
 
 
 const ControlButtons: FC = () => {
@@ -25,8 +31,32 @@ const ControlButtons: FC = () => {
   )
 }
 
-const Row: FC<{ name: string }> = ({ name }) => {
-  const [visible, setVisible] = useState(false)
+const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strategy, name }) => {
+  const dispatch = useDispatch()
+  const visible = useSelector((s: RootState) => s.layoutTemp.result.study.visible[path]?.[strategy]?.includes(name) ?? false)
+  const [trigger,] = useLazyGetMarkSeriesQuery()
+  const toggleVisible = () => dispatch(layoutTempActions.toggleMarkVisible({ path, strategy, name }))
+  const addSeries = (data: Data) => dispatch(contentActions.addPlotlyChartData({ path, strategy, data }))
+  const removeSeries = () => dispatch(contentActions.removePlotlyChartData({ path, strategy, name }))
+
+  useEffect(() => {
+    (async () => {
+      if (visible) {
+        let { data } = await trigger({ path, strategy, name })
+        if (data)
+          addSeries({
+            name: name,
+            x: data.map(r => r[0]),
+            y: data.map(r => r[1]),
+            type: 'scatter',
+            mode: 'lines',
+          })
+      } else {
+        removeSeries()
+      }
+    })()
+  }, [visible])
+
   return (
     <Box
       className='flex row spread'
@@ -40,7 +70,7 @@ const Row: FC<{ name: string }> = ({ name }) => {
           checkedIcon={<VisibilityOutlinedIcon />}
           sx={{ mr: 1 }}
           checked={visible}
-          onClick={() => setVisible(p => !p)}
+          onClick={toggleVisible}
         />
         <Typography>
           {name}
@@ -80,7 +110,7 @@ const Marks: FC<{ path: string, strategy: string }> = ({ path, strategy }) => {
         <AccordionDetails>
           {
             index[strategy].map(name =>
-              <Row key={name} {...{ name }} />
+              <Row key={name} {...{ path, strategy, name }} />
             )
           }
         </AccordionDetails>
