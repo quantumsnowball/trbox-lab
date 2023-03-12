@@ -20,6 +20,7 @@ const PlotlyChart: FC<{ path: string, strategy: string }> = ({ path, strategy })
           orientation: 'h',
         },
         yaxis: { side: 'right' },
+        margin: { l: 20, r: 40, t: 20, b: 20 },
       }}
       config={{
         responsive: true,
