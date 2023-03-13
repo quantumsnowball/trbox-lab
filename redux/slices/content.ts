@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Data } from 'plotly.js'
 
 
-type PlotTarget = 'main' | 'sub'
+export type PlotTarget = 'main' | 'sub1' | 'sub2'
+export type StudyPlotMode = PlotTarget | null
 
 const contentSlice = createSlice({
   name: 'content',
@@ -13,7 +14,8 @@ const contentSlice = createSlice({
           [path: string]: {
             [strategy: string]: {
               main: { [name: string]: Data }
-              sub: { [name: string]: Data }
+              sub1: { [name: string]: Data }
+              sub2: { [name: string]: Data }
             }
           }
         }
@@ -24,7 +26,7 @@ const contentSlice = createSlice({
     addPlotlyChartSeries: (s, a: PayloadAction<{ path: string, strategy: string, name: string, target: PlotTarget, data: Data }>) => {
       const { path, strategy, data, target, name } = a.payload
       s.result.study.series[path] ??= {}
-      s.result.study.series[path][strategy] ??= { main: {}, sub: {} }
+      s.result.study.series[path][strategy] ??= { main: {}, sub1: {}, sub2: {} }
       s.result.study.series[path][strategy][target][name] = data
     },
     removePlotlyChartSeries: (s, a: PayloadAction<{ path: string, strategy: string, name: string, target: PlotTarget }>) => {

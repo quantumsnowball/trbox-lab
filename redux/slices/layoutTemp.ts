@@ -1,7 +1,7 @@
 import { SourceBottomNavTag } from '@/components/source/constants'
 import { ResultBottomNavTag } from '@/components/result/constants'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { StudyPlotMode } from '@/components/result/Study/MarksDrawer/ControlButtons'
+import { StudyPlotMode } from './content'
 
 
 const layoutTempSlice = createSlice({

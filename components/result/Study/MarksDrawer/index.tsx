@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Typography, Checkbox } from "@mui/material"
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material"
 import { FC, useEffect, useState } from "react"
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { useGetMarksIndexQuery, useLazyGetMarkSeriesQuery } from "@/redux/slices/apiSlice"
@@ -7,7 +7,7 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
-import { contentActions } from "@/redux/slices/content";
+import { contentActions, StudyPlotMode } from "@/redux/slices/content";
 import { Data } from "plotly.js";
 import ControlButtons from "./ControlButtons";
 
@@ -15,17 +15,20 @@ import ControlButtons from "./ControlButtons";
 const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strategy, name }) => {
   const dispatch = useDispatch()
   const [trigger,] = useLazyGetMarkSeriesQuery()
-  const studyMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
+  const studyMode: StudyPlotMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
   const addMainSeries = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'main', data }))
-  const addSubSeries = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'sub', data }))
+  const addSub1Series = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'sub1', data }))
+  const addSub2Series = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'sub2', data }))
   const removeMainSeries = () => dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name, target: 'main' }))
-  const removeSubSeries = () => dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name, target: 'sub' }))
+  const removeSub1Series = () => dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name, target: 'sub1' }))
+  const removeSub2Series = () => dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name, target: 'sub2' }))
 
   useEffect(() => {
     (async () => {
       if (studyMode === null) {
         removeMainSeries()
-        removeSubSeries()
+        removeSub1Series()
+        removeSub2Series()
         return
       }
       let { data } = await trigger({ path, strategy, name })
@@ -36,12 +39,19 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
         const mode = 'lines'
         const xaxis = 'x'
         if (studyMode === 'main') {
-          addMainSeries({ name, x, y, type, xaxis, yaxis: 'y1' })
-          removeSubSeries()
+          addMainSeries({ name, x, y, type, mode, xaxis, yaxis: 'y1' })
+          removeSub1Series()
+          removeSub2Series()
         }
-        else if (studyMode === 'sub') {
-          addSubSeries({ name, x, y, type, xaxis, yaxis: 'y2' })
+        else if (studyMode === 'sub1') {
+          addSub1Series({ name, x, y, type, mode, xaxis, yaxis: 'y2' })
           removeMainSeries()
+          removeSub2Series()
+        }
+        else if (studyMode === 'sub2') {
+          addSub2Series({ name, x, y, type, mode, xaxis, yaxis: 'y3' })
+          removeMainSeries()
+          removeSub1Series()
         }
       }
     })()
