@@ -55,6 +55,7 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
         }
       }
     })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studyMode])
 
   return (
