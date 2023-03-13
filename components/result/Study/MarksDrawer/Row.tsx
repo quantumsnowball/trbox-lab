@@ -45,7 +45,7 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
             const type = 'scatter'
             const mode = 'markers'
             const xaxis = 'x'
-            addOverlaySeries({ name, x, y, type, mode, xaxis, yaxis: 'y1' })
+            addOverlaySeries({ name, x, y, type, mode, xaxis, yaxis: 'y1', marker: { size: 10 } })
             removeMainSeries()
             removeSub1Series()
             removeSub2Series()
