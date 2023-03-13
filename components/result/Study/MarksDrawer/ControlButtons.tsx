@@ -1,3 +1,4 @@
+import { StudyPlotMode } from "@/redux/slices/content"
 import { layoutTempActions } from "@/redux/slices/layoutTemp"
 import { RootState } from "@/redux/store"
 import { ToggleButton, ToggleButtonGroup } from "@mui/material"
@@ -6,11 +7,10 @@ import { useDispatch } from "react-redux"
 import { useSelector } from "react-redux"
 
 
-export type StudyPlotMode = 'main' | 'sub' | null
 
 const ControlButtons: FC<{ path: string, strategy: string, name: string }> = ({ path, strategy, name }) => {
   const dispatch = useDispatch()
-  const studyMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
+  const studyMode: StudyPlotMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
   const setStudyMode = (m: StudyPlotMode) => dispatch(layoutTempActions.setStudyMode({ path, strategy, name, mode: m }))
   return (
     <ToggleButtonGroup
@@ -19,11 +19,11 @@ const ControlButtons: FC<{ path: string, strategy: string, name: string }> = ({ 
       value={studyMode}
       onChange={(_e, value) => setStudyMode(value)}
     >
-      <ToggleButton value='main'>
+      <ToggleButton value='main' sx={{ textTransform: 'none' }}>
         Main
       </ToggleButton>
-      <ToggleButton value='sub'>
-        Sub
+      <ToggleButton value='sub1' sx={{ textTransform: 'none' }}>
+        Sub1
       </ToggleButton>
     </ToggleButtonGroup>
   )
