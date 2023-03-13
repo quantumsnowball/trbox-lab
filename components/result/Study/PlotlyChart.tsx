@@ -13,6 +13,7 @@ const BASE_LAYOUT: Partial<Layout> = {
     yanchor: 'bottom',
     orientation: 'h',
   },
+  yaxis: { side: 'right' },
   margin: { l: 20, r: 50, t: 20, b: 20 },
 }
 
