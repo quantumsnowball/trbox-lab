@@ -16,7 +16,7 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
   const [getMarkSeries,] = useLazyGetMarkSeriesQuery()
   const [getMarkSeriesOverlay,] = useLazyGetMarkSeriesOverlayQuery()
   const studyMode: StudyPlotMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
-  const firstMainSeriesName = useSelector((s: RootState) => Object.keys(s.content.result.study.series[path]?.[strategy]?.main)[0] ?? null)
+  const firstMainSeriesName = useSelector((s: RootState) => Object.keys(s.content.result.study.series[path]?.[strategy]?.main ?? {})[0] ?? null)
   const addMainSeries = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'main', data }))
   const addSub1Series = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'sub1', data }))
   const addSub2Series = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'sub2', data }))
