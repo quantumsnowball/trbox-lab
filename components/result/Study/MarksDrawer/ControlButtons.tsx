@@ -28,6 +28,9 @@ const ControlButtons: FC<{ path: string, strategy: string, name: string }> = ({ 
       <ToggleButton value='sub2' sx={{ textTransform: 'none' }}>
         Sub2
       </ToggleButton>
+      <ToggleButton value='overlay' sx={{ textTransform: 'none' }}>
+        Overlay
+      </ToggleButton>
     </ToggleButtonGroup>
   )
 }
