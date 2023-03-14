@@ -21,11 +21,12 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
     dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target, data }))
   const removeSeries = (target: PlotTarget) => () =>
     dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name, target }))
+  const removeManySeries = (...args: PlotTarget[]) => args.forEach(m => removeSeries(m)())
 
   useEffect(() => {
     (async () => {
       if (studyMode === null) {
-        (['main', 'sub1', 'sub2', 'overlay'] as PlotTarget[]).forEach(m => removeSeries(m)())
+        removeManySeries('main', 'sub1', 'sub2', 'overlay')
       }
       else if (studyMode === 'overlay') {
         const interp = firstMainSeriesName
@@ -37,8 +38,8 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
             const type = 'scatter'
             const mode = 'markers'
             const xaxis = 'x'
-            addSeries('overlay')({ name, x, y, type, mode, xaxis, yaxis: 'y1', marker: { size: 10 } });
-            (['main', 'sub1', 'sub2'] as PlotTarget[]).forEach(m => removeSeries(m)())
+            addSeries('overlay')({ name, x, y, type, mode, xaxis, yaxis: 'y1', marker: { size: 10 } })
+            removeManySeries('main', 'sub1', 'sub2')
           }
         }
       }
@@ -51,16 +52,16 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
           const mode = 'lines'
           const xaxis = 'x'
           if (studyMode === 'main') {
-            addSeries('main')({ name, x, y, type, mode, xaxis, yaxis: 'y1' });
-            (['sub1', 'sub2', 'overlay'] as PlotTarget[]).forEach(m => removeSeries(m)())
+            addSeries('main')({ name, x, y, type, mode, xaxis, yaxis: 'y1' })
+            removeManySeries('sub1', 'sub2', 'overlay')
           }
           else if (studyMode === 'sub1') {
-            addSeries('sub1')({ name, x, y, type, mode, xaxis, yaxis: 'y2' });
-            (['main', 'sub2', 'overlay'] as PlotTarget[]).forEach(m => removeSeries(m)())
+            addSeries('sub1')({ name, x, y, type, mode, xaxis, yaxis: 'y2' })
+            removeManySeries('main', 'sub2', 'overlay')
           }
           else if (studyMode === 'sub2') {
-            addSeries('sub2')({ name, x, y, type, mode, xaxis, yaxis: 'y3' });
-            (['main', 'sub1', 'overlay'] as PlotTarget[]).forEach(m => removeSeries(m)())
+            addSeries('sub2')({ name, x, y, type, mode, xaxis, yaxis: 'y3' })
+            removeManySeries('main', 'sub1', 'overlay')
           }
         }
       }
