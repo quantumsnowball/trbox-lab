@@ -13,6 +13,7 @@ const ControlButtons: FC<{ path: string, strategy: string, name: string }> = ({ 
   const studyMode: StudyPlotMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
   const setStudyMode = (m: StudyPlotMode) => dispatch(layoutTempActions.setStudyMode({ path, strategy, name, mode: m }))
   const existingMainSeriesNames = useSelector((s: RootState) => Object.keys(s.content.result.study.series[path]?.[strategy]?.main ?? {}) ?? [])
+  const [overlayId, setOverlayId] = useState(0)
 
   return (
     <ToggleButtonGroup
@@ -20,21 +21,30 @@ const ControlButtons: FC<{ path: string, strategy: string, name: string }> = ({ 
       exclusive
       value={studyMode}
       onChange={(_e, value) => {
-        // entering overlay
+        // when entering overlay
         if (value === 'overlay' && studyMode !== 'overlay') {
-          console.log(`select first from ${existingMainSeriesNames.join(', ')}`)
-          setStudyMode(value)
-          return
-        }
-        // double clicking overlay
-        if (value === null && studyMode === 'overlay') {
-          // if there is next main series, stay in overlay
-          console.log(`select next from ${existingMainSeriesNames.join(', ')}`)
-          // else, go to null
           // TODO
-          return
+          console.log({ overlay: existingMainSeriesNames[overlayId] })
+          setOverlayId(v => v + 1)
         }
-        // other mode
+        // when double clicking overlay
+        else if (value === null && studyMode === 'overlay') {
+          // if there is next main series, stay in overlay
+          if (overlayId < existingMainSeriesNames.length) {
+            // TODO
+            console.log({ overlay: existingMainSeriesNames[overlayId] })
+            setOverlayId(overlayId + 1)
+            // skip setStudyMode, remain in overlay
+            return
+          }
+          // else, go to null
+          else {
+            // TODO
+            console.log({ overlay: null })
+            setOverlayId(0)
+          }
+        }
+        // default action
         setStudyMode(value)
       }}
     >
