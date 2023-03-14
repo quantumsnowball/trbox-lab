@@ -51,16 +51,16 @@ const ControlButtons: FC<{ path: string, strategy: string, name: string }> = ({ 
         setStudyMode(value)
       }}
     >
-      <ToggleButton value='main' sx={{ textTransform: 'none' }}>
+      <ToggleButton value='main' color='success' sx={{ textTransform: 'none' }}>
         Main
       </ToggleButton>
-      <ToggleButton value='sub1' sx={{ textTransform: 'none' }}>
+      <ToggleButton value='sub1' color='warning' sx={{ textTransform: 'none' }}>
         Sub1
       </ToggleButton>
-      <ToggleButton value='sub2' sx={{ textTransform: 'none' }}>
+      <ToggleButton value='sub2' color='warning' sx={{ textTransform: 'none' }}>
         Sub2
       </ToggleButton>
-      <ToggleButton value='overlay' sx={{ textTransform: 'none' }}>
+      <ToggleButton value='overlay' color='primary' sx={{ textTransform: 'none' }}>
         Overlay
       </ToggleButton>
     </ToggleButtonGroup>
