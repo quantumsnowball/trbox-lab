@@ -17,10 +17,8 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
   const [getMarkSeriesOverlay,] = useLazyGetMarkSeriesOverlayQuery()
   const studyMode: StudyPlotMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
   const firstMainSeriesName = useSelector((s: RootState) => Object.keys(s.content.result.study.series[path]?.[strategy]?.main ?? {})[0] ?? null)
-  const addMainSeries = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'main', data }))
-  const addSub1Series = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'sub1', data }))
-  const addSub2Series = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'sub2', data }))
-  const addOverlaySeries = (data: Data) => dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target: 'overlay', data }))
+  const addSeries = (target: PlotTarget) => (data: Data) =>
+    dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target, data }))
   const removeSeries = (target: PlotTarget) => () =>
     dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name, target }))
 
@@ -39,7 +37,7 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
             const type = 'scatter'
             const mode = 'markers'
             const xaxis = 'x'
-            addOverlaySeries({ name, x, y, type, mode, xaxis, yaxis: 'y1', marker: { size: 10 } });
+            addSeries('overlay')({ name, x, y, type, mode, xaxis, yaxis: 'y1', marker: { size: 10 } });
             (['main', 'sub1', 'sub2'] as PlotTarget[]).forEach(m => removeSeries(m)())
           }
         }
@@ -53,15 +51,15 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
           const mode = 'lines'
           const xaxis = 'x'
           if (studyMode === 'main') {
-            addMainSeries({ name, x, y, type, mode, xaxis, yaxis: 'y1' });
+            addSeries('main')({ name, x, y, type, mode, xaxis, yaxis: 'y1' });
             (['sub1', 'sub2', 'overlay'] as PlotTarget[]).forEach(m => removeSeries(m)())
           }
           else if (studyMode === 'sub1') {
-            addSub1Series({ name, x, y, type, mode, xaxis, yaxis: 'y2' });
+            addSeries('sub1')({ name, x, y, type, mode, xaxis, yaxis: 'y2' });
             (['main', 'sub2', 'overlay'] as PlotTarget[]).forEach(m => removeSeries(m)())
           }
           else if (studyMode === 'sub2') {
-            addSub2Series({ name, x, y, type, mode, xaxis, yaxis: 'y3' });
+            addSeries('sub2')({ name, x, y, type, mode, xaxis, yaxis: 'y3' });
             (['main', 'sub1', 'overlay'] as PlotTarget[]).forEach(m => removeSeries(m)())
           }
         }
