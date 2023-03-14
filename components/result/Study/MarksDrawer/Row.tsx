@@ -21,14 +21,16 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
     dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target, data }))
   const removeSeries = (target: PlotTarget) => () =>
     dispatch(contentActions.removePlotlyChartSeries({ path, strategy, name, target }))
-  const removeManySeries = (...args: PlotTarget[]) => args.forEach(m => removeSeries(m)())
+  const removeManySeries = (...manySeries: PlotTarget[]) => manySeries.forEach(m => removeSeries(m)())
 
   useEffect(() => {
     (async () => {
       if (studyMode === null) {
         removeManySeries('main', 'sub1', 'sub2', 'overlay')
+        return
       }
-      else if (studyMode === 'overlay') {
+
+      if (studyMode === 'overlay') {
         const interp = firstMainSeriesName
         if (interp) {
           let { data } = await getMarkSeriesOverlay({ path, strategy, name, interp })
@@ -42,29 +44,30 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
             removeManySeries('main', 'sub1', 'sub2')
           }
         }
+        return
       }
-      else {
-        let { data } = await getMarkSeries({ path, strategy, name })
-        if (data) {
-          const x = data.map(r => r[0])
-          const y = data.map(r => r[1])
-          const type = 'scatter'
-          const mode = 'lines'
-          const xaxis = 'x'
-          if (studyMode === 'main') {
-            addSeries('main')({ name, x, y, type, mode, xaxis, yaxis: 'y1' })
-            removeManySeries('sub1', 'sub2', 'overlay')
-          }
-          else if (studyMode === 'sub1') {
-            addSeries('sub1')({ name, x, y, type, mode, xaxis, yaxis: 'y2' })
-            removeManySeries('main', 'sub2', 'overlay')
-          }
-          else if (studyMode === 'sub2') {
-            addSeries('sub2')({ name, x, y, type, mode, xaxis, yaxis: 'y3' })
-            removeManySeries('main', 'sub1', 'overlay')
-          }
+
+      let { data } = await getMarkSeries({ path, strategy, name })
+      if (data) {
+        const x = data.map(r => r[0])
+        const y = data.map(r => r[1])
+        const type = 'scatter'
+        const mode = 'lines'
+        const xaxis = 'x'
+        if (studyMode === 'main') {
+          addSeries('main')({ name, x, y, type, mode, xaxis, yaxis: 'y1' })
+          removeManySeries('sub1', 'sub2', 'overlay')
+        }
+        else if (studyMode === 'sub1') {
+          addSeries('sub1')({ name, x, y, type, mode, xaxis, yaxis: 'y2' })
+          removeManySeries('main', 'sub2', 'overlay')
+        }
+        else if (studyMode === 'sub2') {
+          addSeries('sub2')({ name, x, y, type, mode, xaxis, yaxis: 'y3' })
+          removeManySeries('main', 'sub1', 'overlay')
         }
       }
+
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studyMode])
