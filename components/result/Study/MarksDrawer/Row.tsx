@@ -16,7 +16,7 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
   const [getMarkSeries,] = useLazyGetMarkSeriesQuery()
   const [getMarkSeriesOverlay,] = useLazyGetMarkSeriesOverlayQuery()
   const studyMode: StudyPlotMode = useSelector((s: RootState) => s.layoutTemp.result.study.mode[path]?.[strategy]?.[name] ?? null)
-  const firstMainSeriesName = useSelector((s: RootState) => Object.keys(s.content.result.study.series[path]?.[strategy]?.main ?? {})[0] ?? null)
+  const interp = useSelector((s: RootState) => s.layoutTemp.result.study.overlay[path]?.[strategy]?.[name] ?? null)
   const addSeries = (target: PlotTarget) => (data: Data) =>
     dispatch(contentActions.addPlotlyChartSeries({ path, strategy, name, target, data }))
   const removeSeries = (target: PlotTarget) => () =>
@@ -31,7 +31,6 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
       }
 
       if (studyMode === 'overlay') {
-        const interp = firstMainSeriesName
         if (interp) {
           let { data } = await getMarkSeriesOverlay({ path, strategy, name, interp })
           if (data) {
@@ -70,7 +69,7 @@ const Row: FC<{ path: string, strategy: string, name: string }> = ({ path, strat
 
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [studyMode])
+  }, [studyMode, interp])
 
   return (
     <Box

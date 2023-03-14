@@ -33,6 +33,13 @@ const layoutTempSlice = createSlice({
             }
           }
         },
+        overlay: {} as {
+          [path: string]: {
+            [strategy: string]: {
+              [name: string]: string | null
+            }
+          }
+        },
       },
       trades: {
         selected: {} as { [path: string]: string | null },
@@ -73,6 +80,13 @@ const layoutTempSlice = createSlice({
       s.result.study.mode[path][strategy] ??= {}
       s.result.study.mode[path][strategy][name] ??= null
       s.result.study.mode[path][strategy][name] = mode
+    },
+    setCurrentOverlay: (s, a: PayloadAction<{ path: string, strategy: string, name: string, against: string }>) => {
+      const { path, strategy, name, against } = a.payload
+      s.result.study.overlay[path] ??= {}
+      s.result.study.overlay[path][strategy] ??= {}
+      s.result.study.overlay[path][strategy][name] ??= null
+      s.result.study.overlay[path][strategy][name] = against
     },
     // trades
     setTradesSelected: (s, a: PayloadAction<{ path: string, selected: string | null }>) => { s.result.trades.selected[a.payload.path] = a.payload.selected },

@@ -14,6 +14,9 @@ const ControlButtons: FC<{ path: string, strategy: string, name: string }> = ({ 
   const setStudyMode = (m: StudyPlotMode) => dispatch(layoutTempActions.setStudyMode({ path, strategy, name, mode: m }))
   const existingMainSeriesNames = useSelector((s: RootState) => Object.keys(s.content.result.study.series[path]?.[strategy]?.main ?? {}) ?? [])
   const [overlayId, setOverlayId] = useState(0)
+  const setCurrentOverlay = () => dispatch(layoutTempActions.setCurrentOverlay(
+    { path, strategy, name, against: existingMainSeriesNames[overlayId] ?? null }
+  ))
 
   return (
     <ToggleButtonGroup
@@ -24,7 +27,7 @@ const ControlButtons: FC<{ path: string, strategy: string, name: string }> = ({ 
         // when entering overlay
         if (value === 'overlay' && studyMode !== 'overlay') {
           // TODO
-          console.log({ overlay: existingMainSeriesNames[overlayId] })
+          setCurrentOverlay()
           setOverlayId(v => v + 1)
         }
         // when double clicking overlay
@@ -32,15 +35,15 @@ const ControlButtons: FC<{ path: string, strategy: string, name: string }> = ({ 
           // if there is next main series, stay in overlay
           if (overlayId < existingMainSeriesNames.length) {
             // TODO
-            console.log({ overlay: existingMainSeriesNames[overlayId] })
-            setOverlayId(overlayId + 1)
+            setCurrentOverlay()
+            setOverlayId(v => v + 1)
             // skip setStudyMode, remain in overlay
             return
           }
           // else, go to null
           else {
             // TODO
-            console.log({ overlay: null })
+            setCurrentOverlay()
             setOverlayId(0)
           }
         }
