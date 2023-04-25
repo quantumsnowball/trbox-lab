@@ -1,13 +1,12 @@
-import { RESULT_DIR_PREFIX } from "@/components/result/constants"
-
 export const cleanUrl = (url: string) => url.replace(/([^:]\/)\/+/g, "$1")
 
-export const resultDirDatetimeFormatted = (name: string) =>
-  name
-    .replace(`${RESULT_DIR_PREFIX}_`, '')
-    .replace('T', ' - ')
-    .replaceAll('.', ':')
-    .slice(0, -7)
+export const resultDirDatetimeFormatted = (name: string) => {
+  const pattern = /\d{4}-\d{2}-\d{2}T\d{2}\.\d{2}\.\d{2}/;
+  const match = pattern.exec(name)
+  const iso = match?.[0]
+  const formatted = iso?.replace('T', ' - ').replaceAll('.', ':')
+  return formatted ?? 'Invalid Date'
+}
 
 export const randomRGB = () => '#' + Math.random().toString(16).slice(-6)
 
