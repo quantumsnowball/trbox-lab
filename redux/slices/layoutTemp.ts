@@ -1,6 +1,7 @@
 import { SourceBottomNavTag } from '@/components/source/constants'
 import { ResultBottomNavTag } from '@/components/result/constants'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { StudyPlotMode } from './content'
 
 
 const layoutTempSlice = createSlice({
@@ -25,9 +26,18 @@ const layoutTempSlice = createSlice({
       },
       study: {
         selected: {} as { [path: string]: string | null },
-        visible: {} as {
+        mode: {} as {
           [path: string]: {
-            [strategy: string]: string[]
+            [strategy: string]: {
+              [name: string]: StudyPlotMode
+            }
+          }
+        },
+        overlay: {} as {
+          [path: string]: {
+            [strategy: string]: {
+              [name: string]: string | null
+            }
           }
         },
       },
@@ -64,13 +74,19 @@ const layoutTempSlice = createSlice({
     setEquityChecked: (s, a: PayloadAction<{ path: string, checked: string[] }>) => { s.result.equity.checked[a.payload.path] = a.payload.checked },
     // study
     setStudySelected: (s, a: PayloadAction<{ path: string, selected: string | null }>) => { s.result.study.selected[a.payload.path] = a.payload.selected },
-    toggleMarkVisible: (s, a: PayloadAction<{ path: string, strategy: string, name: string }>) => {
-      const { path, strategy, name } = a.payload
-      s.result.study.visible[path] ??= {}
-      s.result.study.visible[path][strategy] ??= []
-      s.result.study.visible[path][strategy] = s.result.study.visible[path][strategy].includes(name) ?
-        s.result.study.visible[path][strategy].filter(n => n !== name) :
-        [...s.result.study.visible[path][strategy], name]
+    setStudyMode: (s, a: PayloadAction<{ path: string, strategy: string, name: string, mode: StudyPlotMode }>) => {
+      const { path, strategy, name, mode } = a.payload
+      s.result.study.mode[path] ??= {}
+      s.result.study.mode[path][strategy] ??= {}
+      s.result.study.mode[path][strategy][name] ??= null
+      s.result.study.mode[path][strategy][name] = mode
+    },
+    setCurrentOverlay: (s, a: PayloadAction<{ path: string, strategy: string, name: string, against: string }>) => {
+      const { path, strategy, name, against } = a.payload
+      s.result.study.overlay[path] ??= {}
+      s.result.study.overlay[path][strategy] ??= {}
+      s.result.study.overlay[path][strategy][name] ??= null
+      s.result.study.overlay[path][strategy][name] = against
     },
     // trades
     setTradesSelected: (s, a: PayloadAction<{ path: string, selected: string | null }>) => { s.result.trades.selected[a.payload.path] = a.payload.selected },

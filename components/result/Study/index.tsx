@@ -6,7 +6,7 @@ import { Autocomplete, TextField } from "@mui/material"
 import { Box } from "@mui/system"
 import { FC } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import Marks from "./Marks"
+import MarksDrawer from "./MarksDrawer"
 import PlotlyChart from "./PlotlyChart"
 
 
@@ -47,7 +47,7 @@ const Content: FC<{ path: string }> = ({ path }) => {
       {strategy ?
         <>
           <PlotlyChart path={path} strategy={strategy} />
-          <Marks path={path} strategy={strategy} />
+          <MarksDrawer path={path} strategy={strategy} />
         </>
         :
         null

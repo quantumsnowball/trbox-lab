@@ -85,6 +85,10 @@ export const trboxLabApi = createApi({
     getMarkSeries: builder.query<MarkSeries, { path: string, strategy: string, name: string }>({
       query: ({ path, strategy, name }: { path: string, strategy: string, name: string }) => cleanUrl(`result/${path}/marks?strategy=${strategy}&name=${name}`)
     }),
+    getMarkSeriesOverlay: builder.query<MarkSeries, { path: string, strategy: string, name: string, interp: string }>({
+      query: ({ path, strategy, name, interp }: { path: string, strategy: string, name: string, interp: string }) =>
+        cleanUrl(`result/${path}/marks?strategy=${strategy}&name=${name}&interp=${interp}`)
+    }),
     // file operations
     deleteResource: builder.mutation<void, string>({
       query: (path: string) => ({
@@ -112,6 +116,7 @@ export const {
   useGetEquityQuery,
   useGetMarksIndexQuery,
   useLazyGetMarkSeriesQuery,
+  useLazyGetMarkSeriesOverlayQuery,
   useGetTradesQuery,
   useGetStatsQuery,
   // operations

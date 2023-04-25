@@ -2,33 +2,37 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Data } from 'plotly.js'
 
 
+export type PlotTarget = 'main' | 'sub1' | 'sub2' | 'overlay'
+export type StudyPlotMode = PlotTarget | null
+
 const contentSlice = createSlice({
   name: 'content',
   initialState: {
     result: {
       study: {
-        data: {} as {
+        series: {} as {
           [path: string]: {
-            [strategy: string]: Data[]
+            [strategy: string]: {
+              main: { [name: string]: Data }
+              sub1: { [name: string]: Data }
+              sub2: { [name: string]: Data }
+              overlay: { [name: string]: Data }
+            }
           }
         }
       }
     }
   },
   reducers: {
-    addPlotlyChartData: (s, a: PayloadAction<{ path: string, strategy: string, data: Data }>) => {
-      const { path, strategy, data } = a.payload
-      s.result.study.data[path] ??= {}
-      s.result.study.data[path][strategy] ??= []
-      s.result.study.data[path][strategy] =
-        [...s.result.study.data[path][strategy], data]
+    addPlotlyChartSeries: (s, a: PayloadAction<{ path: string, strategy: string, name: string, target: PlotTarget, data: Data }>) => {
+      const { path, strategy, data, target, name } = a.payload
+      s.result.study.series[path] ??= {}
+      s.result.study.series[path][strategy] ??= { main: {}, sub1: {}, sub2: {}, overlay: {} }
+      s.result.study.series[path][strategy][target][name] = data
     },
-    removePlotlyChartData: (s, a: PayloadAction<{ path: string, strategy: string, name: string }>) => {
-      const { path, strategy, name } = a.payload
-      s.result.study.data[path] ??= {}
-      s.result.study.data[path][strategy] ??= []
-      s.result.study.data[path][strategy] =
-        s.result.study.data[path][strategy].filter(data => data.name !== name)
+    removePlotlyChartSeries: (s, a: PayloadAction<{ path: string, strategy: string, name: string, target: PlotTarget }>) => {
+      const { path, strategy, name, target } = a.payload
+      delete s.result.study.series[path]?.[strategy]?.[target]?.[name]
     }
   }
 })
